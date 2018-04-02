@@ -1,3 +1,4 @@
+
 <?php
 session_start();
 require_once('../includes/request-key.php');
@@ -8,22 +9,10 @@ if(!isset($_SESSION[RequestKey::$USER_ID])) {
 }
 else {
   $db = new DBHelper();
-  $place1 = $db->getPlaceById(3);
-  $places = $db->getAllPlace();
-  $count  = $db->countPlace();
+  $places2 = $db->getAllPlace();
+  $rumahs = $db->getRumah();
+  $masjids = $db->getMasjid();
 
-  $location = array();
-  $category = array();
-  $i=1;
-  while ($place = $places->fetch_object()) {
-    $location[$i] = $place->place_location;
-    $name[$i] = $place->place_name;
-    $category[$i] = $place->place_category;
-    $i += 1;
-  }
-  // echo $count;
-  // print_r($location);
-  // print_r($category);
 }
 ?>
 
@@ -41,8 +30,8 @@ else {
     padding: 0 30px;
     display: flex;
     flex-wrap: wrap;
-    margin-right: 30px;
-    margin-left: 30px;
+    margin-right: 15px;
+    margin-left: 15px;
 
   }
   /* Optional: Makes the sample page fill the window. */
@@ -95,153 +84,154 @@ else {
             <h2 class="no-margin-bottom">Dashboard</h2>
           </div>
         </header>
-        <!--data user  -->
         <section class="dashboard-header">
           <div class="container-fluid">
             <div class="row">
-              <div class="statistics col-lg-4">
-                <a style="width:100%" href="create.php">
-                  <div class="statistic d-flex align-items-center bg-white has-shadow">
-                    <div class="icon bg-blue"><i class="fa fa-plus"></i></div>
-                    <div class="text"><strong>Tambah</strong><br><small>Lokasi</small></div>
-                  </div>
-                </a>
+              <div class="clo-md-12">
               </div>
-              <div class="statistics col-lg-4">
-                <div class="statistic d-flex align-items-center bg-white has-shadow">
-                  <div class="icon bg-red"><i class="fa fa-user"></i></div>
-                  <div class="text"><strong><?=$count?></strong><br><small>Lokasi</small></div>
-                </div>
-                <!-- <div class="statistic d-flex align-items-center bg-white has-shadow">
-                <div class="icon bg-green"><i class="fa fa-desktop"></i></div>
-                <div class="text"><strong><?=($totalFile->size/1000).' kb';?></strong><br><small>Memory</small></div>
-              </div> -->
             </div>
           </div>
+        </section>
+        <!-- Dashboard Header Section    -->
+        <div id="floating-panel">
+          <input id="address" type="textbox" value="Sydney, NSW">
+          <input id="submit" type="button" value="Geocode">
         </div>
-      </section>
-      <!-- Dashboard Header Section    -->
-
-      <div id="map"></div>
-      <section class="dashboard-header">
-        <div class="container-fluid">
-          <div class="row">
-            <div class="col-lg-12">
-
-              <div class="table-responsive">
-                <table class="table table-striped ">
-                  <thead>
-                    <tr>
-                      <th>No</th>
-                      <th>Nama Lokasi</th>
-                      <th>Lokasi</th>
-                      <th>Status</th>
-                      <th>Aksi</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-
-                    <?php
-
-                    // while ($place = $places->fetch_object()) {
-                    for ($i=1; $i <=$count ; $i++) {
-                      ?>
+        <div id="map"></div>
+        <section class="dashboard-header">
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-lg-12">
+                <div class="table-responsive">
+                  <table class="table table-striped ">
+                    <thead>
                       <tr>
-                        <td>
-                          <?= $i; ?>
-                        </td>
-                        <td>
-                          <?= ucwords($name[$i]); ?>
-                        </td>
-                        <td>
-                          <?= $location[$i] ?>
-                        </td>
-                        <td>
-                          <?= ((int)$category[$i] == 0 ? '<p class="text-success">Masjid</p>' : '<p class="text-warning">Rumah</p>' ) ?>
-                        </td>
-                        <td>
-                          <button type="button" data-toggle="modal" data-target="#modalUpgrade" class="btn btn-primary middle btn-sm" data-name="<?=$place->place_name?>" data-location="<?=$place->place_location?>" data-category="<?=$place->place_category?>">Detail</button>
-                          <button type="button" data-toggle="modal" data-target="#modalUpgrade" class="btn btn-primary middle btn-sm" data-name="<?=$place->place_name?>" data-location="<?=$place->place_location?>" data-category="<?=$place->place_category?>">Delete</button>
-                        </td>
+                        <th>No</th>
+                        <th>Nama Lokasi</th>
+                        <th>Lokasi</th>
+                        <th>Status</th>
+                        <th>Aksi</th>
                       </tr>
+                    </thead>
+                    <tbody>
                       <?php
-
-                    }
-
-                    ?>
-                  </tbody>
-                </table>
+                      $i=1;
+                      while ($place2 = $places2->fetch_object()) {
+                        // for ($i=1; $i <=$count ; $i++) {
+                        ?>
+                        <tr>
+                          <td>
+                            <?= $i; ?>
+                          </td>
+                          <td>
+                            <?= ucwords($place2->place_name); ?>
+                          </td>
+                          <td>
+                            <?= $place2->place_location ?>
+                          </td>
+                          <td>
+                            <?= ((int)$place2->place_category == 0 ? '<p class="text-success">Masjid</p>' : '<p class="text-warning">Rumah</p>' ) ?>
+                          </td>
+                          <td>
+                            <button type="button" data-toggle="modal" data-target="#modalUpgrade" class="btn btn-primary middle btn-sm" data-name="<?=$place2->place_name?>" data-location="<?=$place2->place_location?>" data-category="<?=$place2->place_category?>">Detail</button>
+                            <button type="button" data-toggle="modal" data-target="#modalUpgrade" class="btn btn-primary middle btn-sm" data-name="<?=$place2->place_name?>" data-location="<?=$place2->place_location?>" data-category="<?=$place2->place_category?>">Delete</button>
+                          </td>
+                        </tr>
+                        <?php
+                      }
+                      ?>
+                    </tbody>
+                  </table>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      <?php include('page-footer.php'); ?>
+        <?php include('page-footer.php'); ?>
+      </div>
     </div>
   </div>
-</div>
-<?php include('foot.php'); ?>
+  <?php include('foot.php'); ?>
 
-<script>
+  <script>
 
-var myStyles =[
-  {
-    featureType: "poi",
-    elementType: "labels",
-    stylers: [
-      { visibility: "off" }
-    ]
-  }
-];
-function initMap() {
-  var map = new google.maps.Map(document.getElementById('map'), {
-    zoom: 17,
-    center: {lat: -7.058202, lng: 110.426634},
-    // animation: google.maps.Animation.DROP,
-    // disableDefaultUI: true
-    styles: myStyles
-  });
+  // The following example creates complex markers to indicate beaches near
+  // Sydney, NSW, Australia. Note that the anchor is set to (0,32) to correspond
+  // to the base of the flagpole.
 
-  var iconBase = 'https://maps.google.com/mapfiles/kml/shapes/';
-  var icons = {
-    rumah: {
-      icon: iconBase + 'library_maps.png'
-    },
-    masjid: {
-      icon: iconBase + 'info-i_maps.png'
-    }
-  };
-
-  //Show marker
-  var features = [
-    <?php
-    for ($i=1; $i <=$count ; $i++) {
-      echo "{
-        position: new google.maps.LatLng(".$location[$i]."),
-        type:'";
-        if ($category[$i] == 0) {
-          echo "masjid";
-        }else {
-          echo "rumah";
-        }
-        echo"'},";
-      }
-      ?>
-    ];
-
-
-    // Create markers.
-    features.forEach(function(feature) {
-      var marker = new google.maps.Marker({
-        position: feature.position,
-        icon: icons[feature.type].icon,
-        map: map
-      });
+  function initMap() {
+    var map = new google.maps.Map(document.getElementById('map'), {
+      zoom: 17,
+      center: {lat: -7.058202, lng: 110.426634}
     });
 
+    setMarkers(map);
   }
 
+  // Data for the markers consisting of a name, a LatLng and a zIndex for the
+  // order in which these markers should display on top of each other.
+  var places = [
+    <?php
+    while($place = $places->fetch_object()){
+      echo "['".$place->place_name."', ".$place->place_location.", ".$place->place_category."],";
+    }
+    ?>
+  ];
+  var masjids = [
+    <?php
+    while($masjid = $masjids->fetch_object()){
+      echo "['".$masjid->place_name."', ".$masjid->place_location.", ".$masjid->place_category."],";
+    }
+    ?>
+  ];
+
+  // ADDS MAEKER TO MAPS.
+  function setMarkers(map) {
+
+    //ICON CALLER
+    var icon_masjid={
+      url: 'https://maps.google.com/mapfiles/kml/shapes/library_maps.png',
+      // This marker is 20 pixels wide by 32 pixels high.
+      size: new google.maps.Size(32, 32),
+      // The origin for this image is (0, 0).
+      origin: new google.maps.Point(0, 0),
+      // The anchor for this image is the base of the flagpole at (0, 32).
+      anchor: new google.maps.Point(0, 16)
+    }
+
+    var icon_rumah={
+      url: 'https://maps.google.com/mapfiles/kml/shapes/info-i_maps.png',
+      // This marker is 20 pixels wide by 32 pixels high.
+      size: new google.maps.Size(32, 32),
+      // The origin for this image is (0, 0).
+      origin: new google.maps.Point(0, 0),
+      // The anchor for this image is the base of the flagpole at (0, 32).
+      anchor: new google.maps.Point(0, 16)
+
+    }
+
+    //MARKER FOR HOME
+    for (var i = 0; i < places.length; i++) {
+      var rumah = rumahs[i];
+      var marker = new google.maps.Marker({
+        position: {lat: rumah[1], lng: rumah[2]},
+        map: map,
+        icon: icon_rumah,
+        title: rumah[0],
+      });
+    }
+    //MARKER FOT MASJID
+    for (var i = 0; i < masjids.length; i++) {
+      var masjid = masjids[i];
+      var marker = new google.maps.Marker({
+        position: {lat: masjid[1], lng: masjid[2]},
+        map: map,
+        icon: icon_masjid,
+        title: masjid[0],
+      });
+    }
+  }
   </script>
   <script async defer
   src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCqQT371I-5H38pipkOoE3_0eIvcFpho5w&callback=initMap">

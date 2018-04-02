@@ -82,6 +82,26 @@ class DBHelper{
       return false;
     }
   }
+
+  //GET MASJID
+  function getMasjid() {
+    if ($result = $this->link->query("SELECT * FROM place WHERE place_category = 0")) {
+      return $result;
+    }
+    else{
+      return false;
+    }
+  }
+
+  //GET MASJID
+  function getRumah() {
+    if ($result = $this->link->query("SELECT * FROM place WHERE place_category = 1")) {
+      return $result;
+    }
+    else{
+      return false;
+    }
+  }
   //COUNT PLACE
   function countPlace() {
 
