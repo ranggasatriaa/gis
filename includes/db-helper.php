@@ -62,6 +62,55 @@ class DBHelper{
   //----------------------------------------------------------------------------
   //PLACE
   //***CREATE PLACE
+  function createPlace($array){
+    $place_name      = $array[RequestKey::$PLACE_NAME];
+    $place_location  = $array[RequestKey::$PLACE_LOCATION];
+    $place_category  = $array[RequestKey::$PLACE_CATEGORY];
+
+    if($place = $this->link->query("INSERT INTO place (place_name, place_location, place_category) VALUES ('$place_name', '$place_location', 'place_cetegory')")){
+      return true;
+    }
+    else{
+      return false;
+    }
+  }
+
+//DELETE PLACE
+function deletePlace($pid){
+  if($result = $this->link->query("DELETE FROM place WHERE place_id = '$pid'")){
+    return true;
+  }
+  else {
+    return false;
+  }
+}
+
+//LAST ID
+function lastPlaceId(){
+  if($result = $this->link->query("SELECT * FROM place")){
+    $place_id = 0;
+    while ($re = $result->fetch_object()) {
+      if ($place_id < $re->place_id){
+        $place_id = $re->place_id;
+      }
+    }
+    return $place_id;
+  }
+  return false;
+}
+
+//CREATE MASJID
+  function createMasjid($array){
+    $masjid_name    = $array[RequestKey::$MASJID_NAME];
+    $place_id       = $array[RequestKey::$PLACE_ID];
+    $masjid_history = $array[RequestKey::$MASJID_HISTORY];
+    if ($masjid = $this->link->query("INSERT INTO masjid (masjid_name, place_id, $masjid_history) VALUES ('$masjid_name', '$place_id', '$masjid_history')")) {
+      return true;
+    }
+    else{
+      return false;
+    }
+  }
 
   //ALL PLACE
   function getAllPlace() {

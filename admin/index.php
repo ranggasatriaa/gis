@@ -9,9 +9,10 @@ if(!isset($_SESSION[RequestKey::$USER_ID])) {
 }
 else {
   $db = new DBHelper();
-  $places2 = $db->getAllPlace();
-  $rumahs = $db->getRumah();
-  $masjids = $db->getMasjid();
+  $count    = $db->countPlace();
+  $places2  = $db->getAllPlace();
+  $rumahs   = $db->getRumah();
+  $masjids  = $db->getMasjid();
 
 }
 ?>
@@ -26,7 +27,7 @@ else {
   /* Always set the map height explicitly to define the size of the div
   * element that contains the map. */
   #map {
-    height: 300px;
+    height: 500px;
     padding: 0 30px;
     display: flex;
     flex-wrap: wrap;
@@ -87,7 +88,19 @@ else {
         <section class="dashboard-header">
           <div class="container-fluid">
             <div class="row">
-              <div class="clo-md-12">
+                <div class="statistics col-lg-4">
+                  <a style="width:100%" href="create_masjid.php">
+                  <div class="statistic d-flex align-items-center bg-white has-shadow">
+                    <div class="icon bg-red"><i class="fa fa-plus"></i></div>
+                    <div class="text"><strong>Add</strong><br><small>Place</small></div>
+                  </div>
+                </a>
+                </div>
+              <div class="statistics col-lg-4">
+                <div class="statistic d-flex align-items-center bg-white has-shadow">
+                  <div class="icon bg-blue"><i class="fa fa-user"></i></div>
+                  <div class="text"><strong><?=$count?></strong><br><small>Place</small></div>
+                </div>
               </div>
             </div>
           </div>
@@ -138,6 +151,7 @@ else {
                           </td>
                         </tr>
                         <?php
+                        $i += 1;
                       }
                       ?>
                     </tbody>
@@ -171,10 +185,10 @@ else {
 
   // Data for the markers consisting of a name, a LatLng and a zIndex for the
   // order in which these markers should display on top of each other.
-  var places = [
+  var rumahs = [
     <?php
-    while($place = $places->fetch_object()){
-      echo "['".$place->place_name."', ".$place->place_location.", ".$place->place_category."],";
+    while($rumah = $rumahs->fetch_object()){
+      echo "['".$rumah->place_name."', ".$rumah->place_location.", ".$rumah->place_category."],";
     }
     ?>
   ];
@@ -212,7 +226,7 @@ else {
     }
 
     //MARKER FOR HOME
-    for (var i = 0; i < places.length; i++) {
+    for (var i = 0; i < rumahs.length; i++) {
       var rumah = rumahs[i];
       var marker = new google.maps.Marker({
         position: {lat: rumah[1], lng: rumah[2]},
