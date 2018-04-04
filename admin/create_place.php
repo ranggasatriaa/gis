@@ -34,21 +34,7 @@ else {
       print_r($array_place);
       if ($place = $db->createPlace($array_place)) {
         echo "masuk create place | ";
-        $masjid_place_id = (int)$db->lastPlaceId();
-        echo "place id: ". $masjid_place_id;
-        $array_masjid = array();
-        $array_masjid[RequestKey::$MASJID_NAME]    = $masjid_name;
-        $array_masjid[RequestKey::$MASJID_PLACE_ID]       = $masjid_place_id;
-        $array_masjid[RequestKey::$MASJID_HISTORY] = $masjid_history;
-        print_r($array_masjid);
-        if ($masjid = $db->createMasjid($array_masjid)) {
-          echo "masuk masjid";
-          $status = 1;
-        }
-        else{
-          $db->deletePlace($place_id);
-          $status = 2;
-        }
+        $status = 1;
       }
       else{
         //error create
@@ -92,7 +78,7 @@ else {
         <!-- Page Header-->
         <header class="page-header">
           <div class="container-fluid">
-            <h2 class="no-margin-bottom">Add Masjid</h2>
+            <h2 class="no-margin-bottom">Add Lokasi</h2>
           </div>
         </header>
         <section class="dashboard-header">
@@ -102,7 +88,7 @@ else {
                 <div class="card">
                   <div class="card-body">
 
-                    <form class="form-horizontal" action="create_masjid.php" method="post">
+                    <form class="form-horizontal" action="create_place.php" method="post">
                       <div class="form-group row">
                         <label class="col-sm-2 form-control-label ">Nama Masjid</label>
                         <div class="col-sm-10">
@@ -115,13 +101,6 @@ else {
                         <div class="col-sm-10">
                           <input class="form-control" type="text" name="<?= RequestKey::$PLACE_LOCATION ?>" value="" placeholder="Lokasi Masjid" required="nedd to fill">
                           <small class="form-text" >Lokasi Masjid</small>
-                        </div>
-                      </div>
-                      <div class="form-group row">
-                        <label class="col-sm-2 form-control-label ">Sejarah Masjid</label>
-                        <div class="col-sm-10">
-                          <textarea class="form-control"  name="<?= RequestKey::$MASJID_HISTORY ?>" rows="8" cols="80" placeholder="Sejarah Masjid"></textarea>
-                          <small class="form-text" >Sejarah Masjid</small>
                         </div>
                       </div>
                       <div class="form-group">

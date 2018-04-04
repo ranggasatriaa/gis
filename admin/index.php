@@ -12,7 +12,7 @@ else {
   $count    = $db->countPlace();
   $places2  = $db->getAllPlace();
   $rumahs   = $db->getRumah();
-  $masjids  = $db->getMasjid();
+  $masjids  = $db->getAllMasjid();
 
 }
 ?>
@@ -75,7 +75,9 @@ else {
         <!-- Sidebar Navidation Menus--><span class="heading">Main</span>
         <ul class="list-unstyled">
           <li class="active"><a href="."> <i class="icon-home"></i>Dashboard </a></li>
+          <li><a href="place.php"> <i class="fa fa-map-o"></i>Place </a></li>
           <li><a href="profil.php"> <i class="icon-user"></i>Profil </a></li>
+
         </ul>
       </nav>
       <div class="content-inner">
@@ -88,14 +90,22 @@ else {
         <section class="dashboard-header">
           <div class="container-fluid">
             <div class="row">
-                <div class="statistics col-lg-4">
-                  <a style="width:100%" href="create_masjid.php">
+              <div class="statistics col-lg-4">
+                <a style="width:100%" href="create_masjid.php">
                   <div class="statistic d-flex align-items-center bg-white has-shadow">
                     <div class="icon bg-red"><i class="fa fa-plus"></i></div>
                     <div class="text"><strong>Add</strong><br><small>Place</small></div>
                   </div>
                 </a>
-                </div>
+              </div>
+              <div class="statistics col-lg-4">
+                <a style="width:100%" href="create_family.php">
+                  <div class="statistic d-flex align-items-center bg-white has-shadow">
+                    <div class="icon bg-red"><i class="fa fa-plus"></i></div>
+                    <div class="text"><strong>Add</strong><br><small>Family</small></div>
+                  </div>
+                </a>
+              </div>
               <div class="statistics col-lg-4">
                 <div class="statistic d-flex align-items-center bg-white has-shadow">
                   <div class="icon bg-blue"><i class="fa fa-user"></i></div>

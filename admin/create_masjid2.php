@@ -13,47 +13,37 @@ else {
   $err_location = '';
   $err_history  = '';
 
-  if(isset($_POST[RequestKey::$PLACE_NAME]) && isset($_POST[RequestKey::$PLACE_LOCATION]) && isset($_POST[RequestKey::$MASJID_HISTORY])){
+  if(isset($_POST[RequestKey::$MASJID_NAME]) && isset($_POST[RequestKey::$MASJID_HISTORY])){
     echo "masuk if iset | ";
     $db = new DBHelper();
 
     //escapeInput
-    $place_name     = $db->escapeInput($_POST[RequestKey::$PLACE_NAME]);
-    $place_location = $db->escapeInput($_POST[RequestKey::$PLACE_LOCATION]);
-    $place_category = 0;
-    $masjid_name    = $db->escapeInput($_POST[RequestKey::$PLACE_NAME]);
+    $masjid_name    = $db->escapeInput($_POST[RequestKey::$MASJID_NAME]);
     $masjid_history = $db->escapeInput($_POST[RequestKey::$MASJID_HISTORY]);
 
     //CEK ERROR PADA INPUTAN
     if(empty($err_name) && empty($err_location) && empty($err_history)){
       echo "masuk error | ";
-      $array_place = array();
-      $array_place[RequestKey::$PLACE_NAME]     = $place_name;
-      $array_place[RequestKey::$PLACE_LOCATION] = $place_location;
-      $array_place[RequestKey::$PLACE_CATEGORY] = $place_category;
-      print_r($array_place);
-      if ($place = $db->createPlace($array_place)) {
-        echo "masuk create place | ";
-        $masjid_place_id = (int)$db->lastPlaceId();
-        echo "place id: ". $masjid_place_id;
-        $array_masjid = array();
-        $array_masjid[RequestKey::$MASJID_NAME]    = $masjid_name;
-        $array_masjid[RequestKey::$MASJID_PLACE_ID]       = $masjid_place_id;
-        $array_masjid[RequestKey::$MASJID_HISTORY] = $masjid_history;
-        print_r($array_masjid);
-        if ($masjid = $db->createMasjid($array_masjid)) {
-          echo "masuk masjid";
-          $status = 1;
-        }
-        else{
-          $db->deletePlace($place_id);
-          $status = 2;
-        }
+      $masjid_place_id = (int)$db->lastPlaceId();
+      echo "place id: ". $masjid_place_id;
+      $array_masjid = array();
+      $array_masjid[RequestKey::$MASJID_NAME]     = $masjid_name;
+      $array_masjid[RequestKey::$MASJID_PLACE_ID] = $masjid_place_id;
+      $array_masjid[RequestKey::$MASJID_HISTORY] = $masjid_history;
+      print_r($array_masjid);
+      if ($masjid = $db->createMasjid($array_masjid)) {
+        echo "masuk masjid";
+        $status = 1;
       }
       else{
-        //error create
-        $status = 3;
+        $db->deletePlace($place_id);
+        $status = 2;
       }
+      // echo $masjid->fetch_object();
+    }
+    else{
+      //error create
+      $status = 3;
     }
   }
 }
@@ -66,11 +56,8 @@ else {
   <?php include('head.php'); ?>
 </head>
 <body>
-
   <div class="page">
-
     <?php include('main-navbar.php'); ?>
-
     <div class="page-content d-flex align-items-stretch">
       <!-- Side Navbar -->
       <nav class="side-navbar">
@@ -102,21 +89,15 @@ else {
                 <div class="card">
                   <div class="card-body">
 
-                    <form class="form-horizontal" action="create_masjid.php" method="post">
+                    <form class="form-horizontal" action="create_masjid2.php" method="post">
                       <div class="form-group row">
                         <label class="col-sm-2 form-control-label ">Nama Masjid</label>
                         <div class="col-sm-10">
-                          <input class="form-control" type="text" name="<?= RequestKey::$PLACE_NAME ?>" value="" placeholder="Nama Lokasi">
+                          <input class="form-control" type="text" name="<?= RequestKey::$MASJID_NAME ?>" value="" placeholder="Nama Lokasi">
                           <small class="form-text" >Nama masjid</small>
                         </div>
                       </div>
-                      <div class="form-group row">
-                        <label class="col-sm-2 form-control-label ">Lokasi Masjid</label>
-                        <div class="col-sm-10">
-                          <input class="form-control" type="text" name="<?= RequestKey::$PLACE_LOCATION ?>" value="" placeholder="Lokasi Masjid" required="nedd to fill">
-                          <small class="form-text" >Lokasi Masjid</small>
-                        </div>
-                      </div>
+
                       <div class="form-group row">
                         <label class="col-sm-2 form-control-label ">Sejarah Masjid</label>
                         <div class="col-sm-10">
@@ -151,7 +132,7 @@ else {
       swal("Success!","Create Success","success")
       .then((value) => {
         window.location.href = "create_masjid.php";
-        });
+      });
     }
     else if (status == 2) {
       swal("Failed!","Tidak bisa masuk query","error");
