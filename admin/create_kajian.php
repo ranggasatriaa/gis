@@ -8,51 +8,46 @@ if(!isset($_SESSION[RequestKey::$USER_ID])) {
   header('Location: ../.');
 }
 else {
-  $status       = 0;
-  $err_name     = '';
-  $err_location = '';
-  $err_history  = '';
+  $db = new DBHelper();
+  $status           = 0;
+  $err_date         = '';
+  $err_time         = '';
+  $err_title        = '';
+  $err_description  = '';
+  $err_speaker      = '';
 
-  if(isset($_POST[RequestKey::$PLACE_NAME]) && isset($_POST[RequestKey::$PLACE_LOCATION]) && isset($_POST[RequestKey::$MASJID_HISTORY])){
-    echo "masuk if iset | ";
-    $db = new DBHelper();
+  if(isset($_GET[RequestKey::$MASJID_ID])){
+    $masjid_id_old = $db->escapeInput($_GET[RequestKey::$MASJID_ID]);
+  }
 
+  if(isset($_POST[RequestKey::$KAJIAN_MASJID_ID]) && isset($_POST[RequestKey::$KAJIAN_DATE]) && isset($_POST[RequestKey::$KAJIAN_TIME]) && isset($_POST[RequestKey::$KAJIAN_TITLE]) && isset($_POST[RequestKey::$KAJIAN_DESCRIPTION]) && isset($_POST[RequestKey::$KAJIAN_SPEAKER])){
+    // echo date('Y-m-d', strtotime($_POST[RequestKey::$KAJIAN_DATE]));
     //escapeInput
-    $place_name     = $db->escapeInput($_POST[RequestKey::$PLACE_NAME]);
-    $place_location = $db->escapeInput($_POST[RequestKey::$PLACE_LOCATION]);
-    $place_category = 0;
-    $masjid_name    = $db->escapeInput($_POST[RequestKey::$PLACE_NAME]);
-    $masjid_history = $db->escapeInput($_POST[RequestKey::$MASJID_HISTORY]);
+    // $masjid_id           = $db->escapeInput($_POST([RequestKey::$KAJIAN_MASJID_ID]));
+    $masjid_id           = $db->escapeInput($_POST[RequestKey::$KAJIAN_MASJID_ID]);
+    $kajian_date         = $db->escapeInput($_POST[RequestKey::$KAJIAN_DATE]);
+    $kajian_time         = $db->escapeInput($_POST[RequestKey::$KAJIAN_TIME]);
+    $kajian_title        = $db->escapeInput($_POST[RequestKey::$KAJIAN_TITLE]);
+    $kajian_description  = $db->escapeInput($_POST[RequestKey::$KAJIAN_DESCRIPTION]);
+    $kajian_speaker      = $db->escapeInput($_POST[RequestKey::$KAJIAN_SPEAKER]);
 
     //CEK ERROR PADA INPUTAN
-    if(empty($err_name) && empty($err_location) && empty($err_history)){
-      echo "masuk error | ";
-      $array_place = array();
-      $array_place[RequestKey::$PLACE_NAME]     = $place_name;
-      $array_place[RequestKey::$PLACE_LOCATION] = $place_location;
-      $array_place[RequestKey::$PLACE_CATEGORY] = $place_category;
-      print_r($array_place);
-      if ($place = $db->createPlace($array_place)) {
-        echo "masuk create place | ";
-        $masjid_place_id = (int)$db->lastPlaceId();
-        echo "place id: ". $masjid_place_id;
-        $array_masjid = array();
-        $array_masjid[RequestKey::$MASJID_NAME]    = $masjid_name;
-        $array_masjid[RequestKey::$MASJID_PLACE_ID]       = $masjid_place_id;
-        $array_masjid[RequestKey::$MASJID_HISTORY] = $masjid_history;
-        print_r($array_masjid);
-        if ($masjid = $db->createMasjid($array_masjid)) {
-          echo "masuk masjid";
-          $status = 1;
-        }
-        else{
-          $db->deletePlace($place_id);
-          $status = 2;
-        }
+    if(empty($err_date) && empty($err_time) && empty($err_title) && empty($err_description) && empty($err_speaker)){
+      $array = array();
+      $array[RequestKey::$KAJIAN_MASJID_ID]       = $masjid_id;
+      $array[RequestKey::$KAJIAN_DATE]            = $kajian_date;
+      $array[RequestKey::$KAJIAN_TIME]            = $kajian_time;
+      $array[RequestKey::$KAJIAN_TITLE]           = $kajian_title;
+      $array[RequestKey::$KAJIAN_DESCRIPTION]     = $kajian_description;
+      $array[RequestKey::$KAJIAN_SPEAKER]         = $kajian_speaker;
+      // print_r($array);
+      if ($kajian = $db->createKajian($array)) {
+        // echo "masuk create kajian | ";
+        $status = 1;
       }
       else{
         //error create
-        $status = 3;
+        $status = 2;
       }
     }
   }
@@ -83,8 +78,8 @@ else {
         </div>
         <!-- Sidebar Navidation Menus--><span class="heading">Main</span>
         <ul class="list-unstyled">
-          <li class="active"><a href="."> <i class="icon-home"></i>Dashboard </a></li>
-          <li><a href="place.php"> <i class="fa fa-map-o"></i>Place </a></li>
+          <li><a href="."> <i class="icon-home"></i>Dashboard </a></li>
+          <li class="active"><a href="place.php"> <i class="fa fa-map-o"></i>Place </a></li>
           <li><a href="profil.php"> <i class="icon-user"></i>Profil </a></li>
         </ul>
       </nav>
@@ -92,7 +87,7 @@ else {
         <!-- Page Header-->
         <header class="page-header">
           <div class="container-fluid">
-            <h2 class="no-margin-bottom">Add Masjid</h2>
+            <h2 class="no-margin-bottom">Add Kajian</h2>
           </div>
         </header>
         <section class="dashboard-header">
@@ -101,31 +96,45 @@ else {
               <div class="col-md-12">
                 <div class="card">
                   <div class="card-body">
-
-                    <form class="form-horizontal" action="create_masjid.php" method="post">
+                    <form class="form-horizontal" action="create_kajian.php?masjid-id=1" method="post">
                       <div class="form-group row">
-                        <label class="col-sm-2 form-control-label ">Nama Masjid</label>
+                        <label class="col-sm-2 form-control-label ">Tanggal Kajian</label>
                         <div class="col-sm-10">
-                          <input class="form-control" type="text" name="<?= RequestKey::$PLACE_NAME ?>" value="" placeholder="Nama Lokasi">
-                          <small class="form-text" >Nama masjid</small>
+                          <input class="form-control" type="date" name="<?= RequestKey::$KAJIAN_DATE ?>" value="" placeholder="Tanggal Kajian">
+                          <small class="form-text" ><?=$err_date?></small>
                         </div>
                       </div>
                       <div class="form-group row">
-                        <label class="col-sm-2 form-control-label ">Lokasi Masjid</label>
+                        <label class="col-sm-2 form-control-label ">Waktu Kajian</label>
                         <div class="col-sm-10">
-                          <input class="form-control" type="text" name="<?= RequestKey::$PLACE_LOCATION ?>" value="" placeholder="Lokasi Masjid" required="nedd to fill">
-                          <small class="form-text" >Lokasi Masjid</small>
+                          <input class="form-control" type="time" name="<?= RequestKey::$KAJIAN_TIME ?>" value="" placeholder="Waktu Kajian">
+                          <small class="form-text" ><?=$err_time?></small>
                         </div>
                       </div>
                       <div class="form-group row">
-                        <label class="col-sm-2 form-control-label ">Sejarah Masjid</label>
+                        <label class="col-sm-2 form-control-label ">Judul Kajian</label>
                         <div class="col-sm-10">
-                          <textarea class="form-control"  name="<?= RequestKey::$MASJID_HISTORY ?>" rows="8" cols="80" placeholder="Sejarah Masjid"></textarea>
-                          <small class="form-text" >Sejarah Masjid</small>
+                          <input class="form-control" type="text" name="<?= RequestKey::$KAJIAN_TITLE ?>" value="" placeholder="Judual Kajian">
+                          <small class="form-text" ><?=$err_title?></small>
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label class="col-sm-2 form-control-label ">Deskripsi Kajian</label>
+                        <div class="col-sm-10">
+                          <textarea name="<?=RequestKey::$KAJIAN_DESCRIPTION?>" rows="5" cols="80"></textarea>
+                          <small class="form-text" ><?=$err_description?></small>
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label class="col-sm-2 form-control-label ">Pengisi Kajian</label>
+                        <div class="col-sm-10">
+                          <input class="form-control" type="text" name="<?= RequestKey::$KAJIAN_SPEAKER ?>" value="" placeholder="Pengisi Kajian">
+                          <small class="form-text" ><?=$err_speaker?></small>
                         </div>
                       </div>
                       <div class="form-group">
-                        <a class="btn btn-secondary" href="index.php">Cancel</a>
+                        <input type="hidden" name="<?=RequestKey::$KAJIAN_MASJID_ID?>" value="<?=$masjid_id_old?>">
+                        <a class="btn btn-secondary" href="detail_masjid.php?<?=RequestKey::$PLACE_ID?>=<?=$masjid_id_old?>">Cancel</a>
                         <input class="btn btn-primary" type="submit" name="submit" value="Submit">
                       </div>
                     </form>
@@ -142,7 +151,7 @@ else {
   </div>
   <?php
   include('foot.php');
-  echo '<script>var status = '.$status.';</script>';
+  echo '<script>var status = '.$status.'</script>';
   $status = 0;
   ?>
   <script>
@@ -150,8 +159,8 @@ else {
     if (status == 1) {
       swal("Success!","Create Success","success")
       .then((value) => {
-        window.location.href = "create_masjid.php";
-        });
+        window.location.href = "detail_masjid.php?place-id=<?=$masjid_id_old?>" + escape(window.location.href);;
+      });
     }
     else if (status == 2) {
       swal("Failed!","Tidak bisa masuk query","error");

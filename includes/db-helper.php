@@ -131,31 +131,6 @@ class DBHelper{
     }
   }
 
-  //CREATE FAMILY
-  function createFamily($array){
-    $family_place_id    = $array[RequestKey::$FAMILY_PLACE_ID];
-    $family_name        = $array[RequestKey::$FAMILY_NAME];
-    $family_status      = $array[RequestKey::$FAMILY_STATUS];
-    $family_age         = $array[RequestKey::$FAMILY_AGE];
-    $family_gender      = $array[RequestKey::$FAMILY_GENDER];
-    $family_born_place  = $array[RequestKey::$FAMILY_BORN_PLACE];
-    $family_born_date   = $array[RequestKey::$FAMILY_BORN_DATE];
-    $family_education   = $array[RequestKey::$FAMILY_EDUCATION];
-    $family_salary      = $array[RequestKey::$FAMILY_SALARY];
-    $family_blood       = $array[RequestKey::$FAMILY_BLOOD];
-
-    if ($result = $this->link->query("INSERT INTO `family` (
-                                                  `place_id`, `family_name`, `family_status`, `family_age`, `family_gender`, `family_born_place`, `family_born_date`, `family_education`, `family_salary`, `family_blood`)
-                                          VALUES (
-                                              `$family_place_id`, `$family_name`, `$family_status`, `$family_age`, `$family_gender`, `$family_born_place`, `$family_born_date`, `$family_education`, `$family_salary`, `$family_blood`)
-                                      ")){
-      return true;
-    }
-    else{
-      return false;
-    }
-  }
-
   //GET MASJID
   function getAllMasjid() {
     if ($result = $this->link->query("SELECT * FROM place WHERE place_category = 0")) {
@@ -183,8 +158,50 @@ class DBHelper{
   //GET ALL KAJIAN
   //GET MASJID
   function getAllKajian($mid) {
-    if ($result = $this->link->query("SELECT * FROM masjid_kajian WHERE masjid_id = $mid")) {
+    if ($result = $this->link->query("SELECT * FROM masjid_kajian WHERE masjid_id = $mid ORDER BY kajian_date ASC, kajian_time ASC ")) {
       return $result;
+    }
+    else{
+      return false;
+    }
+  }
+
+  //CREATE KAJIAN
+  function createKajian($array){
+    $masjid_id          = $array[RequestKey::$KAJIAN_MASJID_ID];
+    $kajian_date        = $array[RequestKey::$KAJIAN_DATE];
+    $kajian_time         = $array[RequestKey::$KAJIAN_TIME];
+    $kajian_title        = $array[RequestKey::$KAJIAN_TITLE];
+    $kajian_description  = $array[RequestKey::$KAJIAN_DESCRIPTION];
+    $kajian_speaker      = $array[RequestKey::$KAJIAN_SPEAKER];
+    if ($result = $this->link->query("INSERT INTO masjid_kajian (masjid_id, kajian_date, kajian_time, kajian_title, kajian_description, kajian_speaker) VALUES ('$masjid_id', '$kajian_date', '$kajian_time', '$kajian_title', '$kajian_description', '$kajian_speaker')")) {
+      return true;
+    }
+    else{
+      return false;
+    }
+  }
+
+  //EDIT KAJIAN
+  function editKajian($array){
+    $kajian_id          = $array[RequestKey::$KAJIAN_ID];
+    $kajian_date        = $array[RequestKey::$KAJIAN_DATE];
+    $kajian_time         = $array[RequestKey::$KAJIAN_TIME];
+    $kajian_title        = $array[RequestKey::$KAJIAN_TITLE];
+    $kajian_description  = $array[RequestKey::$KAJIAN_DESCRIPTION];
+    $kajian_speaker      = $array[RequestKey::$KAJIAN_SPEAKER];
+    if ($result = $this->link->query("UPDATE masjid_kajian SET kajian_date = '$kajian_date', kajian_time = '$kajian_time', kajian_title = '$kajian_title', kajian_description = '$kajian_description', kajian_speaker = '$kajian_speaker' WHERE kajian_id = '$kajian_id'")) {
+      return true;
+    }
+    else{
+      return false;
+    }
+  }
+
+  //DELETE KAJIAN
+  function deleteKajian($kid){
+    if($result = $this->link->query("DELETE FROM masjid_kajian WHERE kajian_id = '$kid'")){
+      return true;
     }
     else{
       return false;
@@ -205,6 +222,41 @@ class DBHelper{
     }
   }
 
+  //CREATE JUMAT
+  function createJumat($array){
+    $masjid_id   = $array[RequestKey::$KAJIAN_MASJID_ID];
+    $jumat_date  = $array[RequestKey::$JUMAT_DATE];
+    $jumat_imam  = $array[RequestKey::$JUMAT_IMAM];
+    if ($result = $this->link->query("INSERT INTO masjid_jumat (masjid_id, jumat_date, jumat_imam) VALUES ('$masjid_id', '$jumat_date', '$jumat_imam')")) {
+      return true;
+    }
+    else{
+      return false;
+    }
+  }
+
+  //EDIT JUMAT
+  function editJumat($array){
+    $jumat_id   = $array[RequestKey::$JUMAT_ID];
+    $jumat_date = $array[RequestKey::$JUMAT_DATE];
+    $jumat_imam = $array[RequestKey::$JUMAT_IMAM];
+    if ($result = $this->link->query("UPDATE masjid_jumat SET jumat_date = '$jumat_date', jumat_imam ='$jumat_imam' WHERE jumat_id = '$jumat_id'")) {
+      return true;
+    }
+    else{
+      return false;
+    }
+  }
+
+  //DELETE KAJIAN
+  function deleteJumat($jid){
+    if($result = $this->link->query("DELETE FROM masjid_jumat WHERE jumat_id = '$jid'")){
+      return true;
+    }
+    else{
+      return false;
+    }
+  }
 
   //----------------------------------------------------------------------------
 
@@ -219,19 +271,45 @@ class DBHelper{
       return false;
     }
   }
-  //COUNT PLACE
-  function countPlace() {
 
-    if ($result = $this->link->query("SELECT * FROM place")) {
-      return $result->num_rows;
+  //CREATE FAMILY
+  function createFamily($array){
+    $family_place_id    = $array[RequestKey::$FAMILY_PLACE_ID];
+    $family_name        = $array[RequestKey::$FAMILY_NAME];
+    $family_status      = $array[RequestKey::$FAMILY_STATUS];
+    $family_age         = $array[RequestKey::$FAMILY_AGE];
+    $family_gender      = $array[RequestKey::$FAMILY_GENDER];
+    $family_born_place  = $array[RequestKey::$FAMILY_BORN_PLACE];
+    $family_born_date   = $array[RequestKey::$FAMILY_BORN_DATE];
+    $family_education   = $array[RequestKey::$FAMILY_EDUCATION];
+    $family_salary      = $array[RequestKey::$FAMILY_SALARY];
+    $family_blood       = $array[RequestKey::$FAMILY_BLOOD];
+
+    if ($result = $this->link->query("INSERT INTO `family` (
+      `place_id`, `family_name`, `family_status`, `family_age`, `family_gender`, `family_born_place`, `family_born_date`, `family_education`, `family_salary`, `family_blood`)
+      VALUES (
+        `$family_place_id`, `$family_name`, `$family_status`, `$family_age`, `$family_gender`, `$family_born_place`, `$family_born_date`, `$family_education`, `$family_salary`, `$family_blood`)
+        ")){
+          return true;
+        }
+        else{
+          return false;
+        }
+      }
+
+      //COUNT PLACE
+      function countPlace() {
+
+        if ($result = $this->link->query("SELECT * FROM place")) {
+          return $result->num_rows;
+        }
+        else{
+          return false;
+        }
+      }
+
+
+
+      //----------------------------------------------------------------------------
     }
-    else{
-      return false;
-    }
-  }
-
-
-
-  //----------------------------------------------------------------------------
-}
-?>
+    ?>

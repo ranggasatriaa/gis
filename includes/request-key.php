@@ -23,8 +23,10 @@ class RequestKey {
   public static $KAJIAN_ID            = 'kajian-id';
   public static $KAJIAN_MASJID_ID     = 'kajian-masjid-id';
   public static $KAJIAN_DATE          = 'kajian-date';
+  public static $KAJIAN_TIME          = 'kajian-time';
   public static $KAJIAN_TITLE         = 'kajian-title';
   public static $KAJIAN_DESCRIPTION   = 'kajian-description';
+  public static $KAJIAN_SPEAKER       = 'kajian-speaker';
 
   //jumat
   public static $JUMAT_ID             = 'jumat-id';
