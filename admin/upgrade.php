@@ -25,6 +25,7 @@ function initialize() {
 
 
 
+
 function setMarkers(map,locations){
 
   var marker, i
@@ -61,3 +62,34 @@ function setMarkers(map,locations){
 }
 
 </script>
+??=================================================
+
+/========================================================================
+
+
+<?php
+if ($result = $this->link->query("INSERT INTO 'family' (
+  'place_id', 'family_name', 'family_status', 'family_age', 'family_gender', 'family_born_place', 'family_born_date', 'family_education', 'family_salary', 'family_blood')
+  VALUES (
+    '$family_place_id', '$family_name', '$family_status', '$family_age', '$family_gender', '$family_born_place', '$family_born_date', '$family_education', '$family_salary', '$family_blood')
+    ")){
+      return true;
+    }
+    else{
+      return false;
+    }
+  }
+
+
+        if ($result = $this->link->query("INSERT INTO `family` (
+          `place_id`, `family_name`, `family_status`, `family_age`, `family_gender`, `family_born_place`, `family_born_date`, `family_education`, `family_salary`, `family_blood`)
+          VALUES (
+            `$family_place_id`, `$family_name`, `$family_status`, `$family_age`, `$family_gender`, `$family_born_place`, `$family_born_date`, `$family_education`, `$family_salary`, `$family_blood`)
+            ")){
+              return true;
+            }
+            else{
+              return false;
+            }
+          }
+   ?>

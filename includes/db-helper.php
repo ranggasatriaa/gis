@@ -75,7 +75,7 @@ class DBHelper{
     $place_name      = $array[RequestKey::$PLACE_NAME];
     $place_location  = $array[RequestKey::$PLACE_LOCATION];
     $place_category  = $array[RequestKey::$PLACE_CATEGORY];
-    if($place = $this->link->query("INSERT INTO place (place_name, place_location, place_category) VALUES ('$place_name', '$place_location', 'place_cetegory')")){
+    if($place = $this->link->query("INSERT INTO place (place_name, place_location, place_category) VALUES ('$place_name', '$place_location', '$place_category')")){
       return true;
     }
     else{
@@ -420,10 +420,10 @@ class DBHelper{
       $family_salary      = $array[RequestKey::$FAMILY_SALARY];
       $family_blood       = $array[RequestKey::$FAMILY_BLOOD];
 
-      if ($result = $this->link->query("INSERT INTO `family` (
-        `place_id`, `family_name`, `family_status`, `family_age`, `family_gender`, `family_born_place`, `family_born_date`, `family_education`, `family_salary`, `family_blood`)
+      if ($result = $this->link->query("INSERT INTO family(
+        place_id, family_name, family_status, family_age, family_gender, family_born_place, family_born_date, family_education, family_salary, family_blood)
         VALUES (
-          `$family_place_id`, `$family_name`, `$family_status`, `$family_age`, `$family_gender`, `$family_born_place`, `$family_born_date`, `$family_education`, `$family_salary`, `$family_blood`)
+          '$family_place_id', '$family_name', '$family_status', '$family_age', '$family_gender', '$family_born_place', '$family_born_date', '$family_education', '$family_salary', '$family_blood')
           ")){
             return true;
           }

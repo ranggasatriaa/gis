@@ -32,7 +32,7 @@ else {
       <nav class="side-navbar">
         <!-- Sidebar Header-->
         <div class="sidebar-header d-flex align-items-center">
-          <div class="avatar"><img src="../assets/user_img/user/no_image_image.png" alt="..." class="img-fluid rounded-circle" style="height:55px; width: 55px; object-fit: contain;"></div>
+          <div class="avatar"><img src="../img/no_image_image.png" alt="..." class="img-fluid rounded-circle" style="height:55px; width: 55px; object-fit: contain;"></div>
           <div class="title">
             <h1 class="h4">ADMIN</h1>
           </div>
@@ -63,7 +63,7 @@ else {
                 </a>
               </div>
               <div class="statistics col-lg-4">
-                <a style="width:100%" href="create_family.php">
+                <a style="width:100%" href="family/create_family.php">
                   <div class="statistic d-flex align-items-center bg-white has-shadow">
                     <div class="icon bg-red"><i class="fa fa-plus"></i></div>
                     <div class="text"><strong>Add</strong><br><small>Family</small></div>
