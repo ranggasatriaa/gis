@@ -56,6 +56,16 @@ class DBHelper{
     }
   }
 
+  //GET USER BY id
+  function getUserById($uid){
+    if($result = $this->link->query("SELECT * FROM user WHERE user_id = '$uid'")){
+      return $result->fetch_object();
+    }
+    else {
+      return false;
+    }
+  }
+
   //----------------------------------------------------------------------------
 
   //----------------------------------------------------------------------------

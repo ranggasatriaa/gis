@@ -11,56 +11,52 @@ $err_pw_3 = '';
 $status = 0;
 $message = '';
 
-if(!isset($_SESSION[RequestKey::$DATA_USER_KEY]) && !isset($_SESSION[RequestKey::$DATA_USER_LEVEL])) {
+if(!isset($_SESSION[RequestKey::$USER_ID])) {
   header('Location: ../.');
-}
-else if ($_SESSION[RequestKey::$DATA_USER_LEVEL] != 2) {
-  //unautorize
 }
 else {
   //DB
-  $db = new DBHelper();
-  $user = $db->getUserByKey($_SESSION[RequestKey::$DATA_USER_KEY]);
+  $db   = new DBHelper();
+  $uid  = $_SESSION[RequestKey::$USER_ID];
+  $user = $db->getUserById($uid);
 
-  if (isset($_POST['submit'])) {
-    if(isset($_POST['password-lama']) && isset($_POST['password-baru']) && isset($_POST['password-baru-2'])) {
-      $password_lama    = $db->escapeInput($_POST['password-lama']);
-      $password_baru    = $db->escapeInput($_POST['password-baru']);
-      $password_baru_2  = $db->escapeInput($_POST['password-baru-2']);
+  if(isset($_POST['password-lama']) && isset($_POST['password-baru']) && isset($_POST['password-baru-2'])) {
+    $password_lama    = $db->escapeInput($_POST['password-lama']);
+    $password_baru    = $db->escapeInput($_POST['password-baru']);
+    $password_baru_2  = $db->escapeInput($_POST['password-baru-2']);
 
-      if (!preg_match("/^[a-zA-Z0-9]{8,20}$/",$password_lama)) {
-        $err_pw_1 = "Input tidak valid";
-      }
-
-      if (!preg_match("/^[a-zA-Z0-9]{8,20}$/",$password_baru)) {
-        $err_pw_2 = "Input tidak valid";
-      }
-
-      if (!preg_match("/^[a-zA-Z0-9]{8,20}$/",$password_baru_2)) {
-        $err_pw_3 = "Input tidak valid";
-      }
-
-      if (empty($err_pw_1) && empty($err_pw_2) && empty($err_pw_3)) {
-        if (sha1($password_lama) == $user->user_password) {
-          if ($password_baru == $password_baru_2) {
-            if($db->changePassword($user->user_id,sha1($password_baru))){
-              $status = 1;
-            }else {
-              $status = 2;
-              $message = $db->strBadQuery;
-            }
-          }else {
-            $err_pw_3 = "Konfirmasi password tidak sesuai";
-          }
-        }
-        else{
-          $err_pw_1 = "Password lama salah";
-        }
-      }
+    if (!preg_match("/^[a-zA-Z0-9]{8,20}$/",$password_lama)) {
+      $err_pw_1 = "Input tidak valid";
     }
-    else {
-      $status = 2;
-      $message = $db->strBadRequest;
+
+    if (!preg_match("/^[a-zA-Z0-9]{8,20}$/",$password_baru)) {
+      $err_pw_2 = "Input tidak valid";
+    }
+
+    if (!preg_match("/^[a-zA-Z0-9]{8,20}$/",$password_baru_2)) {
+      $err_pw_3 = "Input tidak valid";
+    }
+
+    if (empty($err_pw_1) && empty($err_pw_2) && empty($err_pw_3)) {
+      if (sha1($password_lama) == $user->user_password) {
+        if ($password_baru == $password_baru_2) {
+          if($db->changePassword($uid,sha1($password_baru))){
+            $status = 1;
+          }else {
+            $status = 2;
+            $message = $db->strBadQuery;
+          }
+        }else {
+          $status = 2;
+          $message = "Cek Inputan";
+          $err_pw_3 = "Konfirmasi password tidak sesuai";
+        }
+      }
+      else{
+        $message = "Cek Inputan";
+        $status = 2;
+        $err_pw_1 = "Password lama salah";
+      }
     }
   }
 }
@@ -83,15 +79,17 @@ else {
       <nav class="side-navbar">
         <!-- Sidebar Header-->
         <div class="sidebar-header d-flex align-items-center">
-          <div class="avatar"><img src="../assets/user_img/user/<?=($user->user_image != "") ?$user->user_image:'no_image_image.png' ?>" alt="..." class="img-fluid rounded-circle" style="height:55px; width: 55px; object-fit: contain;"></div>
+          <div class="avatar"><img src="../assets/user_img/user/no_image_image.png" alt="..." class="img-fluid rounded-circle" style="height:55px; width: 55px; object-fit: contain;"></div>
           <div class="title">
-            <h1 class="h4"><?=$user->user_name;?></h1>
+            <h1 class="h4">ADMIN</h1>
           </div>
         </div>
         <!-- Sidebar Navidation Menus--><span class="heading">Main</span>
         <ul class="list-unstyled">
           <li><a href="."> <i class="icon-home"></i>Dashboard </a></li>
+          <li><a href="place.php"> <i class="fa fa-map-o"></i>Place </a></li>
           <li class="active"><a href="profil.php"> <i class="icon-user"></i>Profil </a></li>
+
         </ul>
       </nav>
       <div class="content-inner">
@@ -101,14 +99,6 @@ else {
             <h2 class="no-margin-bottom">Edit password</h2>
           </div>
         </header>
-        <!-- Breadcrumb-->
-        <div class="breadcrumb-holder container-fluid">
-          <ul class="breadcrumb">
-            <li class="breadcrumb-item"><a href=".">Dashboard</a></li>
-            <li class="breadcrumb-item"><a href="profil.php">Profil</a></li>
-            <li class="breadcrumb-item active">Edit Password</li>
-          </ul>
-        </div>
         <!-- Dashboard Header Section    -->
         <section class="dashboard-header">
           <div class="container-fluid">

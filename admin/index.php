@@ -13,7 +13,6 @@ else {
   $places2  = $db->getAllPlace();
   $rumahs   = $db->getRumah();
   $masjids  = $db->getAllMasjid();
-
 }
 ?>
 
