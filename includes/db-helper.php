@@ -136,6 +136,26 @@ class DBHelper{
       }
     }
   }
+
+  //GET PLACE AND MASJID
+  function getPlaceMasjid(){
+    if ($result = $this->link->query("SELECT * FROM place AS p INNER JOIN masjid AS m ON p.place_id = m.place_id WHERE p.place_category = 0")) {
+      return $result;
+    }
+    else{
+      return fail;
+    }
+  }
+
+  //GET PLACE AND RUMAH
+  function getPlaceRumah(){
+    if ($result = $this->link->query("SELECT * FROM place AS p INNER JOIN family AS f ON p.place_id = f.place_id WHERE p.place_category = 1")) {
+      return $result;
+    }
+    else{
+      return fail;
+    }
+  }
   //----------------------------------------------------------------------------
 
   //----------------------------------------------------------------------------

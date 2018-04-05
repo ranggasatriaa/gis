@@ -12,15 +12,16 @@
         <div class="navbar-holder d-flex align-items-center justify-content-between">
             <!-- Navbar Header-->
             <div class="navbar-header">
-            <!-- Navbar Brand --><a href="index.html" class="navbar-brand">
-                <div class="brand-text brand-big"><span>Arsip </span><strong>Keluarga</strong></div>
-                <div class="brand-text brand-small"><strong>BD</strong></div></a>
-            <!-- Toggle Button--><a id="toggle-btn" href="#" class="menu-btn active"><span></span><span></span><span></span></a>
+            <!-- Navbar Brand --><a href="index.php" class="navbar-brand">
+                <div class="brand-text brand-big"><span>Geographic Information </span><strong>System</strong></div>
+                <div class="brand-text brand-small"><strong>GIS</strong></div></a>
+            <!-- Toggle Button-->
+            <!-- <a id="toggle-btn" href="#" class="menu-btn active"><span></span><span></span><span></span></a> -->
             </div>
             <!-- Navbar Menu -->
             <ul class="nav-menu list-unstyled d-flex flex-md-row align-items-md-center">
             <!-- Logout    -->
-            <li class="nav-item"><a href="../logout.php" class="nav-link logout">Logout<i class="fa fa-sign-out"></i></a></li>
+            <li class="nav-item"><a href="login.php" class="nav-link logout">Login<i class="fa fa-sign-in"></i></a></li>
             </ul>
         </div>
         </div>

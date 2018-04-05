@@ -3,7 +3,7 @@
     <div class="container-fluid">
         <div class="row">
         <div class="col-sm-6">
-            <p>Dinas Kearsipan dan Perpustakaan</p>
+            <p>GIS</p>
         </div>
         <div class="col-sm-6 text-right">
             <p>Design by <a href="https://bootstrapious.com/admin-templates" class="external">Bootstrapious</a></p>

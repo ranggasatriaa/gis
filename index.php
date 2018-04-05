@@ -1,11 +1,11 @@
 
 <?php
 session_start();
-require_once('../includes/request-key.php');
-require_once('../includes/db-helper.php');
+require_once('includes/request-key.php');
+require_once('includes/db-helper.php');
 
-if(!isset($_SESSION[RequestKey::$USER_ID])) {
-  header('Location: ../.');
+if(isset($_SESSION[RequestKey::$USER_ID])) {
+  header('Location: admin/.');
 }
 else {
   $db = new DBHelper();
@@ -26,12 +26,11 @@ else {
   /* Always set the map height explicitly to define the size of the div
   * element that contains the map. */
   #map {
-    height: 500px;
-    padding: 0 30px;
+    height: 450px;
+    /* padding: 0 30px; */
     display: flex;
     flex-wrap: wrap;
-    margin-right: 15px;
-    margin-left: 15px;
+    margin-bottom: 30px;
 
   }
   /* Optional: Makes the sample page fill the window. */
@@ -56,38 +55,23 @@ else {
   </style>
 </head>
 <body>
+
   <div class="page">
+
     <?php include('main-navbar.php'); ?>
-    <div class="page-content d-flex align-items-stretch">
-      <!-- Side Navbar -->
-      <nav class="side-navbar">
-        <!-- Sidebar Header-->
-        <div class="sidebar-header d-flex align-items-center">
-          <div class="avatar"><img src="../img/no_image_image.png" alt="..." class="img-fluid rounded-circle" style="height:55px; width: 55px; object-fit: contain;"></div>
-          <div class="title">
-            <h1 class="h4">ADMIN</h1>
-          </div>
-        </div>
-        <!-- Sidebar Navidation Menus--><span class="heading">Main</span>
-        <ul class="list-unstyled">
-          <li class="active"><a href="."> <i class="icon-home"></i>Dashboard </a></li>
-          <li><a href="place.php"> <i class="fa fa-map-o"></i>Place </a></li>
-          <li><a href="profil.php"> <i class="icon-user"></i>Profil </a></li>
-        </ul>
-      </nav>
-      <div class="content-inner">
+
+    <div class="row">
+
+      <div class="col-lg-12">
         <!-- Page Header-->
         <header class="page-header">
           <div class="container-fluid">
             <h2 class="no-margin-bottom">Dashboard</h2>
           </div>
         </header>
-        <!-- Dashboard Header Section    -->
-        <div id="floating-panel">
-          <input id="address" type="textbox" value="Sydney, NSW">
-          <input id="submit" type="button" value="Geocode">
-        </div>
-        <div id="map"></div>
+        <section class="projects no-padding-top ">
+          <div  id="map"></div>
+        </section>
         <?php include('page-footer.php'); ?>
       </div>
     </div>
@@ -142,7 +126,7 @@ else {
     //ICON CALLER
     var icon_masjid={
       // url: 'https://maps.google.com/mapfiles/kml/shapes/library_maps.png',
-      url: '../img/masjid.png',
+      url: 'img/masjid.png',
 
 
       // This marker is 20 pixels wide by 32 pixels high.
@@ -154,7 +138,7 @@ else {
     }
 
     var icon_rumah={
-      url: '../img/house.png',
+      url: 'img/house.png',
       // This marker is 20 pixels wide by 32 pixels high.
       size: new google.maps.Size(32, 32),
       // The origin for this image is (0, 0).

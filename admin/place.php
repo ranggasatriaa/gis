@@ -120,7 +120,9 @@ else {
                               </td>
                               <td>
                                 <?= ((int)$place->place_category == 0 ? '<a class="btn btn-primary btn-sm " href="masjid/detail_masjid.php?'.RequestKey::$PLACE_ID.'='.$place->place_id.'">Detail</a>' : '<a class="btn btn-primary btn-sm" href="family/detail_family.php">Detail</a>' ) ?>
-                                <button type="button" data-toggle="modal" data-target="#modalUpgrade" class="btn btn-secondary middle btn-sm" data-name="<?=$place->place_name?>" data-location="<?=$place->place_location?>" data-category="<?=$place->place_category?>">Delete</button>
+                                <!-- <a class="btn btn-sm btn-secondary" href="#" data-toggle="modal" data-target="#modalMasjidDelete" data-id="<?=$masjid->masjid_id?>" data-name="<?=strtoupper($masjid->masjid_name)?>" data-history="<?=$masjid->masjid_history?>" ><i class="fa fa-eraser"></i> Delete</a>
+
+                                <button type="button" data-toggle="modal" data-target="#modalMajisDelete" class="btn btn-secondary middle btn-sm" data-name="<?=$place->place_name?>" data-location="<?=$place->place_location?>" data-category="<?=$place->place_category?>">Delete</button> -->
                               </td>
                             </tr>
                             <?php
@@ -141,5 +143,59 @@ else {
     </div>
   </div>
   <?php include('foot.php'); ?>
+
+  <!-- MODAL DETAIL Masjid -->
+  <div id="modalMasjidDelete" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" class="modal fade text-left">
+    <div role="document" class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 id="exampleModalLabel" class="modal-title">Detail Masjid</h4>
+          <button type="button" data-dismiss="modal" aria-label="Close" class="close"><span aria-hidden="true">×</span></button>
+        </div>
+        <div class="modal-body">
+          <div class="table-responsive">
+            <table class="table">
+              <tr>
+                <td>Nama</td>
+                <td id="masjid-name"></td>
+              </tr>
+              <tr>
+                <td>Sejarah</td>
+                <td id="masjid-history"></td>
+              </tr>
+            </table>
+          </div>
+          <div class="dropdown-divider"></div>
+          <!-- <input type="hidden" name="kaji" class="form-control" id="file-key"> -->
+        </div>
+        <div class="modal-footer">
+          <div class="row col-12 no-padding ">
+            <div class="row col-12">
+              <h4>Anda yakan akan menghapus?</h4>
+            </div>
+            <div class="row col-12">
+              <button type="button" data-dismiss="modal" class="btn btn-primary" style="margin-right:10px">No</button>
+              <form id="form-masjid-delete" method="get" class="pull-right no-margin">
+                <input type="hidden" name="masjid-id" id="masjid-id-delete">
+                <button class="btn btn-secondary">Yes</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+  <script>
+
+  $('#modalMasjidDelete').on('show.bs.modal', function (event) {
+    var button = $(event.relatedTarget)
+    var modal = $(this)
+    modal.find('#form-masjid-delete').attr('action','delete_masjid.php');
+    modal.find('.modal-body #masjid-name').text(button.data('name'));
+    modal.find('.modal-body #masjid-history').text(button.data('history'))
+    document.getElementById('masjid-id-delete').value=button.data('id') ;
+  })
+  </script>
 </body>
 </html>
