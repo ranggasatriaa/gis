@@ -13,6 +13,14 @@ else {
   $db        = new DBHelper();
   $masjid    = $db->getMasjidByPlaceId($pid);
   $place     = $db->getPlaceById($pid);
+  $kajian_msg= "";
+  $jumat_msg = "";
+  if (!$db->isKajianExist($masjid->masjid_id)) {
+    $kajian_msg = "Belum ada Kajian";
+  }
+  if (!$db->isJumatExist($masjid->masjid_id)) {
+    $jumat_msg = "Belum ada Jadual Imam Sholat Jumat";
+  }
   $kajians   = $db->getAllKajian($masjid->masjid_id);
   $jumats    = $db->getAllJumat($masjid->masjid_id);
 
@@ -36,7 +44,7 @@ else {
       <nav class="side-navbar">
         <!-- Sidebar Header-->
         <div class="sidebar-header d-flex align-items-center">
-          <div class="avatar"><img src="../../../assets/user_img/user/no_image_image.png" alt="..." class="img-fluid rounded-circle" style="height:55px; width: 55px; object-fit: contain;"></div>
+          <div class="avatar"><img src="../../assets/user_img/user/no_image_image.png" alt="..." class="img-fluid rounded-circle" style="height:55px; width: 55px; object-fit: contain;"></div>
           <div class="title">
             <h1 class="h4">ADMIN</h1>
           </div>
@@ -62,7 +70,7 @@ else {
                 <div class="card">
                   <div class="card-close">
                     <a class="btn btn-sm btn-primary" href="edit_masjid.php<?=$masjid->masjid_id?>"><i class="fa fa-edit"></i> Edit</a>
-                    <a class="pull-right" href="#" data-toggle="modal" data-target="#modalMasjid" data-id="$masjid->masjid_id" data-name="<?=$masji_name?>" data-description="<?=$masjid->masjid_description?>" ><i class="fa fa-eraser"></i> Delete</a>
+                    <a class="btn btn-sm btn-secondary" href="#" data-toggle="modal" data-target="#modalMasjidDelete" data-id="$masjid->masjid_id" data-name="<?=strtoupper($masjid->masjid_name)?>" data-history="<?=$masjid->masjid_history?>" ><i class="fa fa-eraser"></i> Delete</a>
 
                     <!-- <a class="btn btn-sm btn-secondary" href="delete_masjid.php<?=$masjid->masjid_id?>"><i class="fa fa-eraser"></i> Delete</a> -->
                   </div>
@@ -89,6 +97,9 @@ else {
                     </div>
                   </div>
                   <div class="card-body no-padding">
+                    <h3><?php if ($kajian_msg !="") {
+                      echo "<h4 style='text-align:center; padding:5px'>".$kajian_msg."</h4>";
+                    }?></h3>
                     <?php while ($kajian = $kajians->fetch_object()) {
                       ?>
                       <div class="item">
@@ -139,6 +150,9 @@ else {
                       </div>
                     </div>
                     <div class="card-body no-padding">
+                      <h3><?php if ($jumat_msg !="") {
+                        echo "<h4 style='text-align:center; padding:5px'>".$jumat_msg."</h4>";
+                      }?></h3>
                       <?php
                       while ($jumat = $jumats->fetch_object()) {
                         ?>
@@ -271,13 +285,54 @@ else {
       </div>
     </div>
 
+    <!-- MODAL DETAIL Masjid -->
+    <div id="modalMasjidDelete" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" class="modal fade text-left">
+      <div role="document" class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 id="exampleModalLabel" class="modal-title">Detail Masjid</h4>
+            <button type="button" data-dismiss="modal" aria-label="Close" class="close"><span aria-hidden="true">×</span></button>
+          </div>
+          <div class="modal-body">
+            <div class="table-responsive">
+              <table class="table">
+                <tr>
+                  <td>Nama</td>
+                  <td id="masjid-name"></td>
+                </tr>
+                <tr>
+                  <td>Sejarah</td>
+                  <td id="masjid-history"></td>
+                </tr>
+              </table>
+            </div>
+            <div class="dropdown-divider"></div>
+            <!-- <input type="hidden" name="kaji" class="form-control" id="file-key"> -->
+          </div>
+          <div class="modal-footer">
+            <div class="row col-12 no-padding">
+              <div class="col-9 no-padding">
+                <h4>Anda yakan akan menghapus?</h4>
+                <button type="button" data-dismiss="modal" class="btn btn-secondary">No</button>
+                <form id="form-masjid-delete" method="get" class="pull-right">
+                  <input type="hidden" name="masjid-id" id="masjid-id-delete">
+                  <button class="btn btn-secondary">Yes</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
     <script>
     //javascript modal kajian
     $('#modalKajian').on('show.bs.modal', function (event) {
       var button = $(event.relatedTarget)
       var modal = $(this)
-      modal.find('#formedit').attr('action','edit_kajian.php?kajian-id='+button.data('id'));
-      modal.find('#formdelete').attr('action','delete_kajian.php?kajian-id='+button.data('id'));
+      modal.find('#formedit').attr('action','edit_kajian.php');
+      modal.find('#formdelete').attr('action','delete_kajian.php');
       modal.find('.modal-body #kajian-date').text(button.data('date'))
       modal.find('.modal-body #kajian-time').text(button.data('time'))
       modal.find('.modal-body #kajian-title').text(button.data('title'))
@@ -298,6 +353,16 @@ else {
       modal.find('.modal-body #jumat-imam').text(button.data('imam'))
       document.getElementById('jumat-id-edit').value=button.data('id') ;
       document.getElementById('jumat-id-delete').value=button.data('id') ;
+    })
+
+    //javascript modal masjid
+    $('#modalMasjidDelete').on('show.bs.modal', function (event) {
+      var button = $(event.relatedTarget)
+      var modal = $(this)
+      modal.find('#form-masjid-delete').attr('action','delete_masjid.php');
+      modal.find('.modal-body #masjid-name').text(button.data('name'));
+      modal.find('.modal-body #masjid-history').text(button.data('history'))
+      document.getElementById('masjid-id-delete').value=button.data('id') ;
     })
     </script>
   </body>

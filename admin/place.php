@@ -59,7 +59,7 @@ else {
                 <a style="width:100%" href="masjid/create_masjid.php">
                   <div class="statistic d-flex align-items-center bg-white has-shadow">
                     <div class="icon bg-red"><i class="fa fa-plus"></i></div>
-                    <div class="text"><strong>Add</strong><br><small>Place</small></div>
+                    <div class="text"><strong>Add</strong><br><small>Masjid</small></div>
                   </div>
                 </a>
               </div>

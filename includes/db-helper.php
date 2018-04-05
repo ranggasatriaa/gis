@@ -114,6 +114,18 @@ class DBHelper{
     }
     return false;
   }
+
+  //CEK SAME LOCATION
+  function isLocationExist($loc){
+    if ($result = $this->link->query("SELECT * FROM place WHERE place_location = '$loc'")) {
+      if ($result->num_rows > 0) {
+        return true;
+      }
+      else {
+        return false;
+      }
+    }
+  }
   //----------------------------------------------------------------------------
 
   //----------------------------------------------------------------------------
@@ -142,7 +154,7 @@ class DBHelper{
   }
 
   //GET MASJID BY ID
-  function getMasjidById($mid  ) {
+  function getMasjidById($mid) {
     if ($result = $this->link->query("SELECT * FROM masjid WHERE masjid_id = '$mid'")) {
       return $result->fetch_object();
     }
@@ -165,16 +177,27 @@ class DBHelper{
 
   //----------------------------------------------------------------------------
   //KAJIAN
+
+  //CHECK Cek Kajian
+  function isKajianExist($mid) {
+    if ($result = $this->link->query("SELECT * FROM masjid_kajian WHERE masjid_id = $mid")) {
+      if ($result->num_rows > 0) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   //GET ALL KAJIAN
-  //GET MASJID
   function getAllKajian($mid) {
     if ($result = $this->link->query("SELECT * FROM masjid_kajian WHERE masjid_id = $mid ORDER BY kajian_date ASC, kajian_time ASC ")) {
-      return $result;
+        return $result;
     }
     else{
       return false;
     }
   }
+
   //GET KAJIAN BY ID
   function getKajianById($kid) {
     if ($result = $this->link->query("SELECT * FROM masjid_kajian WHERE kajian_id = $kid")) {
@@ -232,6 +255,17 @@ class DBHelper{
 
   //----------------------------------------------------------------------------
   //JUMAT
+  //CHECK Cek Kajian
+  function isJumatExist($mid) {
+    if ($result = $this->link->query("SELECT * FROM masjis_jumat WHERE masjid_id = $mid")) {
+      if ($result->num_rows > 0) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  //GET ALL JUMAT
   function getAllJumat($mid) {
     if ($result = $this->link->query("SELECT * FROM masjid_jumat WHERE masjid_id = $mid")) {
       return $result;

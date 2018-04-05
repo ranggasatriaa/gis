@@ -32,27 +32,33 @@ else {
       $array_place[RequestKey::$PLACE_LOCATION] = $place_location;
       $array_place[RequestKey::$PLACE_CATEGORY] = $place_category;
       print_r($array_place);
-      if ($place = $db->createPlace($array_place)) {
-        echo "masuk create place | ";
-        $masjid_place_id = (int)$db->lastPlaceId();
-        echo "place id: ". $masjid_place_id;
-        $array_masjid = array();
-        $array_masjid[RequestKey::$MASJID_NAME]    = $masjid_name;
-        $array_masjid[RequestKey::$MASJID_PLACE_ID]       = $masjid_place_id;
-        $array_masjid[RequestKey::$MASJID_HISTORY] = $masjid_history;
-        print_r($array_masjid);
-        if ($masjid = $db->createMasjid($array_masjid)) {
-          echo "masuk masjid";
-          $status = 1;
+      if (!$db->isLocationExist($place_location)) {
+        if ($place = $db->createPlace($array_place)) {
+          echo "masuk create place | ";
+          $masjid_place_id = (int)$db->lastPlaceId();
+          echo "place id: ". $masjid_place_id;
+          $array_masjid = array();
+          $array_masjid[RequestKey::$MASJID_NAME]    = $masjid_name;
+          $array_masjid[RequestKey::$MASJID_PLACE_ID]       = $masjid_place_id;
+          $array_masjid[RequestKey::$MASJID_HISTORY] = $masjid_history;
+          print_r($array_masjid);
+          if ($masjid = $db->createMasjid($array_masjid)) {
+            echo "masuk masjid";
+            $status = 1;
+          }
+          else{
+            $db->deletePlace($place_id);
+            $status = 2;
+          }
         }
         else{
-          $db->deletePlace($place_id);
-          $status = 2;
+          //error create
+          $status = 3;
         }
       }
       else{
-        //error create
-        $status = 3;
+        //telah ada lokasi yang sama
+        $status = 4;
       }
     }
   }
@@ -84,7 +90,7 @@ else {
         <!-- Sidebar Navidation Menus--><span class="heading">Main</span>
         <ul class="list-unstyled">
           <li class="active"><a href="."> <i class="icon-home"></i>Dashboard </a></li>
-          <li><a href="place.php"> <i class="fa fa-map-o"></i>Place </a></li>
+          <li><a href="../place.php"> <i class="fa fa-map-o"></i>Place </a></li>
           <li><a href="profil.php"> <i class="icon-user"></i>Profil </a></li>
         </ul>
       </nav>
@@ -158,6 +164,9 @@ else {
     }
     else if (status == 3) {
       swal("Failed!","Cek Inputan","error");
+    }
+    else if (status == 4) {
+      swal("Failed!","Same location","error");
     }
   });
   </script>
