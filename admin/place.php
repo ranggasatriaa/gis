@@ -52,6 +52,34 @@ else {
             <h2 class="no-margin-bottom">Place</h2>
           </div>
         </header>
+        <section class="dashboard-header no-padding-bottom">
+          <div class="container-fluid">
+            <div class="row">
+              <div class="statistics col-lg-4">
+                <a style="width:100%" href="masjid/create_masjid.php">
+                  <div class="statistic d-flex align-items-center bg-white has-shadow">
+                    <div class="icon bg-red"><i class="fa fa-plus"></i></div>
+                    <div class="text"><strong>Add</strong><br><small>Place</small></div>
+                  </div>
+                </a>
+              </div>
+              <div class="statistics col-lg-4">
+                <a style="width:100%" href="create_family.php">
+                  <div class="statistic d-flex align-items-center bg-white has-shadow">
+                    <div class="icon bg-red"><i class="fa fa-plus"></i></div>
+                    <div class="text"><strong>Add</strong><br><small>Family</small></div>
+                  </div>
+                </a>
+              </div>
+              <div class="statistics col-lg-4">
+                <div class="statistic d-flex align-items-center bg-white has-shadow">
+                  <div class="icon bg-blue"><i class="fa fa-user"></i></div>
+                  <div class="text"><strong><?=$count?></strong><br><small>Place</small></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
         <section class="dashboard-header">
           <div class="container-fluid">
             <div class="row">
@@ -92,7 +120,7 @@ else {
                                 <?= ((int)$place->place_category == 0 ? '<p class="text-success">Masjid</p>' : '<p class="text-danger">Rumah</p>' ) ?>
                               </td>
                               <td>
-                                <?= ((int)$place->place_category == 0 ? '<a class="btn btn-primary btn-sm " href="detail_masjid.php?'.RequestKey::$PLACE_ID.'='.$place->place_id.'">Detail</a>' : '<a class="btn btn-primary btn-sm" href="detail_rumah.php">Detail</a>' ) ?>
+                                <?= ((int)$place->place_category == 0 ? '<a class="btn btn-primary btn-sm " href="masjid/detail_masjid.php?'.RequestKey::$PLACE_ID.'='.$place->place_id.'">Detail</a>' : '<a class="btn btn-primary btn-sm" href="family/detail_family.php">Detail</a>' ) ?>
                                 <button type="button" data-toggle="modal" data-target="#modalUpgrade" class="btn btn-secondary middle btn-sm" data-name="<?=$place->place_name?>" data-location="<?=$place->place_location?>" data-category="<?=$place->place_category?>">Delete</button>
                               </td>
                             </tr>

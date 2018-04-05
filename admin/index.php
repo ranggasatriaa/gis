@@ -87,34 +87,6 @@ else {
             <h2 class="no-margin-bottom">Dashboard</h2>
           </div>
         </header>
-        <section class="dashboard-header">
-          <div class="container-fluid">
-            <div class="row">
-              <div class="statistics col-lg-4">
-                <a style="width:100%" href="create_masjid.php">
-                  <div class="statistic d-flex align-items-center bg-white has-shadow">
-                    <div class="icon bg-red"><i class="fa fa-plus"></i></div>
-                    <div class="text"><strong>Add</strong><br><small>Place</small></div>
-                  </div>
-                </a>
-              </div>
-              <div class="statistics col-lg-4">
-                <a style="width:100%" href="create_family.php">
-                  <div class="statistic d-flex align-items-center bg-white has-shadow">
-                    <div class="icon bg-red"><i class="fa fa-plus"></i></div>
-                    <div class="text"><strong>Add</strong><br><small>Family</small></div>
-                  </div>
-                </a>
-              </div>
-              <div class="statistics col-lg-4">
-                <div class="statistic d-flex align-items-center bg-white has-shadow">
-                  <div class="icon bg-blue"><i class="fa fa-user"></i></div>
-                  <div class="text"><strong><?=$count?></strong><br><small>Place</small></div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
         <!-- Dashboard Header Section    -->
         <div id="floating-panel">
           <input id="address" type="textbox" value="Sydney, NSW">

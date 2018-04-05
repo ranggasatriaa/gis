@@ -141,6 +141,16 @@ class DBHelper{
     }
   }
 
+  //GET MASJID BY ID
+  function getMasjidById($mid  ) {
+    if ($result = $this->link->query("SELECT * FROM masjid WHERE masjid_id = '$mid'")) {
+      return $result->fetch_object();
+    }
+    else{
+      return false;
+    }
+  }
+
   //GET MASJID BY PLACE ID
   function getMasjidByPlaceId($pid  ) {
     if ($result = $this->link->query("SELECT * FROM masjid WHERE place_id = '$pid'")) {
@@ -165,6 +175,15 @@ class DBHelper{
       return false;
     }
   }
+  //GET KAJIAN BY ID
+  function getKajianById($kid) {
+    if ($result = $this->link->query("SELECT * FROM masjid_kajian WHERE kajian_id = $kid")) {
+      return $result->fetch_object();
+    }
+    else{
+      return false;
+    }
+  }
 
   //CREATE KAJIAN
   function createKajian($array){
@@ -184,8 +203,8 @@ class DBHelper{
 
   //EDIT KAJIAN
   function editKajian($array){
-    $kajian_id          = $array[RequestKey::$KAJIAN_ID];
-    $kajian_date        = $array[RequestKey::$KAJIAN_DATE];
+    $kajian_id           = $array[RequestKey::$KAJIAN_ID];
+    $kajian_date         = $array[RequestKey::$KAJIAN_DATE];
     $kajian_time         = $array[RequestKey::$KAJIAN_TIME];
     $kajian_title        = $array[RequestKey::$KAJIAN_TITLE];
     $kajian_description  = $array[RequestKey::$KAJIAN_DESCRIPTION];
@@ -222,9 +241,19 @@ class DBHelper{
     }
   }
 
+  //GET JUMAT BY ID
+  function getJumatById($jid) {
+    if ($result = $this->link->query("SELECT * FROM masjid_jumat WHERE jumat_id = $jid")) {
+      return $result->fetch_object();
+    }
+    else{
+      return false;
+    }
+  }
+
   //CREATE JUMAT
   function createJumat($array){
-    $masjid_id   = $array[RequestKey::$KAJIAN_MASJID_ID];
+    $masjid_id   = $array[RequestKey::$JUMAT_MASJID_ID];
     $jumat_date  = $array[RequestKey::$JUMAT_DATE];
     $jumat_imam  = $array[RequestKey::$JUMAT_IMAM];
     if ($result = $this->link->query("INSERT INTO masjid_jumat (masjid_id, jumat_date, jumat_imam) VALUES ('$masjid_id', '$jumat_date', '$jumat_imam')")) {

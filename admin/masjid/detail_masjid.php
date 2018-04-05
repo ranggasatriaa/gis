@@ -1,18 +1,18 @@
 
 <?php
 session_start();
-require_once('../includes/request-key.php');
-require_once('../includes/db-helper.php');
+require_once('../../includes/request-key.php');
+require_once('../../includes/db-helper.php');
 
 if(!isset($_SESSION[RequestKey::$USER_ID])) {
-  header('Location: ../.');
+  header('Location: ../../.');
 }
 else {
 
-  $pid      = $_GET[RequestKey::$PLACE_ID];
-  $db       = new DBHelper();
-  $masjid   = $db->getMasjidByPlaceId($pid);
-  $place    = $db->getPlaceById($pid);
+  $pid       = $_GET[RequestKey::$PLACE_ID];
+  $db        = new DBHelper();
+  $masjid    = $db->getMasjidByPlaceId($pid);
+  $place     = $db->getPlaceById($pid);
   $kajians   = $db->getAllKajian($masjid->masjid_id);
   $jumats    = $db->getAllJumat($masjid->masjid_id);
 
@@ -36,17 +36,16 @@ else {
       <nav class="side-navbar">
         <!-- Sidebar Header-->
         <div class="sidebar-header d-flex align-items-center">
-          <div class="avatar"><img src="../assets/user_img/user/no_image_image.png" alt="..." class="img-fluid rounded-circle" style="height:55px; width: 55px; object-fit: contain;"></div>
+          <div class="avatar"><img src="../../../assets/user_img/user/no_image_image.png" alt="..." class="img-fluid rounded-circle" style="height:55px; width: 55px; object-fit: contain;"></div>
           <div class="title">
             <h1 class="h4">ADMIN</h1>
           </div>
         </div>
         <!-- Sidebar Navidation Menus--><span class="heading">Main</span>
         <ul class="list-unstyled">
-          <li><a href="."> <i class="icon-home"></i>Dashboard </a></li>
-          <li class="active"><a href="place.php"> <i class="fa fa-map-o"></i>Place </a></li>
-          <li><a href="profil.php"> <i class="icon-user"></i>Profil </a></li>
-
+          <li><a href="../."> <i class="icon-home"></i>Dashboard </a></li>
+          <li class="active"><a href="../place.php"> <i class="fa fa-map-o"></i>Place </a></li>
+          <li><a href="../profil.php"> <i class="icon-user"></i>Profil </a></li>
         </ul>
       </nav>
       <div class="content-inner">
@@ -63,7 +62,9 @@ else {
                 <div class="card">
                   <div class="card-close">
                     <a class="btn btn-sm btn-primary" href="edit_masjid.php<?=$masjid->masjid_id?>"><i class="fa fa-edit"></i> Edit</a>
-                    <a class="btn btn-sm btn-secondary" href="delete_masjid.php<?=$masjid->masjid_id?>"><i class="fa fa-eraser"></i> Delete</a>
+                    <a class="pull-right" href="#" data-toggle="modal" data-target="#modalMasjid" data-id="$masjid->masjid_id" data-name="<?=$masji_name?>" data-description="<?=$masjid->masjid_description?>" ><i class="fa fa-eraser"></i> Delete</a>
+
+                    <!-- <a class="btn btn-sm btn-secondary" href="delete_masjid.php<?=$masjid->masjid_id?>"><i class="fa fa-eraser"></i> Delete</a> -->
                   </div>
                   <div class="card-header">
                     <h4> Masjid <?= $masjid->masjid_name ?></h4>
@@ -292,7 +293,7 @@ else {
       var button = $(event.relatedTarget)
       var modal = $(this)
       modal.find('#form-jumat-edit').attr('action','edit_jumat.php');
-      modal.find('#form-jumat-delete').attr('action','delete_kajian.php');
+      modal.find('#form-jumat-delete').attr('action','delete_jumat.php');
       modal.find('.modal-body #jumat-date').text(button.data('date'))
       modal.find('.modal-body #jumat-imam').text(button.data('imam'))
       document.getElementById('jumat-id-edit').value=button.data('id') ;

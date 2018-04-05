@@ -1,11 +1,11 @@
 
 <?php
 session_start();
-require_once('../includes/request-key.php');
-require_once('../includes/db-helper.php');
+require_once('../../includes/request-key.php');
+require_once('../../includes/db-helper.php');
 
 if(!isset($_SESSION[RequestKey::$USER_ID])) {
-  header('Location: ../.');
+  header('Location: ../../.');
 }
 else {
   $db = new DBHelper();
@@ -18,6 +18,8 @@ else {
 
   if(isset($_GET[RequestKey::$MASJID_ID])){
     $masjid_id_old = $db->escapeInput($_GET[RequestKey::$MASJID_ID]);
+  }else {
+    header('location: place.php ');
   }
 
   if(isset($_POST[RequestKey::$KAJIAN_MASJID_ID]) && isset($_POST[RequestKey::$KAJIAN_DATE]) && isset($_POST[RequestKey::$KAJIAN_TIME]) && isset($_POST[RequestKey::$KAJIAN_TITLE]) && isset($_POST[RequestKey::$KAJIAN_DESCRIPTION]) && isset($_POST[RequestKey::$KAJIAN_SPEAKER])){
@@ -50,6 +52,10 @@ else {
         $status = 2;
       }
     }
+    else {
+      //salah inputan
+      $status = 3;
+    }
   }
 }
 ?>
@@ -71,16 +77,16 @@ else {
       <nav class="side-navbar">
         <!-- Sidebar Header-->
         <div class="sidebar-header d-flex align-items-center">
-          <div class="avatar"><img src="../assets/user_img/user/no_image_image.png" alt="..." class="img-fluid rounded-circle" style="height:55px; width: 55px; object-fit: contain;"></div>
+          <div class="avatar"><img src="../../../assets/user_img/user/no_image_image.png" alt="..." class="img-fluid rounded-circle" style="height:55px; width: 55px; object-fit: contain;"></div>
           <div class="title">
             <h1 class="h4">ADMIN</h1>
           </div>
         </div>
         <!-- Sidebar Navidation Menus--><span class="heading">Main</span>
         <ul class="list-unstyled">
-          <li><a href="."> <i class="icon-home"></i>Dashboard </a></li>
-          <li class="active"><a href="place.php"> <i class="fa fa-map-o"></i>Place </a></li>
-          <li><a href="profil.php"> <i class="icon-user"></i>Profil </a></li>
+          <li><a href="../."> <i class="icon-home"></i>Dashboard </a></li>
+          <li class="active"><a href="../place.php"> <i class="fa fa-map-o"></i>Place </a></li>
+          <li><a href="../profil.php"> <i class="icon-user"></i>Profil </a></li>
         </ul>
       </nav>
       <div class="content-inner">
@@ -96,7 +102,7 @@ else {
               <div class="col-md-12">
                 <div class="card">
                   <div class="card-body">
-                    <form class="form-horizontal" action="create_kajian.php?masjid-id=1" method="post">
+                    <form class="form-horizontal" action="create_kajian.php?masjid-id=<?=$masjid_id_old?>" method="post">
                       <div class="form-group row">
                         <label class="col-sm-2 form-control-label ">Tanggal Kajian</label>
                         <div class="col-sm-10">
