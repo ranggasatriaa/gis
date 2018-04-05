@@ -14,7 +14,7 @@ else {
   $err_history  = '';
 
   if(isset($_POST[RequestKey::$PLACE_NAME]) && isset($_POST[RequestKey::$PLACE_LOCATION]) && isset($_POST[RequestKey::$MASJID_HISTORY])){
-    echo "masuk if iset | ";
+    // echo "masuk if iset | ";
     $db = new DBHelper();
 
     //escapeInput
@@ -26,24 +26,24 @@ else {
 
     //CEK ERROR PADA INPUTAN
     if(empty($err_name) && empty($err_location) && empty($err_history)){
-      echo "masuk error | ";
+      // echo "masuk error | ";
       $array_place = array();
       $array_place[RequestKey::$PLACE_NAME]     = $place_name;
       $array_place[RequestKey::$PLACE_LOCATION] = $place_location;
       $array_place[RequestKey::$PLACE_CATEGORY] = $place_category;
-      print_r($array_place);
+      // print_r($array_place);
       if (!$db->isLocationExist($place_location)) {
         if ($place = $db->createPlace($array_place)) {
-          echo "masuk create place | ";
+          // echo "masuk create place | ";
           $masjid_place_id = (int)$db->lastPlaceId();
-          echo "place id: ". $masjid_place_id;
+          // echo "place id: ". $masjid_place_id;
           $array_masjid = array();
           $array_masjid[RequestKey::$MASJID_NAME]    = $masjid_name;
           $array_masjid[RequestKey::$MASJID_PLACE_ID]       = $masjid_place_id;
           $array_masjid[RequestKey::$MASJID_HISTORY] = $masjid_history;
-          print_r($array_masjid);
+          // print_r($array_masjid);
           if ($masjid = $db->createMasjid($array_masjid)) {
-            echo "masuk masjid";
+            // echo "masuk masjid";
             $status = 1;
           }
           else{
@@ -89,8 +89,8 @@ else {
         </div>
         <!-- Sidebar Navidation Menus--><span class="heading">Main</span>
         <ul class="list-unstyled">
-          <li class="active"><a href="."> <i class="icon-home"></i>Dashboard </a></li>
-          <li><a href="../place.php"> <i class="fa fa-map-o"></i>Place </a></li>
+          <li><a href="."> <i class="icon-home"></i>Dashboard </a></li>
+          <li class="active"><a href="../place.php"> <i class="fa fa-map-o"></i>Place </a></li>
           <li><a href="profil.php"> <i class="icon-user"></i>Profil </a></li>
         </ul>
       </nav>
@@ -131,7 +131,7 @@ else {
                         </div>
                       </div>
                       <div class="form-group">
-                        <a class="btn btn-secondary" href="index.php">Cancel</a>
+                        <a class="btn btn-secondary" href="../place.php">Cancel</a>
                         <input class="btn btn-primary" type="submit" name="submit" value="Submit">
                       </div>
                     </form>
@@ -156,7 +156,7 @@ else {
     if (status == 1) {
       swal("Success!","Create Success","success")
       .then((value) => {
-        window.location.href = "create_masjid.php";
+        window.location.href = "../place.php";
         });
     }
     else if (status == 2) {

@@ -140,7 +140,7 @@ else {
     if (status == 1) {
       swal("Success!","Edit Success","success")
       .then((value) => {
-        window.location.href = "detail_masjid.php?place-id=<?=$place_id?>" + escape(window.location.href);;
+        window.location.href = "detail_masjid.php?place-id=<?=$place_id?>" + escape(window.location.href);
       });
     }
     else if (status == 2) {

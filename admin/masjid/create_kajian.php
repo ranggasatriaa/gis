@@ -17,9 +17,11 @@ else {
   $err_speaker      = '';
 
   if(isset($_GET[RequestKey::$MASJID_ID])){
-    $masjid_id_old = $db->escapeInput($_GET[RequestKey::$MASJID_ID]);
+    $mid = $db->escapeInput($_GET[RequestKey::$MASJID_ID]);
+    $masjid = $db->getMasjidById($mid);
+    $place_id = $masjid->place_id;
   }else {
-    header('location: place.php ');
+    header('location: ../place.php ');
   }
 
   if(isset($_POST[RequestKey::$KAJIAN_MASJID_ID]) && isset($_POST[RequestKey::$KAJIAN_DATE]) && isset($_POST[RequestKey::$KAJIAN_TIME]) && isset($_POST[RequestKey::$KAJIAN_TITLE]) && isset($_POST[RequestKey::$KAJIAN_DESCRIPTION]) && isset($_POST[RequestKey::$KAJIAN_SPEAKER])){
@@ -77,7 +79,7 @@ else {
       <nav class="side-navbar">
         <!-- Sidebar Header-->
         <div class="sidebar-header d-flex align-items-center">
-          <div class="avatar"><img src="../../../assets/user_img/user/no_image_image.png" alt="..." class="img-fluid rounded-circle" style="height:55px; width: 55px; object-fit: contain;"></div>
+          <div class="avatar"><img src="../../assets/user_img/user/no_image_image.png" alt="..." class="img-fluid rounded-circle" style="height:55px; width: 55px; object-fit: contain;"></div>
           <div class="title">
             <h1 class="h4">ADMIN</h1>
           </div>
@@ -102,7 +104,7 @@ else {
               <div class="col-md-12">
                 <div class="card">
                   <div class="card-body">
-                    <form class="form-horizontal" action="create_kajian.php?masjid-id=<?=$masjid_id_old?>" method="post">
+                    <form class="form-horizontal" action="create_kajian.php?masjid-id=<?=$mid?>" method="post">
                       <div class="form-group row">
                         <label class="col-sm-2 form-control-label ">Tanggal Kajian</label>
                         <div class="col-sm-10">
@@ -139,8 +141,8 @@ else {
                         </div>
                       </div>
                       <div class="form-group">
-                        <input type="hidden" name="<?=RequestKey::$KAJIAN_MASJID_ID?>" value="<?=$masjid_id_old?>">
-                        <a class="btn btn-secondary" href="detail_masjid.php?<?=RequestKey::$PLACE_ID?>=<?=$masjid_id_old?>">Cancel</a>
+                        <input type="hidden" name="<?=RequestKey::$KAJIAN_MASJID_ID?>" value="<?=$mid?>">
+                        <a class="btn btn-secondary" href="detail_masjid.php?<?=RequestKey::$PLACE_ID?>=<?=$place_id?>">Cancel</a>
                         <input class="btn btn-primary" type="submit" name="submit" value="Submit">
                       </div>
                     </form>
@@ -165,7 +167,7 @@ else {
     if (status == 1) {
       swal("Success!","Create Success","success")
       .then((value) => {
-        window.location.href = "detail_masjid.php?place-id=<?=$masjid_id_old?>" + escape(window.location.href);;
+        window.location.href = "detail_masjid.php?place-id=<?=$place_id?>" + escape(window.location.href);;
       });
     }
     else if (status == 2) {

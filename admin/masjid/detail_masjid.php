@@ -9,8 +9,8 @@ if(!isset($_SESSION[RequestKey::$USER_ID])) {
 }
 else {
 
-  $pid       = $_GET[RequestKey::$PLACE_ID];
   $db        = new DBHelper();
+  $pid       = $_GET[RequestKey::$PLACE_ID];
   $masjid    = $db->getMasjidByPlaceId($pid);
   $place     = $db->getPlaceById($pid);
   $kajian_msg= "";
@@ -69,8 +69,8 @@ else {
               <div class="col-md-12">
                 <div class="card">
                   <div class="card-close">
-                    <a class="btn btn-sm btn-primary" href="edit_masjid.php<?=$masjid->masjid_id?>"><i class="fa fa-edit"></i> Edit</a>
-                    <a class="btn btn-sm btn-secondary" href="#" data-toggle="modal" data-target="#modalMasjidDelete" data-id="$masjid->masjid_id" data-name="<?=strtoupper($masjid->masjid_name)?>" data-history="<?=$masjid->masjid_history?>" ><i class="fa fa-eraser"></i> Delete</a>
+                    <a class="btn btn-sm btn-primary" href="edit_masjid.php?<?=RequestKey::$MASJID_ID?>=<?=$masjid->masjid_id?>"><i class="fa fa-edit"></i> Edit</a>
+                    <a class="btn btn-sm btn-secondary" href="#" data-toggle="modal" data-target="#modalMasjidDelete" data-id="<?=$masjid->masjid_id?>" data-name="<?=strtoupper($masjid->masjid_name)?>" data-history="<?=$masjid->masjid_history?>" ><i class="fa fa-eraser"></i> Delete</a>
 
                     <!-- <a class="btn btn-sm btn-secondary" href="delete_masjid.php<?=$masjid->masjid_id?>"><i class="fa fa-eraser"></i> Delete</a> -->
                   </div>
@@ -97,9 +97,9 @@ else {
                     </div>
                   </div>
                   <div class="card-body no-padding">
-                    <h3><?php if ($kajian_msg !="") {
+                    <?php if ($kajian_msg !="") {
                       echo "<h4 style='text-align:center; padding:5px'>".$kajian_msg."</h4>";
-                    }?></h3>
+                    }?>
                     <?php while ($kajian = $kajians->fetch_object()) {
                       ?>
                       <div class="item">
@@ -110,7 +110,7 @@ else {
                                 <span style="padding-right:0px" class="date text-info"> <?=date("d-m-Y", strtotime($kajian->kajian_date)) ?></span><br>
                               </div>
                               <div style="padding-left:0px"class="col-4 no-margin no-padding">
-                                <div class="icon"><i class="fa fa-calendar-check-o"></i></div>
+                                <div style="padding-top:7px" class="icon"><i class="fa fa-calendar-check-o"></i></div>
                               </div>
                             </div>
                             <div style="padding:0px 15px" class="row">
@@ -118,7 +118,7 @@ else {
                                 <span style="padding-right:0px" class="date"> <?=date("g:i", strtotime($kajian->kajian_time)) ?></span><br>
                               </div>
                               <div style="padding-left:0px"class="col-4 no-margin no-padding">
-                                <div class="icon"><i class="fa fa-clock-o"></i></div>
+                                <div style="padding-top:7px" class="icon"><i class="fa fa-clock-o"></i></div>
                               </div>
                             </div>
                           </div>
@@ -150,16 +150,16 @@ else {
                       </div>
                     </div>
                     <div class="card-body no-padding">
-                      <h3><?php if ($jumat_msg !="") {
+                      <?php if ($jumat_msg !="") {
                         echo "<h4 style='text-align:center; padding:5px'>".$jumat_msg."</h4>";
-                      }?></h3>
+                      }?>
                       <?php
                       while ($jumat = $jumats->fetch_object()) {
                         ?>
                         <div class="item">
                           <div class="row">
                             <div class="col-4 date-holder text-right no-margin">
-                              <div class="icon"><i class="fa fa-calendar-check-o"></i></div>
+                              <div style="padding-top:7px" class="icon"><i class="fa fa-calendar-check-o"></i></div>
                               <div class="date"><span class="text-info"><?=$jumat->jumat_date?></span></div>
                             </div>
                             <div class="col-8 content no-margin">
@@ -310,11 +310,13 @@ else {
             <!-- <input type="hidden" name="kaji" class="form-control" id="file-key"> -->
           </div>
           <div class="modal-footer">
-            <div class="row col-12 no-padding">
-              <div class="col-9 no-padding">
+            <div class="row col-12 no-padding ">
+              <div class="row col-12">
                 <h4>Anda yakan akan menghapus?</h4>
-                <button type="button" data-dismiss="modal" class="btn btn-secondary">No</button>
-                <form id="form-masjid-delete" method="get" class="pull-right">
+              </div>
+              <div class="row col-12">
+                <button type="button" data-dismiss="modal" class="btn btn-primary" style="margin-right:10px">No</button>
+                <form id="form-masjid-delete" method="get" class="pull-right no-margin">
                   <input type="hidden" name="masjid-id" id="masjid-id-delete">
                   <button class="btn btn-secondary">Yes</button>
                 </form>
@@ -324,46 +326,47 @@ else {
         </div>
       </div>
     </div>
+  </div>
 
 
-    <script>
-    //javascript modal kajian
-    $('#modalKajian').on('show.bs.modal', function (event) {
-      var button = $(event.relatedTarget)
-      var modal = $(this)
-      modal.find('#formedit').attr('action','edit_kajian.php');
-      modal.find('#formdelete').attr('action','delete_kajian.php');
-      modal.find('.modal-body #kajian-date').text(button.data('date'))
-      modal.find('.modal-body #kajian-time').text(button.data('time'))
-      modal.find('.modal-body #kajian-title').text(button.data('title'))
-      modal.find('.modal-body #kajian-description').text(button.data('description'))
-      modal.find('.modal-body #kajian-speaker').text(button.data('speaker'))
-      document.getElementById('kajian-id-edit').value=button.data('id') ;
-      document.getElementById('kajian-id-delete').value=button.data('id') ;
-      modal.find('.modal-body #kajian-id2').text(button.data('id'))
-    })
+  <script>
+  //javascript modal kajian
+  $('#modalKajian').on('show.bs.modal', function (event) {
+    var button = $(event.relatedTarget)
+    var modal = $(this)
+    modal.find('#formedit').attr('action','edit_kajian.php');
+    modal.find('#formdelete').attr('action','delete_kajian.php');
+    modal.find('.modal-body #kajian-date').text(button.data('date'))
+    modal.find('.modal-body #kajian-time').text(button.data('time'))
+    modal.find('.modal-body #kajian-title').text(button.data('title'))
+    modal.find('.modal-body #kajian-description').text(button.data('description'))
+    modal.find('.modal-body #kajian-speaker').text(button.data('speaker'))
+    document.getElementById('kajian-id-edit').value=button.data('id') ;
+    document.getElementById('kajian-id-delete').value=button.data('id') ;
+    modal.find('.modal-body #kajian-id2').text(button.data('id'))
+  })
 
-    //javascript modal jumat
-    $('#modalJumat').on('show.bs.modal', function (event) {
-      var button = $(event.relatedTarget)
-      var modal = $(this)
-      modal.find('#form-jumat-edit').attr('action','edit_jumat.php');
-      modal.find('#form-jumat-delete').attr('action','delete_jumat.php');
-      modal.find('.modal-body #jumat-date').text(button.data('date'))
-      modal.find('.modal-body #jumat-imam').text(button.data('imam'))
-      document.getElementById('jumat-id-edit').value=button.data('id') ;
-      document.getElementById('jumat-id-delete').value=button.data('id') ;
-    })
+  //javascript modal jumat
+  $('#modalJumat').on('show.bs.modal', function (event) {
+    var button = $(event.relatedTarget)
+    var modal = $(this)
+    modal.find('#form-jumat-edit').attr('action','edit_jumat.php');
+    modal.find('#form-jumat-delete').attr('action','delete_jumat.php');
+    modal.find('.modal-body #jumat-date').text(button.data('date'))
+    modal.find('.modal-body #jumat-imam').text(button.data('imam'))
+    document.getElementById('jumat-id-edit').value=button.data('id') ;
+    document.getElementById('jumat-id-delete').value=button.data('id') ;
+  })
 
-    //javascript modal masjid
-    $('#modalMasjidDelete').on('show.bs.modal', function (event) {
-      var button = $(event.relatedTarget)
-      var modal = $(this)
-      modal.find('#form-masjid-delete').attr('action','delete_masjid.php');
-      modal.find('.modal-body #masjid-name').text(button.data('name'));
-      modal.find('.modal-body #masjid-history').text(button.data('history'))
-      document.getElementById('masjid-id-delete').value=button.data('id') ;
-    })
-    </script>
-  </body>
-  </html>
+  //javascript modal masjid
+  $('#modalMasjidDelete').on('show.bs.modal', function (event) {
+    var button = $(event.relatedTarget)
+    var modal = $(this)
+    modal.find('#form-masjid-delete').attr('action','delete_masjid.php');
+    modal.find('.modal-body #masjid-name').text(button.data('name'));
+    modal.find('.modal-body #masjid-history').text(button.data('history'))
+    document.getElementById('masjid-id-delete').value=button.data('id') ;
+  })
+  </script>
+</body>
+</html>
