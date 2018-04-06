@@ -35,6 +35,7 @@ class RequestKey {
   public static $JUMAT_IMAM           = 'jumat-imam';
 
   //FAMILY
+  public static $FAMILY_ID            = 'family-id';
   public static $FAMILY_PLACE_ID      = 'family-place-id';
   public static $FAMILY_NAME          = 'family-name';
   public static $FAMILY_STATUS        = 'family-status';
