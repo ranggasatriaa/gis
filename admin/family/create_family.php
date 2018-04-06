@@ -8,8 +8,11 @@ if(!isset($_SESSION[RequestKey::$USER_ID])) {
   header('Location: ../../.');
 }
 else {
-  $status       = 0;
+  $status          = 0;
+  $message         = '';
+  $err_location    = '';
   $err_name        = '';
+  $err_status      = '';
   $err_gender      = '';
   $err_born_place  = '';
   $err_born_date   = '';
@@ -114,9 +117,9 @@ else {
         </div>
         <!-- Sidebar Navidation Menus--><span class="heading">Main</span>
         <ul class="list-unstyled">
-          <li><a href="."> <i class="icon-home"></i>Dashboard </a></li>
+          <li><a href="../."> <i class="icon-home"></i>Dashboard </a></li>
           <li class="active"><a href="../place.php"> <i class="fa fa-map-o"></i>Place </a></li>
-          <li><a href="profil.php"> <i class="icon-user"></i>Profil </a></li>
+          <li><a href="../profil.php"> <i class="icon-user"></i>Profil </a></li>
         </ul>
       </nav>
       <div class="content-inner">
@@ -138,14 +141,14 @@ else {
                         <label class="col-sm-2 form-control-label ">Nama Lengkap Kepala Keluarga</label>
                         <div class="col-sm-10">
                           <input class="form-control" type="text" name="<?= RequestKey::$FAMILY_NAME ?>" value="" placeholder="Nama Lokasi">
-                          <small class="form-text" >Nama family</small>
+                          <small class="form-text" ><?=$err_name?></small>
                         </div>
                       </div>
                       <div class="form-group row">
                         <label class="col-sm-2 form-control-label ">Lokasi</label>
                         <div class="col-sm-10">
                           <input class="form-control" type="text" name="<?= RequestKey::$PLACE_LOCATION ?>" value="" placeholder="Lokasi family" required="">
-                          <small class="form-text" >Lokasi family</small>
+                          <small class="form-text" ><?=$err_location?></small>
                         </div>
                       </div>
                       <div class="form-group row">
@@ -156,35 +159,35 @@ else {
                             <option value="1">Laki-laki</option>
                             <option value="2">Perempuan</option>
                           </select>
-                          <small class="form-text" ></small>
+                          <small class="form-text" ><?=$err_gender?></small>
                         </div>
                       </div>
                       <div class="form-group row">
                         <label class="col-sm-2 form-control-label ">Tempat Lahir</label>
                         <div class="col-sm-10">
                           <input class="form-control" type="text" name="<?= RequestKey::$FAMILY_BORN_PLACE ?>" value="" placeholder="" required="">
-                          <small class="form-text" ></small>
+                          <small class="form-text" ><?=$err_born_place?></small>
                         </div>
                       </div>
                       <div class="form-group row">
                         <label class="col-sm-2 form-control-label ">Tanggal Lahir</label>
                         <div class="col-sm-10">
                           <input class="form-control" type="date" name="<?= RequestKey::$FAMILY_BORN_DATE ?>" value="" placeholder="" required="">
-                          <small class="form-text" ></small>
+                          <small class="form-text" ><?=$err_born_date?></small>
                         </div>
                       </div>
                       <div class="form-group row">
                         <label class="col-sm-2 form-control-label ">Pendidikan Terakhir</label>
                         <div class="col-sm-10">
                           <input class="form-control" type="text" name="<?= RequestKey::$FAMILY_EDUCATION ?>" value="" placeholder="" required="">
-                          <small class="form-text" ></small>
+                          <small class="form-text" ><?=$err_education?></small>
                         </div>
                       </div>
                       <div class="form-group row">
                         <label class="col-sm-2 form-control-label ">Penghasilan (dalam Rp)</label>
                         <div class="col-sm-10">
                           <input class="form-control" type="number" name="<?= RequestKey::$FAMILY_SALARY ?>" value="" placeholder="">
-                          <small class="form-text" ></small>
+                          <small class="form-text" ><?=$err_salary?></small>
                         </div>
                       </div>
                       <div class="form-group row">
@@ -197,7 +200,7 @@ else {
                             <option value="AB">AB</option>
                             <option value="O">O</option>
                           </select>
-                          <small class="form-text" ></small>
+                          <small class="form-text" ><?=$err_blood?></small>
                         </div>
                       </div>
                       <div class="form-group">

@@ -25,7 +25,7 @@ else {
       if($db->isJumatExist($mid)){
         $del_kajian = $db->deleteKajianByMid($mid);
         $del_jumat  = $db->deleteJumatByMid($mid);
-        $del_masjid = $db->deleteMaasjid($mid);
+        $del_masjid = $db->deleteMasjid($mid);
         $del_place  = $db->deletePlace($pid);
         if ($del_kajian && $del_jumat && $del_masjid && $del_place) {
           $message  = 'Berhasil Menghapus!';
@@ -39,7 +39,7 @@ else {
       //ada kajian tidak ada jumat
       else {
         $del_kajian = $db->deleteKajianByMid($mid);
-        $del_masjid = $db->deleteMaasjid($mid);
+        $del_masjid = $db->deleteMasjid($mid);
         $del_place  = $db->deletePlace($pid);
         if ($del_kajian && $del_masjid && $del_place) {
           $message  = 'Berhasil Menghapus!!';
@@ -56,7 +56,7 @@ else {
       //cek ada jumat
       if($db->isJumatExist($mid)){
         $del_jumat  = $db->deleteJumatByMid($mid);
-        $del_masjid = $db->deleteMaasjid($mid);
+        $del_masjid = $db->deleteMasjid($mid);
         $del_place  = $db->deletePlace($pid);
         if ($del_jumat && $del_masjid && $del_place) {
           $message  = 'Berhasil Menghapus!!!';
@@ -69,7 +69,7 @@ else {
       }
       //tidak ada kajian dan jumat
       else {
-        $del_masjid = $db->deleteMaasjid($mid);
+        $del_masjid = $db->deleteMasjid($mid);
         $del_place  = $db->deletePlace($pid);
         if ( $del_masjid && $del_place) {
           $message  = 'Berhasil Menghapus!!!!';

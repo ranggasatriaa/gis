@@ -53,7 +53,7 @@ else {
         <!-- Sidebar Navidation Menus--><span class="heading">Main</span>
         <ul class="list-unstyled">
           <li><a href="../."> <i class="icon-home"></i>Dashboard </a></li>
-          <li class="active"><a href="../place.php"> <i class="fa fa-map-o"></i>Place </a></li>
+          <li class="active"><a href="../../place.php"> <i class="fa fa-map-o"></i>Place </a></li>
           <li><a href="../profil.php"> <i class="icon-user"></i>Profil </a></li>
         </ul>
       </nav>

@@ -13,20 +13,21 @@ else {
 
   $db = new DBHelper();
 
-  if(isset($_GET[RequestKey::$FAMILY_ID])){
-    $fid = $db->escapeInput($_GET[RequestKey::$FAMILY_ID]);
-    $family_old = $db->getFamilyById($fid);
-    $pid = $family_old->place_id;
-    if ($result = $db->deleteAnggota($fid)) {
-      //MASUK DELETE
-      $status = 1;
+  if(isset($_GET[RequestKey::$PLACE_ID])){
+    $pid = $db->escapeInput($_GET[RequestKey::$PLACE_ID]);
+    if ($db->deleteAnggota($pid)) {
+      if($db->deleteplace($pid)){
+
+        $status = 1;
+      }
+      else {
+        $status = 2;
+      }
     }
     else {
       //GAGAL QUERY
       $status = 2;
     }
-
-    // $place_id = $masjid->place_id;
   }else {
     header('location: ../place.php ');
   }
@@ -98,7 +99,7 @@ else {
     if (status == 1) {
       swal("Success!","Berhasil menghapus anggota","success")
       .then((value) => {
-        window.location.href = "detail_family.php?place-id=<?=$pid?>" + escape(window.location.href);
+        window.location.href = "../place.php";
       })
     }
     else if (status == 2) {

@@ -72,7 +72,7 @@ else {
               </div>
               <div class="statistics col-lg-4">
                 <div class="statistic d-flex align-items-center bg-white has-shadow">
-                  <div class="icon bg-blue"><i class="fa fa-user"></i></div>
+                  <div class="icon bg-blue"><i class="fa fa-map-marker"></i></div>
                   <div class="text"><strong><?=$count?></strong><br><small>Place</small></div>
                 </div>
               </div>
