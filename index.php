@@ -108,14 +108,15 @@ else {
   var rumahs = [
     <?php
     while($rumah = $rumahs->fetch_object()){
-      echo "['".ucwords($rumah->place_name)."', ".$rumah->place_location.", ".$rumah->place_category."],";
+      echo "['".ucwords($rumah->place_name)."', ".$rumah->place_location.", ".$rumah->place_id."],";
     }
     ?>
   ];
   var masjids = [
     <?php
     while($masjid = $masjids->fetch_object()){
-      echo "['".ucwords($masjid->place_name)."', ".$masjid->place_location.", ".$masjid->place_id."],";
+      $masjidDetail = $db->getMasjidByPlaceId($masjid->place_id);
+      echo "['".ucwords($masjid->place_name)."', ".$masjid->place_location.", ".$masjid->place_id.", '". implode(' ', array_slice(explode(' ', $masjidDetail->masjid_history), 0, 10))."'],";
     }
     ?>
   ];
@@ -157,7 +158,7 @@ else {
         icon: icon_rumah,
         title: rumah[0],
       });
-      var content = "<div style='width:200px;min-height:40px'><h3>" + rumah[0] + "</h3><br/><a href='detail_place.php'>Read More</a></div>"
+      var content = "<div style='width:200px;min-height:40px'><h3>" + rumah[0] + "</h3><br/><a href='user/detail_family.php?place-id="+rumah[3]+"'>Read More</a></div>"
 
       google.maps.event.addListener(marker,'click', (function(marker,content,infowindow){
         return function() {
@@ -165,7 +166,12 @@ else {
           infowindow.open(map,marker);
         };
       })(marker,content,infowindow));
+      marker.addListener('click', function() {
+        map.setZoom(19);
+        map.setCenter(marker.getPosition());
+      });
     }
+
     //MARKER FOT MASJID
     for (var i = 0; i < masjids.length; i++) {
       var masjid = masjids[i];
@@ -176,7 +182,8 @@ else {
         title: masjid[0],
       });
 
-      var content = "<div style='width:200px;min-height:40px'><h3>" + masjid[0] + "</h3><br/><a href='user/detail_masjid.php?place-id="+masjid[3]+"'>Read More</a></div>"
+      var content = "<div style='width:200px;min-height:40px'><h3>" + masjid[0] + "</h3><p>"+masjid[4]+"...</p><a href='user/detail_masjid.php?place-id="+masjid[3]+"'>Read More</a></div>"
+
 
       google.maps.event.addListener(marker,'click', (function(marker,content,infowindow){
         return function() {
@@ -184,6 +191,10 @@ else {
           infowindow.open(map,marker);
         };
       })(marker,content,infowindow));
+      marker.addListener('click', function() {
+        map.setZoom(19);
+        map.setCenter(marker.getPosition());
+      });
     }
   }
 
