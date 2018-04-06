@@ -434,9 +434,49 @@ class DBHelper{
         }
       }
 
+      function editFamily($array){
+        $family_id          = $array[RequestKey::$FAMILY_ID];
+        $family_name        = $array[RequestKey::$FAMILY_NAME];
+        $family_status      = $array[RequestKey::$FAMILY_STATUS];
+        $family_age         = $array[RequestKey::$FAMILY_AGE];
+        $family_gender      = $array[RequestKey::$FAMILY_GENDER];
+        $family_born_place  = $array[RequestKey::$FAMILY_BORN_PLACE];
+        $family_born_date   = $array[RequestKey::$FAMILY_BORN_DATE];
+        $family_education   = $array[RequestKey::$FAMILY_EDUCATION];
+        $family_salary      = $array[RequestKey::$FAMILY_SALARY];
+        $family_blood       = $array[RequestKey::$FAMILY_BLOOD];
+
+        if ($result = $this->link->query("UPDATE family SET
+          family_name = '$family_name',
+          family_status = '$family_status',
+          family_age = '$family_age',
+          family_gender = '$family_gender',
+          family_born_place = '$family_born_place',
+          family_born_date = '$family_born_date',
+          family_education = '$family_education',
+          family_salary = '$family_salary',
+          family_blood = '$family_blood'
+          WHERE family_id = '$family_id'
+            ")){
+              return true;
+            }
+            else{
+              return false;
+            }
+          }
+
+      //DELTE Anggota
+      function deleteAnggota($fid){
+        if ($result = $this->link->query("DELETE FROM family WHERE family_id = '$fid'")) {
+          return true;
+        }
+        else {
+          return false;
+        }
+      }
+
       //COUNT PLACE
       function countPlace() {
-
         if ($result = $this->link->query("SELECT * FROM place")) {
           return $result->num_rows;
         }
@@ -445,7 +485,17 @@ class DBHelper{
         }
       }
 
-      //GET MASJID BY PLACE ID
+      //GET gamilu by  id
+      function getFamilyById($fid) {
+        if ($result = $this->link->query("SELECT * FROM family WHERE family_id = '$fid'")) {
+          return $result->fetch_object();
+        }
+        else{
+          return false;
+        }
+      }
+
+      //GET gamilu by place id
       function getFamilyByPlaceId($pid) {
         if ($result = $this->link->query("SELECT * FROM family WHERE place_id = '$pid'")) {
           return $result;
@@ -455,7 +505,7 @@ class DBHelper{
         }
       }
 
-      //GET MASJID BY PLACE ID
+      //GET family leader
       function getFamilyLeader($pid) {
         if ($result = $this->link->query("SELECT * FROM family WHERE place_id = '$pid' AND family_status = 0")) {
           return $result->fetch_object();
@@ -464,7 +514,6 @@ class DBHelper{
           return false;
         }
       }
-
 
 
 

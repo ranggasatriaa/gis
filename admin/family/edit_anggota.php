@@ -20,22 +20,23 @@ else {
   $err_blood       = '';
   $db = new DBHelper();
 
-  if(isset($_GET[RequestKey::$PLACE_ID])){
-    $pid = $db->escapeInput($_GET[RequestKey::$PLACE_ID]);
-    $place = $db->getPlaceById($pid);
+  if(isset($_GET[RequestKey::$FAMILY_ID])){
+    $fid = $db->escapeInput($_GET[RequestKey::$FAMILY_ID]);
+    $family_old = $db->getFamilyById($fid);
+    $pid = $family_old->place_id;
     // $place_id = $masjid->place_id;
   }else {
     header('location: ../place.php ');
   }
 
-  if(isset($_POST[RequestKey::$FAMILY_PLACE_ID]) &&isset($_POST[RequestKey::$FAMILY_NAME])
+  if(isset($_POST[RequestKey::$FAMILY_ID]) && isset($_POST[RequestKey::$FAMILY_NAME])
   && isset($_POST[RequestKey::$FAMILY_STATUS])  && isset($_POST[RequestKey::$FAMILY_GENDER])
   && isset($_POST[RequestKey::$FAMILY_BORN_PLACE]) && isset($_POST[RequestKey::$FAMILY_BORN_DATE])
   && isset($_POST[RequestKey::$FAMILY_SALARY])  && isset($_POST[RequestKey::$FAMILY_BLOOD])){
-    // echo "masuk if iset | ";
+    echo "masuk if iset | ";
 
     //escapeInput
-    $place_id           = $db->escapeInput($_POST[RequestKey::$FAMILY_PLACE_ID]);
+    $family_id         = $db->escapeInput($_POST[RequestKey::$FAMILY_ID]);
     $family_name        = $db->escapeInput($_POST[RequestKey::$FAMILY_NAME]);
     $family_status      = $db->escapeInput($_POST[RequestKey::$FAMILY_STATUS]);
     $family_gender      = $db->escapeInput($_POST[RequestKey::$FAMILY_GENDER]);
@@ -49,12 +50,12 @@ else {
     if(empty($err_name) && empty($err_gender) && empty($err_born_place)
     && empty($err_born_date) && empty($err_education) && empty($err_salary)
     && empty($err_blood)){
-      // echo "masuk error | ";
+      echo "masuk error | ";
 
       $family_age =  date_diff(date_create($family_born_date), date_create('today'))->y;
       // echo "place id: ". $family_place_id;
       $array_family = array();
-      $array_family[RequestKey::$FAMILY_PLACE_ID]    = $place_id;
+      $array_family[RequestKey::$FAMILY_ID]          = $family_id;
       $array_family[RequestKey::$FAMILY_NAME]        = $family_name;
       $array_family[RequestKey::$FAMILY_STATUS]      = $family_status;
       $array_family[RequestKey::$FAMILY_AGE]         = $family_age;
@@ -65,9 +66,9 @@ else {
       $array_family[RequestKey::$FAMILY_SALARY]      = $family_salary;
       $array_family[RequestKey::$FAMILY_BLOOD]       = $family_blood;
 
-      // print_r($array_family);
-      if ($family = $db->createFamily($array_family)) {
-        // echo "masuk family";
+      print_r($array_family);
+      if ($family = $db->editFamily($array_family)) {
+        echo "edit family";
         $status = 1;
         // $message = "Berhasil menambah anggota";
       }
@@ -78,7 +79,7 @@ else {
       }
     }
     else{
-    //salah inputan
+      //salah inputan
       $status = 3;
       // $message = "Cek Inputan";
     }
@@ -127,11 +128,11 @@ else {
                 <div class="card">
                   <div class="card-body">
 
-                    <form class="form-horizontal" action="create_anggota.php?place-id=<?=$pid?>" method="post">
+                    <form class="form-horizontal" action="edit_anggota.php?family-id=<?=$fid?>" method="post">
                       <div class="form-group row">
                         <label class="col-sm-2 form-control-label ">Nama Lengkap</label>
                         <div class="col-sm-10">
-                          <input class="form-control" type="text" name="<?= RequestKey::$FAMILY_NAME ?>" value="" placeholder="Nama Lengkap">
+                          <input class="form-control" type="text" name="<?= RequestKey::$FAMILY_NAME ?>" value="<?=$family_old->family_name?>" placeholder="Nama Lengkap">
                           <small class="form-text" ><?=$err_name?></small>
                         </div>
                       </div>
@@ -140,9 +141,10 @@ else {
                         <div class="col-sm-10">
                           <select class="form-control" name="<?=RequestKey::$FAMILY_STATUS?>" required>
                             <option value=""> - Pilih -</option>
-                            <option value="1">Anak Pertama</option>
-                            <option value="2">Anggota keluarga</option>
-                            <option value="3">Pembantu</option>
+                            <option value="0" <?=$family_old->family_status == 0 ? "selected":""?> >Kepala Keluarga</option>
+                            <option value="1" <?=$family_old->family_status == 1 ? "selected":""?> >Anak Pertama</option>
+                            <option value="2" <?=$family_old->family_status == 2 ? "selected":""?> >Anggota keluarga</option>
+                            <option value="3" <?=$family_old->family_status == 3 ? "selected":""?> >Pembantu</option>
                           </select>
                           <small class="form-text" ><?=$err_status?></small>
                         </div>
@@ -152,8 +154,8 @@ else {
                         <div class="col-sm-10">
                           <select class="form-control" name="<?=RequestKey::$FAMILY_GENDER?>" required>
                             <option value=""> - Pilih -</option>
-                            <option value="1">Laki-laki</option>
-                            <option value="2">Perempuan</option>
+                            <option value="1" <?=$family_old->family_gender == 1 ? "selected":""?> >Laki-laki</option>
+                            <option value="2" <?=$family_old->family_gender == 2 ? "selected":""?> >Perempuan</option>
                           </select>
                           <small class="form-text" ><?=$err_gender?></small>
                         </div>
@@ -161,28 +163,28 @@ else {
                       <div class="form-group row">
                         <label class="col-sm-2 form-control-label ">Tempat Lahir</label>
                         <div class="col-sm-10">
-                          <input class="form-control" type="text" name="<?= RequestKey::$FAMILY_BORN_PLACE ?>" value="" placeholder="Tempat Lahir" required="">
+                          <input class="form-control" type="text" name="<?= RequestKey::$FAMILY_BORN_PLACE ?>" value="<?=$family_old->family_born_place?>" placeholder="Tempat lahir" required="">
                           <small class="form-text" ><?=$err_born_place?></small>
                         </div>
                       </div>
                       <div class="form-group row">
                         <label class="col-sm-2 form-control-label ">Tanggal Lahir</label>
                         <div class="col-sm-10">
-                          <input class="form-control" type="date" name="<?= RequestKey::$FAMILY_BORN_DATE ?>" value="" placeholder="Tanggal Lahir" required="">
+                          <input class="form-control" type="date" name="<?= RequestKey::$FAMILY_BORN_DATE ?>" value="<?=$family_old->family_born_date?>" placeholder="Tanggal lahir" required="">
                           <small class="form-text" ><?=$err_born_date?></small>
                         </div>
                       </div>
                       <div class="form-group row">
                         <label class="col-sm-2 form-control-label ">Pendidikan Terakhir</label>
                         <div class="col-sm-10">
-                          <input class="form-control" type="text" name="<?= RequestKey::$FAMILY_EDUCATION ?>" value="" placeholder="Pendidikan Terakhir" required="">
+                          <input class="form-control" type="text" name="<?= RequestKey::$FAMILY_EDUCATION ?>" value="<?=$family_old->family_education?>" placeholder="Pendidikan Terakhir" required="">
                           <small class="form-text" ><?=$err_education?></small>
                         </div>
                       </div>
                       <div class="form-group row">
                         <label class="col-sm-2 form-control-label ">Penghasilan (dalam Rp)</label>
                         <div class="col-sm-10">
-                          <input class="form-control" type="number" name="<?= RequestKey::$FAMILY_SALARY ?>" value="" placeholder="penghasilan">
+                          <input class="form-control" type="number" name="<?= RequestKey::$FAMILY_SALARY ?>" value="<?=$family_old->family_salary?>" placeholder="Pendapatan">
                           <small class="form-text" ><?=$err_salary?></small>
                         </div>
                       </div>
@@ -191,10 +193,10 @@ else {
                         <div class="col-sm-10">
                           <select class="form-control" name="<?=RequestKey::$FAMILY_BLOOD?>">
                             <option value=""> - Pilih -</option>
-                            <option value="A">A</option>
-                            <option value="B">B</option>
-                            <option value="AB">AB</option>
-                            <option value="O">O</option>
+                            <option value="A" <?=$family_old->family_blood == "A" ? "selected":""?> >A</option>
+                            <option value="B" <?=$family_old->family_blood == "B" ? "selected":""?> >B</option>
+                            <option value="AB" <?=$family_old->family_blood == "AB" ? "selected":""?> >AB</option>
+                            <option value="O" <?=$family_old->family_blood == "O" ? "selected":""?> >O</option>
 
                           </select>
                           <small class="form-text" ><?=$err_blood?></small>
@@ -202,7 +204,7 @@ else {
                       </div>
 
                       <div class="form-group">
-                        <input type="hidden" name="<?=RequestKey::$FAMILY_PLACE_ID?>" value="<?=$pid?>">
+                        <input type="hidden" name="<?=RequestKey::$FAMILY_ID?>" value="<?=$fid?>">
                         <a class="btn btn-secondary" href="detail_family.php?place-id=<?=$pid?>">Cancel</a>
                         <input class="btn btn-primary" type="submit" name="submit" value="Submit">
                       </div>
@@ -229,9 +231,9 @@ else {
   <script>
   $(document).ready(function() {
     if (status == 1) {
-      swal("Success!","Berhasil menambah anggota","success")
+      swal("Success!","Berhasil megubah anggota","success")
       .then((value) => {
-        window.location.href = "detail_family.php?place-id=<?=$place_id?>" + escape(window.location.href);
+        window.location.href = "detail_family.php?place-id=<?=$pid?>" + escape(window.location.href);
       })
     }
     else if (status == 2) {

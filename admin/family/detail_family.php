@@ -99,7 +99,17 @@ else {
                         <tr>
                           <td><?=$i?></td>
                           <td><?=$family->family_name?></td>
-                          <td><?=$family->family_status?></td>
+                          <td><?php
+                          if ($family->family_status == 0) {
+                            echo "Kepala Keluarga";
+                          }elseif ($family->family_status == 1) {
+                            echo "Anak Pertama";
+                          }elseif ($family->family_status == 2) {
+                            echo "Anggota Keluarga";
+                          }elseif ($family->family_status == 3) {
+                            echo "Pembantu";
+                          }
+                          ?></td>
                           <td>
                             <!-- <?=$family->family_name?> -->
                             <a class="btn btn-sm btn-primary" href="#" data-toggle="modal" data-target="#modalAnggotaKeluarga"
@@ -127,7 +137,9 @@ else {
                             <!-- <a class="btn btn-primary btn-sm" href="detail_anggota_family.php">Detail</a> -->
                           </td>
                         </tr>
+
                         <?php
+                        $i+=1;
                         } ?>
                       </tbody>
                     </table>
