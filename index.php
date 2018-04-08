@@ -108,6 +108,12 @@ else {
   var rumahs = [
     <?php
     while($rumah = $rumahs->fetch_object()){
+      $family = $db->getFamilyLeader($rumah->place_id);
+      if ($family->family_gender == 1) {
+        $gender = 'pak';
+      }else {
+        $gender = 'bu';
+      }
       echo "['".ucwords($rumah->place_name)."', ".$rumah->place_location.", ".$rumah->place_id."],";
     }
     ?>
@@ -158,7 +164,7 @@ else {
         icon: icon_rumah,
         title: rumah[0],
       });
-      var content = "<div style='width:200px;min-height:40px'><h3>" + rumah[0] + "</h3><br/><a href='user/detail_family.php?place-id="+rumah[3]+"'>Read More</a></div>"
+      var content = "<div style='width:200px;min-height:40px'><h3>Rumah Keluarga " + rumah[0] + "</h3><br/><a href='user/detail_family.php?place-id="+rumah[3]+"'>Read More</a></div>"
 
       google.maps.event.addListener(marker,'click', (function(marker,content,infowindow){
         return function() {
