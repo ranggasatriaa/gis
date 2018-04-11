@@ -21,7 +21,7 @@
         <!-- Navbar Menu -->
         <ul class="nav-menu list-unstyled d-flex flex-md-row align-items-md-center">
           <!-- Logout    -->
-          <li class="nav-item"><a href="login.php" class="nav-link logout">Login<i class="fa fa-sign-in"></i></a></li>
+          <li class="nav-item"><a href="../login.php" class="nav-link logout">Login<i class="fa fa-sign-in"></i></a></li>
         </ul>
       </div>
     </div>

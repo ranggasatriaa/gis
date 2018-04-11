@@ -55,7 +55,7 @@ else {
           <div class="container-fluid">
             <div class="row">
               <div class="statistics col-lg-4">
-                <a style="width:100%" href="masjid/create_masjid.php">
+                <a style="width:100%" href="masjid/select_place.php">
                   <div class="statistic d-flex align-items-center bg-white has-shadow">
                     <div class="icon bg-red"><i class="fa fa-plus"></i></div>
                     <div class="text"><strong>Add</strong><br><small>Masjid</small></div>
@@ -63,7 +63,7 @@ else {
                 </a>
               </div>
               <div class="statistics col-lg-4">
-                <a style="width:100%" href="family/create_family.php">
+                <a style="width:100%" href="family/select_place.php">
                   <div class="statistic d-flex align-items-center bg-white has-shadow">
                     <div class="icon bg-red"><i class="fa fa-plus"></i></div>
                     <div class="text"><strong>Add</strong><br><small>Family</small></div>

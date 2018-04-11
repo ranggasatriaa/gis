@@ -107,7 +107,6 @@ $place          = $db->getPlaceById($pid);
                 </div>
               </div>
             </div>
-
           </section>
           <?php include('page-footer.php'); ?>
         </div>
@@ -133,10 +132,6 @@ $place          = $db->getPlaceById($pid);
                 <tr>
                   <td>Status</td>
                   <td id="family-status"></td>
-                </tr>
-                <tr>
-                  <td>TTL</td>
-                  <td id="family-born"></td>
                 </tr>
                 <tr>
                   <td>Umur</td>
@@ -171,8 +166,8 @@ $place          = $db->getPlaceById($pid);
       modal.find('.modal-body #family-name').text(button.data('name'))
       modal.find('.modal-body #family-status').text(button.data('status'))
       modal.find('.modal-body #family-age').text(button.data('age'))
-      modal.find('.modal-body #family-born').text(button.data('born-place')+", "+button.data('born-date'))
-      modal.find('.modal-body #family-age').text(button.data('age'))
+      // modal.find('.modal-body #family-born').text(button.data('born-place')+", "+button.data('born-date'))
+      // modal.find('.modal-body #family-age').text(button.data('age'))
       modal.find('.modal-body #family-education').text(button.data('education'))
       modal.find('.modal-body #family-salary').text(button.data('salary'))
       modal.find('.modal-body #family-blood').text(button.data('blood'))

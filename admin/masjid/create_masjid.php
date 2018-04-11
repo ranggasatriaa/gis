@@ -13,6 +13,12 @@ else {
   $err_location = '';
   $err_history  = '';
 
+  if (isset($_POST[RequestKey::$PLACE_LOCATION])) {
+    $location = $_POST[RequestKey::$PLACE_LOCATION];
+  }else {
+    $status = 9;
+  }
+
   if(isset($_POST[RequestKey::$PLACE_NAME]) && isset($_POST[RequestKey::$PLACE_LOCATION]) && isset($_POST[RequestKey::$MASJID_HISTORY])){
     // echo "masuk if iset | ";
     $db = new DBHelper();
@@ -110,24 +116,25 @@ else {
 
                     <form class="form-horizontal" action="create_masjid.php" method="post">
                       <div class="form-group row">
-                        <label class="col-sm-2 form-control-label ">Nama Masjid</label>
+                        <label class="col-sm-2 form-control-label ">Lokasi Masjid</label>
                         <div class="col-sm-10">
-                          <input class="form-control" type="text" name="<?= RequestKey::$PLACE_NAME ?>" value="" placeholder="Nama Lokasi">
-                          <small class="form-text" >Nama masjid</small>
+                          <input class="form-control" type="text" disabled name="<?= RequestKey::$PLACE_LOCATION ?>" value="<?=$location?>">
+                          <input class="form-control" type="hidden" name="<?= RequestKey::$PLACE_LOCATION ?>" value="<?=$location?>">
+                          <small class="form-text" ></small>
                         </div>
                       </div>
                       <div class="form-group row">
-                        <label class="col-sm-2 form-control-label ">Lokasi Masjid</label>
+                        <label class="col-sm-2 form-control-label ">Nama Masjid</label>
                         <div class="col-sm-10">
-                          <input class="form-control" type="text" name="<?= RequestKey::$PLACE_LOCATION ?>" value="" placeholder="Lokasi Masjid" required="nedd to fill">
-                          <small class="form-text" >Lokasi Masjid</small>
+                          <input class="form-control" type="text" name="<?= RequestKey::$PLACE_NAME ?>" value="" placeholder="Nama Lokasi">
+                          <small class="form-text" ><?=$err_name?></small>
                         </div>
                       </div>
                       <div class="form-group row">
                         <label class="col-sm-2 form-control-label ">Sejarah Masjid</label>
                         <div class="col-sm-10">
                           <textarea class="form-control"  name="<?= RequestKey::$MASJID_HISTORY ?>" rows="8" cols="80" placeholder="Sejarah Masjid"></textarea>
-                          <small class="form-text" >Sejarah Masjid</small>
+                          <small class="form-text" ><?=$err_history?></small>
                         </div>
                       </div>
                       <div class="form-group">
@@ -167,6 +174,12 @@ else {
     }
     else if (status == 4) {
       swal("Failed!","Same location","error");
+    }
+    else if (status == 9) {
+      swal("Failed!","Tidak ada lokasi terpilih","error")
+      .then((value) => {
+        window.location.href = "select_place.php";
+      });
     }
   });
   </script>

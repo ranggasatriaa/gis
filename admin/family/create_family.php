@@ -8,6 +8,7 @@ if(!isset($_SESSION[RequestKey::$USER_ID])) {
   header('Location: ../../.');
 }
 else {
+
   $status          = 0;
   $message         = '';
   $err_location    = '';
@@ -20,10 +21,17 @@ else {
   $err_salary      = '';
   $err_blood       = '';
 
+  if (isset($_POST[RequestKey::$PLACE_LOCATION])) {
+    $location = $_POST[RequestKey::$PLACE_LOCATION];
+  }else {
+    $status = 9;
+    // header('Location: select_place.php');
+  }
+  // echo "string";
   if(isset($_POST[RequestKey::$PLACE_LOCATION]) &&isset($_POST[RequestKey::$FAMILY_NAME])
-    && isset($_POST[RequestKey::$FAMILY_STATUS])  && isset($_POST[RequestKey::$FAMILY_GENDER])
-    && isset($_POST[RequestKey::$FAMILY_BORN_PLACE]) && isset($_POST[RequestKey::$FAMILY_BORN_DATE])
-    && isset($_POST[RequestKey::$FAMILY_SALARY])  && isset($_POST[RequestKey::$FAMILY_BLOOD])){
+  && isset($_POST[RequestKey::$FAMILY_STATUS])  && isset($_POST[RequestKey::$FAMILY_GENDER])
+  && isset($_POST[RequestKey::$FAMILY_BORN_PLACE]) && isset($_POST[RequestKey::$FAMILY_BORN_DATE])
+  && isset($_POST[RequestKey::$FAMILY_SALARY])  && isset($_POST[RequestKey::$FAMILY_BLOOD])){
     // echo "masuk if iset | ";
     $db = new DBHelper();
 
@@ -40,8 +48,8 @@ else {
     $family_blood       = $db->escapeInput($_POST[RequestKey::$FAMILY_BLOOD]);
     //CEK ERROR PADA INPUTAN
     if(empty($err_name) && empty($err_gender) && empty($err_born_place)
-      && empty($err_born_date) && empty($err_education) && empty($err_salary)
-      && empty($err_blood)){
+    && empty($err_born_date) && empty($err_education) && empty($err_salary)
+    && empty($err_blood)){
       // echo "masuk error | ";
 
       $array_place = array();
@@ -54,7 +62,7 @@ else {
         if ($place = $db->createPlace($array_place)) {
           // echo "masuk create place | ";
           $family_place_id = (int)$db->lastPlaceId();
-          // echo "place id: ". $family_place_i
+          // echo "place id: ". $family_place_id;
           $family_age =  date_diff(date_create($family_born_date), date_create('today'))->y;
           // $family_age = 10;
           $array_family = array();
@@ -102,9 +110,7 @@ else {
 <body>
 
   <div class="page">
-
     <?php include('main-navbar.php'); ?>
-
     <div class="page-content d-flex align-items-stretch">
       <!-- Side Navbar -->
       <nav class="side-navbar">
@@ -138,24 +144,28 @@ else {
 
                     <form class="form-horizontal" action="create_family.php" method="post">
                       <div class="form-group row">
-                        <label class="col-sm-2 form-control-label ">Nama Lengkap Kepala Keluarga</label>
-                        <div class="col-sm-10">
-                          <input class="form-control" type="text" name="<?= RequestKey::$FAMILY_NAME ?>" value="" placeholder="Nama Lokasi">
-                          <small class="form-text" ><?=$err_name?></small>
+                        <label class="col-sm-2 form-control-label ">Lokasi</label>
+                        <div class="col-sm-8">
+                          <input class="form-control" type="text" disabled name="<?= RequestKey::$PLACE_LOCATION ?>" value="<?=$location?>" >
+                          <input class="form-control" type="hidden" name="<?= RequestKey::$PLACE_LOCATION ?>" value="<?=$location?>" >
+                          <small class="form-text" ><?=$err_location?></small>
+                        </div>
+                        <div class="col-sm-2">
+                          <a class="pull-right btn btn-sm btn-secondary" href="select_place.php">Rubah Lokasi</a>
                         </div>
                       </div>
                       <div class="form-group row">
-                        <label class="col-sm-2 form-control-label ">Lokasi</label>
+                        <label class="col-sm-2 form-control-label ">Nama Lengkap Kepala Keluarga</label>
                         <div class="col-sm-10">
-                          <input class="form-control" type="text" name="<?= RequestKey::$PLACE_LOCATION ?>" value="" placeholder="Lokasi family" required="">
-                          <small class="form-text" ><?=$err_location?></small>
+                          <input class="form-control" type="text" name="<?= RequestKey::$FAMILY_NAME ?>" value="" placeholder="Masukkan Nama Kepala keluarga">
+                          <small class="form-text" ><?=$err_name?></small>
                         </div>
                       </div>
                       <div class="form-group row">
                         <label class="col-sm-2 form-control-label ">Jenis Kelamin</label>
                         <div class="col-sm-10">
                           <select class="form-control" name="<?=RequestKey::$FAMILY_GENDER?>" required>
-                            <option value=""> - Pilih -</option>
+                            <option value=""> - Pilih Jenis Kelamin -</option>
                             <option value="1">Laki-laki</option>
                             <option value="2">Perempuan</option>
                           </select>
@@ -165,7 +175,7 @@ else {
                       <div class="form-group row">
                         <label class="col-sm-2 form-control-label ">Tempat Lahir</label>
                         <div class="col-sm-10">
-                          <input class="form-control" type="text" name="<?= RequestKey::$FAMILY_BORN_PLACE ?>" value="" placeholder="" required="">
+                          <input class="form-control" type="text" name="<?= RequestKey::$FAMILY_BORN_PLACE ?>" value="" placeholder="Masukkan Tempat Lahir" required="">
                           <small class="form-text" ><?=$err_born_place?></small>
                         </div>
                       </div>
@@ -179,14 +189,14 @@ else {
                       <div class="form-group row">
                         <label class="col-sm-2 form-control-label ">Pendidikan Terakhir</label>
                         <div class="col-sm-10">
-                          <input class="form-control" type="text" name="<?= RequestKey::$FAMILY_EDUCATION ?>" value="" placeholder="" required="">
+                          <input class="form-control" type="text" name="<?= RequestKey::$FAMILY_EDUCATION ?>" value="" placeholder="Masukkan Pendidikan Terakhir" required="">
                           <small class="form-text" ><?=$err_education?></small>
                         </div>
                       </div>
                       <div class="form-group row">
                         <label class="col-sm-2 form-control-label ">Penghasilan (dalam Rp)</label>
                         <div class="col-sm-10">
-                          <input class="form-control" type="number" name="<?= RequestKey::$FAMILY_SALARY ?>" value="" placeholder="">
+                          <input class="form-control" type="number" name="<?= RequestKey::$FAMILY_SALARY ?>" value="" placeholder="Masukkan Penghasilan">
                           <small class="form-text" ><?=$err_salary?></small>
                         </div>
                       </div>
@@ -194,7 +204,7 @@ else {
                         <label class="col-sm-2 form-control-label ">Golongan Darah</label>
                         <div class="col-sm-10">
                           <select class="form-control" name="<?=RequestKey::$FAMILY_BLOOD?>">
-                            <option value=""> - Pilih -</option>
+                            <option value=""> - Pilih Golongan Darah -</option>
                             <option value="A">A</option>
                             <option value="B">B</option>
                             <option value="AB">AB</option>
@@ -230,7 +240,7 @@ else {
       swal("Success!","Create Success","success")
       .then((value) => {
         window.location.href = "../place.php";
-        });
+      });
     }
     else if (status == 2) {
       swal("Failed!","Tidak bisa masuk query","error");
@@ -240,6 +250,12 @@ else {
     }
     else if (status == 4) {
       swal("Failed!","Same location","error");
+    }
+    else if (status == 9) {
+      swal("Failed!","Tidak ada lokasi terpilih","error")
+      .then((value) => {
+        window.location.href = "select_place.php";
+      });
     }
   });
   </script>

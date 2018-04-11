@@ -97,7 +97,7 @@ else {
   <script>
   $(document).ready(function() {
     if (status == 1) {
-      swal("Success!","Berhasil menghapus anggota","success")
+      swal("Success!","Berhasil menghapus keluarga","success")
       .then((value) => {
         window.location.href = "../place.php";
       })
