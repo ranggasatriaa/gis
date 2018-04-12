@@ -3,20 +3,26 @@
 require_once('../includes/request-key.php');
 require_once('../includes/db-helper.php');
 
-$db        = new DBHelper();
-$pid       = $_GET[RequestKey::$PLACE_ID];
-$masjid    = $db->getMasjidByPlaceId($pid);
-$place     = $db->getPlaceById($pid);
-$kajian_msg= "";
-$jumat_msg = "";
+$db             = new DBHelper();
+$pid            = $_GET[RequestKey::$PLACE_ID];
+$masjid         = $db->getMasjidByPlaceId($pid);
+$place          = $db->getPlaceById($pid);
+$kajian_msg     = "";
+$jumat_msg      = "";
+$kegiatan_msg  = "";
+
 if (!$db->isKajianExist($masjid->masjid_id)) {
   $kajian_msg = "Belum ada Kajian";
 }
 if (!$db->isJumatExist($masjid->masjid_id)) {
   $jumat_msg = "Belum ada Jadual Imam Sholat Jumat";
 }
+if (!$db->isKegiatanExist($masjid->masjid_id)) {
+  $kegiatan_msg = "Belum ada Kegiatan di masjid ini";
+}
 $kajians   = $db->getAllKajian($masjid->masjid_id);
 $jumats    = $db->getAllJumat($masjid->masjid_id);
+$kegiatans  = $db->getAllKegiatan($masjid->masjid_id);
 
 ?>
 
@@ -56,6 +62,8 @@ $jumats    = $db->getAllJumat($masjid->masjid_id);
                 </div>
               </div>
             </div>
+
+            <!-- KAJIAN -->
             <div class="row">
               <div class="col-md-7">
                 <div class="recent-activities card">
@@ -82,7 +90,7 @@ $jumats    = $db->getAllJumat($masjid->masjid_id);
                                 <span style="padding-right:0px" class="date text-info"> <?=date("d-m-Y", strtotime($kajian->kajian_date)) ?></span><br>
                               </div>
                               <div style="padding-left:0px"class="col-4 no-margin no-padding">
-                                <div style="padding-top:7px" class="icon"><i class="fa fa-calendar-check-o"></i></div>
+                                <div style="padding-top:0px" class="icon"><i class="fa fa-calendar-check-o"></i></div>
                               </div>
                             </div>
                             <div style="padding:0px 15px" class="row">
@@ -90,7 +98,7 @@ $jumats    = $db->getAllJumat($masjid->masjid_id);
                                 <span style="padding-right:0px" class="date"> <?=date("g:i", strtotime($kajian->kajian_time)) ?></span><br>
                               </div>
                               <div style="padding-left:0px"class="col-4 no-margin no-padding">
-                                <div style="padding-top:7px" class="icon"><i class="fa fa-clock-o"></i></div>
+                                <div style="padding-top:0px" class="icon"><i class="fa fa-clock-o"></i></div>
                               </div>
                             </div>
                           </div>
@@ -109,6 +117,8 @@ $jumats    = $db->getAllJumat($masjid->masjid_id);
                     </div>
                   </div>
                 </div>
+
+                <!-- IMAM -->
                 <div class="col-md-5">
                   <div class=" recent-activities card">
                     <div class="card-header">
@@ -130,7 +140,7 @@ $jumats    = $db->getAllJumat($masjid->masjid_id);
                         <div class="item">
                           <div class="row">
                             <div class="col-4 date-holder text-right no-margin">
-                              <div style="padding-top:7px" class="icon"><i class="fa fa-calendar-check-o"></i></div>
+                              <div style="padding-top:0px" class="icon"><i class="fa fa-calendar-check-o"></i></div>
                               <div class="date"><span class="text-info"><?=$jumat->jumat_date?></span></div>
                             </div>
                             <div class="col-8 content no-margin">
@@ -144,6 +154,58 @@ $jumats    = $db->getAllJumat($masjid->masjid_id);
                       }
                       ?>
                     </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- KEGIATAN -->
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="recent-activities card">
+                    <div class="card-header">
+                      <div class="row">
+                        <div class="col-8 no-margin">
+                          <h4> Jadual Kegiatan</h4>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="card-body no-padding">
+                      <?php if ($kegiatan_msg !="") {
+                        echo "<h4 style='text-align:center; padding:5px'>".$kegiatan_msg."</h4>";
+                      }?>
+                      <?php while ($kegiatan = $kegiatans->fetch_object()) {
+                        ?>
+                        <div class="item">
+                          <div class="row">
+                            <div class="col-3 date-holder text-right no-margin">
+                              <div style="padding:0px 15px" class="row">
+                                <div style="padding-right:0px"class="col-8 no-margin no-padding">
+                                  <span style="padding-right:0px" class="date text-info"> <?=date("d-m-Y", strtotime($kegiatan->kegiatan_date)) ?></span><br>
+                                </div>
+                                <div style="padding-left:0px"class="col-4 no-margin no-padding">
+                                  <div style="padding-top:0px" class="icon"><i class="fa fa-calendar-check-o"></i></div>
+                                </div>
+                              </div>
+                              <div style="padding:0px 15px" class="row">
+                                <div style=""class="col-8 no-margin no-padding">
+                                  <span style="padding-right:0px" class="date"> <?=date("g:i", strtotime($kegiatan->kegiatan_time)) ?></span><br>
+                                </div>
+                                <div style="padding-left:0px"class="col-4 no-margin no-padding">
+                                  <div style="padding-top:0px" class="icon"><i class="fa fa-clock-o"></i></div>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-9 content no-margin">
+                              <h5><?=strtoupper($kegiatan->kegiatan_title)?>
+                                <!-- <a href="detail_kegiatan.php"><i class="fa fa-edit"></i></a> -->
+                              </h5>
+                              <p><?=$kegiatan->kegiatan_description?></p>
+                              </div>
+                            </div>
+                          </div>
+                          <?php
+                        } ?>
+                      </div>
                   </div>
                 </div>
               </div>

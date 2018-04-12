@@ -9,12 +9,12 @@ if(!isset($_SESSION[RequestKey::$USER_ID])) {
 }
 else {
   $db = new DBHelper();
-  if(isset($_GET[RequestKey::$KAJIAN_ID])){
-    $kid      = $db->escapeInput($_GET[RequestKey::$KAJIAN_ID]);
-    $kajian     = $db->getKajianById($kid);
-    $masjid     = $db->getMasjidById($kajian->masjid_id);
+  if(isset($_GET[RequestKey::$KEGIATAN_ID])){
+    $kid        = $db->escapeInput($_GET[RequestKey::$KEGIATAN_ID]);
+    $kegiatan   = $db->getKegiatanById($kid);
+    $masjid     = $db->getMasjidById($kegiatan->masjid_id);
     $place_id   = $masjid->place_id;
-    if ($result = $db->deleteKajian($kid)) {
+    if ($result = $db->deleteKegiatan($kid)) {
       $status = 1;
     }
     else{
@@ -38,7 +38,7 @@ else {
 
   <div class="page">
 
-    <?php include('main-navbar.php'); ?>
+    <?php include('main-navbar.php');?>
 
     <div class="page-content d-flex align-items-stretch">
       <!-- Side Navbar -->
@@ -61,7 +61,7 @@ else {
         <!-- Page Header-->
         <header class="page-header">
           <div class="container-fluid">
-            <h2 class="no-margin-bottom">Delete Kajian</h2>
+            <h2 class="no-margin-bottom">Delete Kegiatan</h2>
           </div>
         </header>
         <?php include('page-footer.php'); ?>
@@ -88,7 +88,7 @@ else {
       });
     }
     else if (status == 3) {
-      swal("Failed!","Id Kajian tidak ditemukan","error");
+      swal("Failed!","Id Kegiatan tidak ditemukan","error");
       window.location.href = ".";
 
     }

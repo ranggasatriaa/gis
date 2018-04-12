@@ -26,8 +26,15 @@ else {
 
       if (empty($err_login)) {
         if($user = $db->login($username,$password)){
-          $_SESSION[RequestKey::$USER_ID]   = $user->user_id;
-          header('Location: admin/');
+          $_SESSION[RequestKey::$USER_ID]      = $user->user_id;
+          $_SESSION[RequestKey::$USER_LEVEL]   = $user->user_level;
+          if ($user->user_level == 0){
+            header('Location: admin/');
+          }elseif($user->user_level == 1){
+            header('Location: takmir/');
+          }else{
+            header('Location: .');
+          }
         }
         else {
           $err_login = "invalid username or password";

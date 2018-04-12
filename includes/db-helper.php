@@ -29,7 +29,7 @@ class DBHelper{
     $user_name      = $array[RequestKey::$USER_NAME];
     $user_username  = $array[RequestKey::$USER_USERNAME];
 
-    if ($result = $this->link->query("UPDATE user SET user_name = '$user_name', user_username = '$user_username'")) {
+    if ($result = $this->link->query("UPDATE user SET user_name = '$user_name', user_username = '$user_username' WHERE user_id='$user_id'")) {
       return true;
     }
     return false;
@@ -398,6 +398,83 @@ class DBHelper{
   //----------------------------------------------------------------------------
 
   //----------------------------------------------------------------------------
+  //KAGIATAN
+  //GET KEGIATAN
+  function getAllKegiatan($mid) {
+    if ($result = $this->link->query("SELECT * FROM masjid_kegiatan WHERE masjid_id = '$mid'")) {
+      return $result;
+    }
+    else{
+      return false;
+    }
+  }
+
+  //GET KEGIATAN BY ID
+  function getKegiatanById($kid) {
+    if ($result = $this->link->query("SELECT * FROM masjid_kegiatan WHERE kegiatan_id = '$kid'")) {
+      return $result->fetch_object();
+    }
+    else{
+      return false;
+    }
+  }
+
+  //IS KEGIATAN ADA
+  function isKegiatanExist($mid) {
+    if ($result = $this->link->query("SELECT * FROM masjid_kegiatan WHERE masjid_id = '$mid'")) {
+      if ($result->num_rows > 0) {
+        return true;
+      }
+      else{
+        return false;
+      }
+    }
+  }
+
+  //CREATE KEGIATAN
+  function createKegiatan($array){
+    $kegiatan_masjid_id     = $array[RequestKey::$KEGIATAN_MASJID_ID];
+    $kegiatan_date          = $array[RequestKey::$KEGIATAN_DATE];
+    $kegiatan_time          = $array[RequestKey::$KEGIATAN_TIME];
+    $kegiatan_title         = $array[RequestKey::$KEGIATAN_TITLE];
+    $kegiatan_description   = $array[RequestKey::$KEGIATAN_DESCRIPTION];
+
+    if($result = $this->link->query("INSERT INTO masjid_kegiatan(masjid_id, kegiatan_date, kegiatan_time, kegiatan_title, kegiatan_description) VALUES('$kegiatan_masjid_id', '$kegiatan_date', '$kegiatan_time', '$kegiatan_title', '$kegiatan_description') ")){
+      return true;
+    }
+    else {
+      return false;
+    }
+  }
+
+  //EDIT KEGIATAN
+  function editKegiatan($array){
+    $kegiatan_id            = $array[RequestKey::$KEGIATAN_ID];
+    $kegiatan_date          = $array[RequestKey::$KEGIATAN_DATE];
+    $kegiatan_time          = $array[RequestKey::$KEGIATAN_TIME];
+    $kegiatan_title         = $array[RequestKey::$KEGIATAN_TITLE];
+    $kegiatan_description   = $array[RequestKey::$KEGIATAN_DESCRIPTION];
+    if($result = $this->link->query("UPDATE masjid_kegiatan SET kegiatan_date = '$kegiatan_date', kegiatan_time = '$kegiatan_time', kegiatan_title = '$kegiatan_title', kegiatan_description = '$kegiatan_description' WHERE kegiatan_id = '$kegiatan_id'")){
+      return true;
+    }
+    else {
+      return false;
+    }
+  }
+
+  //DELETE kegiatan_id
+  function deleteKegiatan($mid){
+    if ($result = $this->link->query("DELETE FROM masjid_kegiatan WHERE kegiatan_id = '$mid'")) {
+      return true;
+    }
+    else {
+      return false;
+    }
+  }
+
+  //----------------------------------------------------------------------------
+
+  //----------------------------------------------------------------------------
   //RUMAH
   //GET RUMAH
   function getRumah() {
@@ -414,7 +491,7 @@ class DBHelper{
     $family_place_id    = $array[RequestKey::$FAMILY_PLACE_ID];
     $family_name        = $array[RequestKey::$FAMILY_NAME];
     $family_status      = $array[RequestKey::$FAMILY_STATUS];
-    $family_age         = $array[RequestKey::$FAMILY_AGE];
+    $family_religion    = $array[RequestKey::$FAMILY_RELIGION];
     $family_gender      = $array[RequestKey::$FAMILY_GENDER];
     $family_born_place  = $array[RequestKey::$FAMILY_BORN_PLACE];
     $family_born_date   = $array[RequestKey::$FAMILY_BORN_DATE];
@@ -422,7 +499,7 @@ class DBHelper{
     $family_salary      = $array[RequestKey::$FAMILY_SALARY];
     $family_blood       = $array[RequestKey::$FAMILY_BLOOD];
 
-    if ($result = $this->link->query("INSERT INTO family(place_id, family_name, family_status, family_age, family_gender, family_born_place, family_born_date, family_education, family_salary, family_blood) VALUES ( '$family_place_id', '$family_name', '$family_status', '$family_age', '$family_gender', '$family_born_place', '$family_born_date', '$family_education', '$family_salary', '$family_blood') ")){
+    if ($result = $this->link->query("INSERT INTO family(place_id, family_name, family_status, family_religion, family_gender, family_born_place, family_born_date, family_education, family_salary, family_blood) VALUES ( '$family_place_id', '$family_name', '$family_status', '$family_religion', '$family_gender', '$family_born_place', '$family_born_date', '$family_education', '$family_salary', '$family_blood') ")){
       return true;
     }
     else{
@@ -434,7 +511,7 @@ class DBHelper{
     $family_id          = $array[RequestKey::$FAMILY_ID];
     $family_name        = $array[RequestKey::$FAMILY_NAME];
     $family_status      = $array[RequestKey::$FAMILY_STATUS];
-    $family_age         = $array[RequestKey::$FAMILY_AGE];
+    $family_religion    = $array[RequestKey::$FAMILY_RELIGION];
     $family_gender      = $array[RequestKey::$FAMILY_GENDER];
     $family_born_place  = $array[RequestKey::$FAMILY_BORN_PLACE];
     $family_born_date   = $array[RequestKey::$FAMILY_BORN_DATE];
@@ -442,7 +519,7 @@ class DBHelper{
     $family_salary      = $array[RequestKey::$FAMILY_SALARY];
     $family_blood       = $array[RequestKey::$FAMILY_BLOOD];
 
-    if ($result = $this->link->query("UPDATE family SET family_name = '$family_name', family_status = '$family_status', family_age = '$family_age', family_gender = '$family_gender', family_born_place = '$family_born_place', family_born_date = '$family_born_date', family_education = '$family_education', family_salary = '$family_salary', family_blood = '$family_blood' WHERE family_id = '$family_id' ")){
+    if ($result = $this->link->query("UPDATE family SET family_name = '$family_name', family_status = '$family_status', family_religion = '$family_religion', family_gender = '$family_gender', family_born_place = '$family_born_place', family_born_date = '$family_born_date', family_education = '$family_education', family_salary = '$family_salary', family_blood = '$family_blood' WHERE family_id = '$family_id' ")){
       return true;
     }
     else{
@@ -504,6 +581,19 @@ class DBHelper{
   function getFamilyLeader($pid) {
     if ($result = $this->link->query("SELECT * FROM family WHERE place_id = '$pid' AND family_status = 0")) {
       return $result->fetch_object();
+    }
+    else{
+      return false;
+    }
+  }
+  //----------------------------------------------------------------------------
+
+  //----------------------------------------------------------------------------
+  //KAIMANAN
+  //Get KEIMANAN
+  function getKeimanan() {
+    if ($result = $this->link->query("SELECT * FROM place WHERE place_category = 1")) {
+      return $result;
     }
     else{
       return false;

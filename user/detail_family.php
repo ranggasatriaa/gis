@@ -85,7 +85,6 @@ $place          = $db->getPlaceById($pid);
                                 echo 'Pembantu';
                               }
                               ?>"
-                              data-age="<?=$family->family_age?>"
                               data-gender="<?=$family->family_gender?>"
                               data-age="<?=$family->family_age?>"
                               data-born-place="<?=strtoupper($family->family_born_place)?>"

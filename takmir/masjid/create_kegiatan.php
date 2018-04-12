@@ -8,48 +8,41 @@ if(!isset($_SESSION[RequestKey::$USER_ID])) {
   header('Location: ../../.');
 }
 else {
-  $db               = new DBHelper();
-
-  if (isset($_GET[RequestKey::$KAJIAN_ID])) {
-    $kid          = $db->escapeInput($_GET[RequestKey::$KAJIAN_ID]);
-  }elseif(isset($_POST[RequestKey::$JUMAT_ID])){
-    $kid          = $db->escapeInput($_POST[RequestKey::$KAJIAN_ID]);
-  }else {
-    header('location: ../place.php ');
-  }
-  $kajian           = $db->getKajianById($kid);
-  $masjid           = $db->getMasjidById($kajian->masjid_id);
-  $place_id         = $masjid->place_id;
-
-
+  $db = new DBHelper();
   $status           = 0;
   $err_date         = '';
   $err_time         = '';
   $err_title        = '';
   $err_description  = '';
-  $err_speaker      = '';
 
+  if(isset($_GET[RequestKey::$MASJID_ID])){
+    $mid = $db->escapeInput($_GET[RequestKey::$MASJID_ID]);
+    $masjid = $db->getMasjidById($mid);
+    $place_id = $masjid->place_id;
+  }else {
+    header('location: ../place.php ');
+  }
 
-  if(isset($_POST[RequestKey::$KAJIAN_ID]) && isset($_POST[RequestKey::$KAJIAN_DATE]) && isset($_POST[RequestKey::$KAJIAN_TIME]) && isset($_POST[RequestKey::$KAJIAN_TITLE]) && isset($_POST[RequestKey::$KAJIAN_DESCRIPTION]) && isset($_POST[RequestKey::$KAJIAN_SPEAKER])){
-    //escapeInput
-    $kajian_id           = $db->escapeInput($_POST[RequestKey::$KAJIAN_ID]);
-    $kajian_date         = $db->escapeInput($_POST[RequestKey::$KAJIAN_DATE]);
-    $kajian_time         = $db->escapeInput($_POST[RequestKey::$KAJIAN_TIME]);
-    $kajian_title        = $db->escapeInput($_POST[RequestKey::$KAJIAN_TITLE]);
-    $kajian_description  = $db->escapeInput($_POST[RequestKey::$KAJIAN_DESCRIPTION]);
-    $kajian_speaker      = $db->escapeInput($_POST[RequestKey::$KAJIAN_SPEAKER]);
+  if(isset($_POST[RequestKey::$KEGIATAN_MASJID_ID]) && isset($_POST[RequestKey::$KEGIATAN_DATE]) && isset($_POST[RequestKey::$KEGIATAN_TIME]) && isset($_POST[RequestKey::$KEGIATAN_TITLE]) && isset($_POST[RequestKey::$KEGIATAN_DESCRIPTION])){
+
+    $masjid_id             = $db->escapeInput($_POST[RequestKey::$KEGIATAN_MASJID_ID]);
+    $kegiatan_date         = $db->escapeInput($_POST[RequestKey::$KEGIATAN_DATE]);
+    $kegiatan_time         = $db->escapeInput($_POST[RequestKey::$KEGIATAN_TIME]);
+    $kegiatan_title        = $db->escapeInput($_POST[RequestKey::$KEGIATAN_TITLE]);
+    $kegiatan_description  = $db->escapeInput($_POST[RequestKey::$KEGIATAN_DESCRIPTION]);
 
     //CEK ERROR PADA INPUTAN
-    if(empty($err_date) && empty($err_time) && empty($err_title) && empty($err_description) && empty($err_speaker)){
+    if(empty($err_date) && empty($err_time) && empty($err_title) && empty($err_description)){
+      // echo "masuk error";
       $array = array();
-      $array[RequestKey::$KAJIAN_ID]              = $kajian_id;
-      $array[RequestKey::$KAJIAN_DATE]            = $kajian_date;
-      $array[RequestKey::$KAJIAN_TIME]            = $kajian_time;
-      $array[RequestKey::$KAJIAN_TITLE]           = $kajian_title;
-      $array[RequestKey::$KAJIAN_DESCRIPTION]     = $kajian_description;
-      $array[RequestKey::$KAJIAN_SPEAKER]         = $kajian_speaker;
+      $array[RequestKey::$KEGIATAN_MASJID_ID]       = $masjid_id;
+      $array[RequestKey::$KEGIATAN_DATE]            = $kegiatan_date;
+      $array[RequestKey::$KEGIATAN_TIME]            = $kegiatan_time;
+      $array[RequestKey::$KEGIATAN_TITLE]           = $kegiatan_title;
+      $array[RequestKey::$KEGIATAN_DESCRIPTION]     = $kegiatan_description;
       // print_r($array);
-      if ($kajians = $db->editKajian($array)) {
+      if ($kegiatan = $db->createKegiatan($array)) {
+        // echo "masuk create kegiatan | ";
         $status = 1;
       }
       else{
@@ -57,7 +50,7 @@ else {
         $status = 2;
       }
     }
-    else{
+    else {
       //salah inputan
       $status = 3;
     }
@@ -98,7 +91,7 @@ else {
         <!-- Page Header-->
         <header class="page-header">
           <div class="container-fluid">
-            <h2 class="no-margin-bottom">Edit Kajian</h2>
+            <h2 class="no-margin-bottom">Add Kegiatan</h2>
           </div>
         </header>
         <section class="dashboard-header">
@@ -107,44 +100,37 @@ else {
               <div class="col-md-12">
                 <div class="card">
                   <div class="card-body">
-                    <form class="form-horizontal" action="edit_kajian.php?kajian-id=<?=$kid?>" method="post">
+                    <form class="form-horizontal" action="create_kegiatan.php?masjid-id=<?=$mid?>" method="post">
                       <div class="form-group row">
-                        <label class="col-sm-2 form-control-label ">Tanggal Kajian</label>
+                        <label class="col-sm-2 form-control-label ">Tanggal Kegiatan</label>
                         <div class="col-sm-10">
-                          <input class="form-control" type="date" name="<?= RequestKey::$KAJIAN_DATE ?>" value="<?=$kajian->kajian_date?>" placeholder="Tanggal Kajian">
+                          <input class="form-control" type="date" name="<?= RequestKey::$KEGIATAN_DATE ?>" value="" placeholder="Tanggal Kegiatan">
                           <small class="form-text" ><?=$err_date?></small>
                         </div>
                       </div>
                       <div class="form-group row">
-                        <label class="col-sm-2 form-control-label ">Waktu Kajian</label>
+                        <label class="col-sm-2 form-control-label ">Waktu Kegiatan</label>
                         <div class="col-sm-10">
-                          <input class="form-control" type="time" name="<?= RequestKey::$KAJIAN_TIME ?>" value="<?=$kajian->kajian_time?>" placeholder="Waktu Kajian">
+                          <input class="form-control" type="time" name="<?= RequestKey::$KEGIATAN_TIME ?>" value="" placeholder="Waktu Kegiatan">
                           <small class="form-text" ><?=$err_time?></small>
                         </div>
                       </div>
                       <div class="form-group row">
-                        <label class="col-sm-2 form-control-label ">Judul Kajian</label>
+                        <label class="col-sm-2 form-control-label ">Judul Kegiatan</label>
                         <div class="col-sm-10">
-                          <input class="form-control" type="text" name="<?= RequestKey::$KAJIAN_TITLE ?>" value="<?=$kajian->kajian_title?>" placeholder="Judual Kajian">
+                          <input class="form-control" type="text" name="<?= RequestKey::$KEGIATAN_TITLE ?>" value="" placeholder="Judual Kegiatan">
                           <small class="form-text" ><?=$err_title?></small>
                         </div>
                       </div>
                       <div class="form-group row">
-                        <label class="col-sm-2 form-control-label ">Deskripsi Kajian</label>
+                        <label class="col-sm-2 form-control-label ">Deskripsi Kegiatan</label>
                         <div class="col-sm-10">
-                          <textarea name="<?=RequestKey::$KAJIAN_DESCRIPTION?>" rows="5" cols="80"><?=$kajian->kajian_description?></textarea>
+                          <textarea name="<?=RequestKey::$KEGIATAN_DESCRIPTION?>" rows="5" cols="80"></textarea>
                           <small class="form-text" ><?=$err_description?></small>
                         </div>
                       </div>
-                      <div class="form-group row">
-                        <label class="col-sm-2 form-control-label ">Pengisi Kajian</label>
-                        <div class="col-sm-10">
-                          <input class="form-control" type="text" name="<?= RequestKey::$KAJIAN_SPEAKER; ?>" value="<?=$kajian->kajian_speaker?>" placeholder="Judual Kajian">
-                          <small class="form-text" ><?=$err_speaker?></small>
-                        </div>
-                      </div>
                       <div class="form-group">
-                        <input type="hidden" name="<?=RequestKey::$KAJIAN_ID?>" value="<?=$kid?>">
+                        <input type="hidden" name="<?=RequestKey::$KEGIATAN_MASJID_ID?>" value="<?=$mid?>">
                         <a class="btn btn-secondary" href="detail_masjid.php?<?=RequestKey::$PLACE_ID?>=<?=$place_id?>">Cancel</a>
                         <input class="btn btn-primary" type="submit" name="submit" value="Submit">
                       </div>
@@ -168,7 +154,7 @@ else {
   <script>
   $(document).ready(function() {
     if (status == 1) {
-      swal("Success!","Delete Success","success")
+      swal("Success!","Create Success","success")
       .then((value) => {
         window.location.href = "detail_masjid.php?place-id=<?=$place_id?>" + escape(window.location.href);
       });

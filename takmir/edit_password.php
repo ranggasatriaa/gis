@@ -3,8 +3,10 @@ session_start();
 require_once('../includes/request-key.php');
 require_once('../includes/db-helper.php');
 
-$err_name = '';
-$err_username = '';
+//VALIDASI
+$err_pw_1 = '';
+$err_pw_2 = '';
+$err_pw_3 = '';
 
 $status = 0;
 $message = '';
@@ -13,55 +15,67 @@ if(!isset($_SESSION[RequestKey::$USER_ID])) {
   header('Location: ../.');
 }
 else {
+  //DB
   $db   = new DBHelper();
   $uid  = $_SESSION[RequestKey::$USER_ID];
   $user = $db->getUserById($uid);
 
-  //VALIDASI
-  if(isset($_POST[RequestKey::$USER_NAME]) && isset($_POST[RequestKey::$USER_USERNAME])){
-    $user_id        = $db->escapeInput($_POST[RequestKey::$USER_ID]);
-    $user_name      = $db->escapeInput($_POST[RequestKey::$USER_NAME]);
-    $user_username  = $db->escapeInput($_POST[RequestKey::$USER_USERNAME]);
+  if(isset($_POST['password-lama']) && isset($_POST['password-baru']) && isset($_POST['password-baru-2'])) {
+    $password_lama    = $db->escapeInput($_POST['password-lama']);
+    $password_baru    = $db->escapeInput($_POST['password-baru']);
+    $password_baru_2  = $db->escapeInput($_POST['password-baru-2']);
 
-    if (!preg_match("/^[a-zA-Z ]{1,50}$/",$user_name)) {
-      $err_name = "Nama tidak valid";
+    if (!preg_match("/^[a-zA-Z0-9]{8,20}$/",$password_lama)) {
+      $err_pw_1 = "Input tidak valid";
     }
 
-    if (!preg_match("/^[a-zA-Z0-9]{1,50}$/",$user_username)) {
-      $err_username = "Nama tidak valid";
+    if (!preg_match("/^[a-zA-Z0-9]{8,20}$/",$password_baru)) {
+      $err_pw_2 = "Input tidak valid";
     }
 
-    if(empty($err_name) && empty($err_username)){
-      $array = array();
-      $array[RequestKey::$USER_ID]        = $db->escapeInput($uid);
-      $array[RequestKey::$USER_NAME]      = $db->escapeInput($_POST[RequestKey::$USER_NAME]);
-      $array[RequestKey::$USER_USERNAME]  = $db->escapeInput($_POST[RequestKey::$USER_USERNAME]);
-      if ($db->updateUser($array)) {
-        $status = 1;
+    if (!preg_match("/^[a-zA-Z0-9]{8,20}$/",$password_baru_2)) {
+      $err_pw_3 = "Input tidak valid";
+    }
+
+    if (empty($err_pw_1) && empty($err_pw_2) && empty($err_pw_3)) {
+      if (sha1($password_lama) == $user->user_password) {
+        if ($password_baru == $password_baru_2) {
+          if($db->changePassword($uid,sha1($password_baru))){
+            $status = 1;
+          }else {
+            $status = 2;
+            $message = $db->strBadQuery;
+          }
+        }else {
+          $status = 2;
+          $message = "Cek Inputan";
+          $err_pw_3 = "Konfirmasi password tidak sesuai";
+        }
       }
-      else {
+      else{
+        $message = "Cek Inputan";
         $status = 2;
-        $message = "Gagal Query";
+        $err_pw_1 = "Password lama salah";
       }
-    }
-    else {
-      $status = 2;
-      $message = "Cek Inputan";
     }
   }
 }
-
 ?>
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Edit profil</title>
+  <title>Edit password</title>
+
   <?php include('head.php'); ?>
+
 </head>
 <body>
   <div class="page">
+
     <?php include('main-navbar.php'); ?>
+
     <div class="page-content d-flex align-items-stretch">
+      <!-- Side Navbar -->
       <nav class="side-navbar">
         <!-- Sidebar Header-->
         <div class="sidebar-header d-flex align-items-center">
@@ -82,7 +96,7 @@ else {
         <!-- Page Header-->
         <header class="page-header">
           <div class="container-fluid">
-            <h2 class="no-margin-bottom">Edit profil</h2>
+            <h2 class="no-margin-bottom">Edit password</h2>
           </div>
         </header>
         <!-- Dashboard Header Section    -->
@@ -93,24 +107,27 @@ else {
               <div class="col-lg-6">
                 <div class="card">
                   <div class="card-body">
-                    <form class="form-horizontal" action="edit_profil.php" method= "post" enctype="multipart/form-data">
+                    <form class="form-horizontal" method= "post">
                       <div class="form-group row">
-                        <label class="col-sm-3 form-control-label">Nama</label>
+                        <label class="col-sm-3 form-control-label">Password Lama</label>
                         <div class="col-sm-9">
-                          <input id="inputHorizontalSuccess" name="<?= RequestKey::$USER_NAME ?>" type="text" placeholder="Nama" class="form-control form-control-success" value="<?= $user->user_name?>" required>
-                          <small class="form-text <?=($err_name != "" ? 'text-danger' : '')?>"><?=($err_name != "" ? $err_name : 'Karakter huruf dan spasi.')?></small>
+                          <input name="password-lama" type="password" placeholder="Password lama" class="form-control form-control-success"><small class="form-text <?=($err_pw_1 != "" ? 'text-danger' : '')?>"><?=($err_pw_1 != "" ? $err_pw_1 : 'Karakter huruf dan angka min.8 dan max 20.')?></small>
                         </div>
                       </div>
                       <div class="form-group row">
-                        <label class="col-sm-3 form-control-label">User Name</label>
+                        <label class="col-sm-3 form-control-label">Password Baru</label>
                         <div class="col-sm-9">
-                          <input id="inputHorizontalSuccess" name="<?= RequestKey::$USER_USERNAME ?>" type="text" placeholder="Nama" class="form-control form-control-success" value="<?= $user->user_username?>" required>
-                          <small class="form-text <?=($err_username != "" ? 'text-danger' : '')?>"><?=($err_username != "" ? $err_username : 'Karakter huruf dan angka tanpa spasi.')?></small>
+                          <input name="password-baru" type="password" placeholder="Password baru" class="form-control form-control-success"><small class="form-text <?=($err_pw_2 != "" ? 'text-danger' : '')?>"><?=($err_pw_2 != "" ? $err_pw_2 : 'Karakter huruf dan angka min.8 dan max 20.')?></small>
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label class="col-sm-3 form-control-label">Konfirmasi password</label>
+                        <div class="col-sm-9">
+                          <input name="password-baru-2" type="password" placeholder="Pasword" class="form-control form-control-warning"><small class="form-text <?=($err_pw_3 != "" ? 'text-danger' : '')?>"><?=($err_pw_3 != "" ? $err_pw_3 : 'Karakter huruf dan angka min.8 dan max 20.')?></small>
                         </div>
                       </div>
                       <div class="form-group row">
                         <div class="col-sm-9 offset-sm-3">
-                          <input type="hidden" name="<?= RequestKey::$USER_ID ?>" value="<?=$uid?>">
                           <a href="profil.php" class="btn btn-secondary">Cancel</a>
                           <button value="submit" name="submit" class="btn btn-primary">Submit</button>
                         </div>
@@ -147,19 +164,6 @@ else {
     }
   });
   </script>
-
-  <script>
-  function readURL(input){
-    var reader = new FileReader();
-    reader.onload = function(e){
-      $('#img_prev').attr('src',e.target.result);
-    }
-    reader.readAsDataURL(input.files[0]);
-  }
-  $("#image").change(function(){
-    readURL(this);
-  })
-</script>
 
 </body>
 </html>
