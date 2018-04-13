@@ -109,12 +109,7 @@ else {
     <?php
     while($rumah = $rumahs->fetch_object()){
       $family = $db->getFamilyLeader($rumah->place_id);
-      if ($family->family_gender == 1) {
-        $gender = 'pak';
-      }else {
-        $gender = 'bu';
-      }
-      echo "['".ucwords($rumah->place_name)."', ".$rumah->place_location.", ".$rumah->place_id."],";
+      echo "['".ucwords($rumah->place_name)."', ".$rumah->place_location.", ".$rumah->place_id.",".$family->family_religion."],";
     }
     ?>
   ];
@@ -131,11 +126,9 @@ else {
   function setMarkers(map) {
 
     //ICON CALLER
-    var icon_masjid={
+    var masjid_icon={
       // url: 'https://maps.google.com/mapfiles/kml/shapes/library_maps.png',
       url: 'img/masjid.png',
-
-
       // This marker is 20 pixels wide by 32 pixels high.
       size: new google.maps.Size(32, 32),
       // The origin for this image is (0, 0).
@@ -144,13 +137,35 @@ else {
       anchor: new google.maps.Point(16, 32)
     }
 
-    var icon_rumah={
-      url: 'img/house.png',
-      // This marker is 20 pixels wide by 32 pixels high.
+    var islam_icon={
+      url: 'img/islam_icon.png',
       size: new google.maps.Size(32, 32),
-      // The origin for this image is (0, 0).
       origin: new google.maps.Point(0, 0),
-      // The anchor for this image is the base of the flagpole at (0, 32).
+      anchor: new google.maps.Point(16, 32)
+    }
+
+    var kristen_icon={
+      url: 'img/kristen_icon.png',
+      size: new google.maps.Size(32, 32),
+      origin: new google.maps.Point(0, 0),
+      anchor: new google.maps.Point(16, 32)
+    }
+    var katolik_icon={
+      url: 'img/katolik_icon.png',
+      size: new google.maps.Size(32, 32),
+      origin: new google.maps.Point(0, 0),
+      anchor: new google.maps.Point(16, 32)
+    }
+    var budha_icon={
+      url: 'img/budha_icon.png',
+      size: new google.maps.Size(32, 32),
+      origin: new google.maps.Point(0, 0),
+      anchor: new google.maps.Point(16, 32)
+    }
+    var hindu_icon={
+      url: 'img/hindu_icon.png',
+      size: new google.maps.Size(32, 32),
+      origin: new google.maps.Point(0, 0),
       anchor: new google.maps.Point(16, 32)
     }
 
@@ -158,10 +173,22 @@ else {
     var infowindow = new google.maps.InfoWindow()
     for (var i = 0; i < rumahs.length; i++) {
       var rumah = rumahs[i];
+      //change logo
+      if (rumah[4] == 1) {
+        var religion = islam_icon;
+      }else if (rumah[4] == 2) {
+        var religion = kristen_icon;
+      }else if (rumah[4] == 3) {
+        var religion = katolik_icon;
+      }else if (rumah[4] == 4) {
+        var religion = budha_icon;
+      }else if (rumah[4] == 5) {
+        var religion = hindu_icon;
+      }
       var marker = new google.maps.Marker({
         position: {lat: rumah[1], lng: rumah[2]},
         map: map,
-        icon: icon_rumah,
+        icon: religion,
         title: rumah[0],
       });
       var content = "<div style='width:200px;min-height:40px'><h3>Rumah Keluarga " + rumah[0] + "</h3><br/><a href='user/detail_family.php?place-id="+rumah[3]+"'>Read More</a></div>"
@@ -184,7 +211,7 @@ else {
       var marker = new google.maps.Marker({
         position: {lat: masjid[1], lng: masjid[2]},
         map: map,
-        icon: icon_masjid,
+        icon: masjid_icon,
         title: masjid[0],
       });
 

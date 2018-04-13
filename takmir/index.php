@@ -9,6 +9,8 @@ if(!isset($_SESSION[RequestKey::$USER_ID])) {
 }
 else {
   $db = new DBHelper();
+  $side_bar = 1;
+
   $count    = $db->countPlace();
   $places2  = $db->getAllPlace();
   $rumahs   = $db->getRumah();
@@ -59,22 +61,7 @@ else {
   <div class="page">
     <?php include('main-navbar.php'); ?>
     <div class="page-content d-flex align-items-stretch">
-      <!-- Side Navbar -->
-      <nav class="side-navbar">
-        <!-- Sidebar Header-->
-        <div class="sidebar-header d-flex align-items-center">
-          <div class="avatar"><img src="../img/no_image_image.png" alt="..." class="img-fluid rounded-circle" style="height:55px; width: 55px; object-fit: contain;"></div>
-          <div class="title">
-            <h1 class="h4">ADMIN</h1>
-          </div>
-        </div>
-        <!-- Sidebar Navidation Menus--><span class="heading">Main</span>
-        <ul class="list-unstyled">
-          <li class="active"><a href="."> <i class="icon-home"></i>Dashboard </a></li>
-          <li><a href="place.php"> <i class="fa fa-map-o"></i>Place </a></li>
-          <li><a href="profil.php"> <i class="icon-user"></i>Profil </a></li>
-        </ul>
-      </nav>
+      <?php include('side-navbar.php') ?>
       <div class="content-inner">
         <!-- Page Header-->
         <header class="page-header">
@@ -124,7 +111,8 @@ else {
   var rumahs = [
     <?php
     while($rumah = $rumahs->fetch_object()){
-      echo "['".ucwords($rumah->place_name)."', ".$rumah->place_location.", ".$rumah->place_id."],";
+      $family = $db->getFamilyLeader($rumah->place_id);
+      echo "['".ucwords($rumah->place_name)."', ".$rumah->place_location.", ".$rumah->place_id.",".$family->family_religion."],";
     }
     ?>
   ];
@@ -139,39 +127,70 @@ else {
 
   // ADDS MAEKER TO MAPS.
   function setMarkers(map) {
+        //ICON CALLER
+        var masjid_icon={
+          // url: 'https://maps.google.com/mapfiles/kml/shapes/library_maps.png',
+          url: '../img/masjid.png',
+          // This marker is 20 pixels wide by 32 pixels high.
+          size: new google.maps.Size(32, 32),
+          // The origin for this image is (0, 0).
+          origin: new google.maps.Point(0, 0),
+          // The anchor for this image is the base of the flagpole at (0, 32).
+          anchor: new google.maps.Point(16, 32)
+        }
 
-    //ICON CALLER
-    var icon_masjid={
-      // url: 'https://maps.google.com/mapfiles/kml/shapes/library_maps.png',
-      url: '../img/masjid.png',
+        var islam_icon={
+          url: '../img/islam_icon.png',
+          size: new google.maps.Size(32, 32),
+          origin: new google.maps.Point(0, 0),
+          anchor: new google.maps.Point(16, 32)
+        }
 
-
-      // This marker is 20 pixels wide by 32 pixels high.
-      size: new google.maps.Size(32, 32),
-      // The origin for this image is (0, 0).
-      origin: new google.maps.Point(0, 0),
-      // The anchor for this image is the base of the flagpole at (0, 32).
-      anchor: new google.maps.Point(16, 32)
-    }
-
-    var icon_rumah={
-      url: '../img/house.png',
-      // This marker is 20 pixels wide by 32 pixels high.
-      size: new google.maps.Size(32, 32),
-      // The origin for this image is (0, 0).
-      origin: new google.maps.Point(0, 0),
-      // The anchor for this image is the base of the flagpole at (0, 32).
-      anchor: new google.maps.Point(16, 32)
-    }
+        var kristen_icon={
+          url: '../img/kristen_icon.png',
+          size: new google.maps.Size(32, 32),
+          origin: new google.maps.Point(0, 0),
+          anchor: new google.maps.Point(16, 32)
+        }
+        var katolik_icon={
+          url: '../img/katolik_icon.png',
+          size: new google.maps.Size(32, 32),
+          origin: new google.maps.Point(0, 0),
+          anchor: new google.maps.Point(16, 32)
+        }
+        var budha_icon={
+          url: '../img/budha_icon.png',
+          size: new google.maps.Size(32, 32),
+          origin: new google.maps.Point(0, 0),
+          anchor: new google.maps.Point(16, 32)
+        }
+        var hindu_icon={
+          url: '../img/hindu_icon.png',
+          size: new google.maps.Size(32, 32),
+          origin: new google.maps.Point(0, 0),
+          anchor: new google.maps.Point(16, 32)
+        }
 
     //MARKER FOR HOME
     var infowindow = new google.maps.InfoWindow()
     for (var i = 0; i < rumahs.length; i++) {
       var rumah = rumahs[i];
+      //change logo
+      if (rumah[4] == 1) {
+        var religion = islam_icon;
+      }else if (rumah[4] == 2) {
+        var religion = kristen_icon;
+      }else if (rumah[4] == 3) {
+        var religion = katolik_icon;
+      }else if (rumah[4] == 4) {
+        var religion = budha_icon;
+      }else if (rumah[4] == 5) {
+        var religion = hindu_icon;
+      }
       var marker = new google.maps.Marker({
         position: {lat: rumah[1], lng: rumah[2]},
         map: map,
-        icon: icon_rumah,
+        icon: religion,
         title: rumah[0],
       });
       var content = "<div style='width:200px;min-height:40px'><h3>Rumah Keluarga" + rumah[0] + "</h3><br/><a href='family/detail_family.php?place-id="+rumah[3]+"'>Read More</a></div>"
@@ -188,19 +207,17 @@ else {
         map.setCenter(marker.getPosition());
       });
     }
-
-
     //MARKER FOT MASJID
     for (var i = 0; i < masjids.length; i++) {
       var masjid = masjids[i];
       var marker = new google.maps.Marker({
         position: {lat: masjid[1], lng: masjid[2]},
         map: map,
-        icon: icon_masjid,
+        icon: masjid_icon,
         title: masjid[0],
       });
 
-      var content = "<div style='width:200px;min-height:40px'><h3>" + masjid[0] + "</h3><p>"+masjid[4]+"...</p><a href='masjid/detail_masjid.php?place-id="+masjid[3]+"'>Read More</a></div>"
+      var content = "<div style='width:200px;min-height:40px'><h3>" + masjid[0] + "</h3><p>"+masjid[4]+"...</p><a href='user/detail_masjid.php?place-id="+masjid[3]+"'>Read More</a></div>"
 
       google.maps.event.addListener(marker,'click', (function(marker,content,infowindow){
         return function() {
@@ -208,14 +225,12 @@ else {
           infowindow.open(map,marker);
         };
       })(marker,content,infowindow));
-
       marker.addListener('click', function() {
         map.setZoom(19);
         map.setCenter(marker.getPosition());
       });
     }
   }
-
 
   </script>
   <script async defer

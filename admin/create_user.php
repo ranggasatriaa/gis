@@ -3,10 +3,11 @@ session_start();
 require_once('../includes/request-key.php');
 require_once('../includes/db-helper.php');
 
+
+$side_bar = 3;
 $err_name = '';
 $err_username = '';
-$side_bar = 4;
-
+$err_pw = '';
 $status = 0;
 $message = '';
 
@@ -15,14 +16,13 @@ if(!isset($_SESSION[RequestKey::$USER_ID])) {
 }
 else {
   $db   = new DBHelper();
-  $uid  = $_SESSION[RequestKey::$USER_ID];
-  $user = $db->getUserById($uid);
 
   //VALIDASI
-  if(isset($_POST[RequestKey::$USER_NAME]) && isset($_POST[RequestKey::$USER_USERNAME])){
-    $user_id        = $db->escapeInput($_POST[RequestKey::$USER_ID]);
+  if(isset($_POST[RequestKey::$USER_NAME]) && isset($_POST[RequestKey::$USER_USERNAME]) && isset($_POST[RequestKey::$USER_PASSWORD]) && isset($_POST[RequestKey::$USER_LEVEL])){
     $user_name      = $db->escapeInput($_POST[RequestKey::$USER_NAME]);
     $user_username  = $db->escapeInput($_POST[RequestKey::$USER_USERNAME]);
+    $user_password  = $db->escapeInput($_POST[RequestKey::$USER_PASSWORD]);
+    $user_level     = $db->escapeInput($_POST[RequestKey::$USER_LEVEL]);
 
     if (!preg_match("/^[a-zA-Z ]{1,50}$/",$user_name)) {
       $err_name = "Nama tidak valid";
@@ -32,12 +32,18 @@ else {
       $err_username = "Nama tidak valid";
     }
 
-    if(empty($err_name) && empty($err_username)){
+    if (!preg_match("/^[a-zA-Z0-9]{8,20}$/",$user_password)) {
+      $err_pw = "Input tidak valid";
+    }
+
+    if(empty($err_name) && empty($err_username) && empty($err_password)){
       $array = array();
-      $array[RequestKey::$USER_ID]        = $db->escapeInput($uid);
-      $array[RequestKey::$USER_NAME]      = $db->escapeInput($_POST[RequestKey::$USER_NAME]);
-      $array[RequestKey::$USER_USERNAME]  = $db->escapeInput($_POST[RequestKey::$USER_USERNAME]);
-      if ($db->updateUser($array)) {
+      $array[RequestKey::$USER_NAME]      = $user_name;
+      $array[RequestKey::$USER_USERNAME]  = $user_username;
+      $array[RequestKey::$USER_PASSWORD]  = sha1($user_password);
+      $array[RequestKey::$USER_LEVEL]     = $user_level;
+
+      if ($db->createUser($array)) {
         $status = 1;
       }
       else {
@@ -77,28 +83,35 @@ else {
           <div class="container-fluid">
             <div class="row">
               <!-- Horizontal Form-->
-              <div class="col-lg-6">
+              <div class="col-lg">
                 <div class="card">
                   <div class="card-body">
-                    <form class="form-horizontal" action="edit_profil.php" method= "post" enctype="multipart/form-data">
+                    <form class="form-horizontal" action="create_user.php" method= "post" enctype="multipart/form-data">
                       <div class="form-group row">
                         <label class="col-sm-3 form-control-label">Nama</label>
                         <div class="col-sm-9">
-                          <input id="inputHorizontalSuccess" name="<?= RequestKey::$USER_NAME ?>" type="text" placeholder="Nama" class="form-control form-control-success" value="<?= $user->user_name?>" required>
+                          <input id="inputHorizontalSuccess" name="<?= RequestKey::$USER_NAME ?>" type="text" placeholder="Nama" class="form-control form-control-success"  required>
                           <small class="form-text <?=($err_name != "" ? 'text-danger' : '')?>"><?=($err_name != "" ? $err_name : 'Karakter huruf dan spasi.')?></small>
                         </div>
                       </div>
                       <div class="form-group row">
-                        <label class="col-sm-3 form-control-label">User Name</label>
+                        <label class="col-sm-3 form-control-label">Username</label>
                         <div class="col-sm-9">
-                          <input id="inputHorizontalSuccess" name="<?= RequestKey::$USER_USERNAME ?>" type="text" placeholder="Nama" class="form-control form-control-success" value="<?= $user->user_username?>" required>
+                          <input id="inputHorizontalSuccess" name="<?= RequestKey::$USER_USERNAME ?>" type="text" placeholder="Nama" class="form-control form-control-success"  required>
+                          <small class="form-text <?=($err_username != "" ? 'text-danger' : '')?>"><?=($err_username != "" ? $err_username : 'Karakter huruf dan angka tanpa spasi.')?></small>
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label class="col-sm-3 form-control-label">Password</label>
+                        <div class="col-sm-9">
+                          <input id="inputHorizontalSuccess" name="<?= RequestKey::$USER_PASSWORD ?>" type="password" placeholder="Nama" class="form-control form-control-success" required>
                           <small class="form-text <?=($err_username != "" ? 'text-danger' : '')?>"><?=($err_username != "" ? $err_username : 'Karakter huruf dan angka tanpa spasi.')?></small>
                         </div>
                       </div>
                       <div class="form-group row">
                         <div class="col-sm-9 offset-sm-3">
-                          <input type="hidden" name="<?= RequestKey::$USER_ID ?>" value="<?=$uid?>">
-                          <a href="profil.php" class="btn btn-secondary">Cancel</a>
+                          <input type="hidden" name="<?= RequestKey::$USER_LEVEL ?>" value="1">
+                          <a href="user.php" class="btn btn-secondary">Cancel</a>
                           <button value="submit" name="submit" class="btn btn-primary">Submit</button>
                         </div>
                       </div>
@@ -126,7 +139,7 @@ else {
   $(document).ready(function() {
     if (status == 1) {
       swal("Success!","","success").then((value) => {
-        window.location.href = "profil.php";
+        window.location.href = "user.php";
       });
     }
     else if (status == 2) {

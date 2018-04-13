@@ -8,6 +8,8 @@ if(!isset($_SESSION[RequestKey::$USER_ID])) {
 }
 else {
   $db = new DBHelper();
+  $side_bar = 4;
+
   $user    = $db->getUserById($_SESSION[RequestKey::$USER_ID]);
 }
 ?>
@@ -25,22 +27,8 @@ else {
     <?php include('main-navbar.php'); ?>
 
     <div class="page-content d-flex align-items-stretch">
-      <!-- Side Navbar -->
-      <nav class="side-navbar">
-        <!-- Sidebar Header-->
-        <div class="sidebar-header d-flex align-items-center">
-          <div class="avatar"><img src="../img/no_image_image.png" alt="..." class="img-fluid rounded-circle" style="height:55px; width: 55px; object-fit: contain;"></div>
-          <div class="title">
-            <h1 class="h4">ADMIN</h1>
-          </div>
-        </div>
-        <!-- Sidebar Navidation Menus--><span class="heading">Main</span>
-        <ul class="list-unstyled">
-          <li><a href="."> <i class="icon-home"></i>Dashboard </a></li>
-          <li><a href="place.php"> <i class="fa fa-map-o"></i>Place </a></li>
-          <li class="active"><a href="profil.php"> <i class="icon-user"></i>Profil </a></li>
-        </ul>
-      </nav>
+      <?php include('side-navbar.php') ?>
+
       <div class="content-inner">
         <!-- Page Header-->
         <header class="page-header">
@@ -60,11 +48,11 @@ else {
                       <div class="status bg-green"></div>
                     </div>
                     <div class="client-title">
-                      <h3><?=$user->user_name;?></h3><span><?=$user->user_username;?></span>
+                      <h3>Nana: <?=$user->user_name;?></h3><span>username: <?=$user->user_username;?></span>
                     </div>
                     <br>
-                    <a href="edit_profil.php" class="btn btn-primary">Ubah profil</a>
-                    <a href="edit_password.php" class="btn btn-primary">Ubah password</a>
+                    <a href="edit_profil.php?<?=RequestKey::$USER_ID?>=<?=$user->user_id?>" class="btn btn-primary">Ubah profil</a>
+                    <a href="edit_password.php?<?=RequestKey::$USER_ID?>=<?=$user->user_id?>" class="btn btn-primary">Ubah password</a>
                   </div>
                 </div>
               </div>

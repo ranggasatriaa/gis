@@ -8,9 +8,9 @@ if(!isset($_SESSION[RequestKey::$USER_ID])) {
 }
 else {
   $db = new DBHelper();
-  $side_bar = 4;
+  $user    = $db->getUserById($_GET[RequestKey::$USER_ID]);
+  $side_bar = 3;
 
-  $user    = $db->getUserById($_SESSION[RequestKey::$USER_ID]);
 }
 ?>
 <!DOCTYPE html>
@@ -33,7 +33,7 @@ else {
         <!-- Page Header-->
         <header class="page-header">
           <div class="container-fluid">
-            <h2 class="no-margin-bottom">Profil</h2>
+            <h2 class="no-margin-bottom">Detail User</h2>
           </div>
         </header>
         <!-- Dashboard Header Section    -->
@@ -48,11 +48,11 @@ else {
                       <div class="status bg-green"></div>
                     </div>
                     <div class="client-title">
-                      <h3>Nana: <?=$user->user_name;?></h3><span>username: <?=$user->user_username;?></span>
+                      <h3>Nama: <?=$user->user_name;?></h3><span>username: <?=$user->user_username;?></span>
                     </div>
                     <br>
-                    <a href="edit_profil.php?<?=RequestKey::$USER_ID?>=<?=$user->user_id?>" class="btn btn-primary">Ubah profil</a>
-                    <a href="edit_password.php?<?=RequestKey::$USER_ID?>=<?=$user->user_id?>" class="btn btn-primary">Ubah password</a>
+                    <a href="edit_user.php?<?=RequestKey::$USER_ID?>=<?=$user->user_id?>" class="btn btn-primary">Ubah User</a>
+                    <a href="edit_user_password.php?<?=RequestKey::$USER_ID?>=<?=$user->user_id?>" class="btn btn-primary">Ubah password</a>
                   </div>
                 </div>
               </div>

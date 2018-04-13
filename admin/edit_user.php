@@ -5,7 +5,7 @@ require_once('../includes/db-helper.php');
 
 $err_name = '';
 $err_username = '';
-$side_bar = 4;
+$side_bar = 3;
 
 $status = 0;
 $message = '';
@@ -15,8 +15,15 @@ if(!isset($_SESSION[RequestKey::$USER_ID])) {
 }
 else {
   $db   = new DBHelper();
-  $uid  = $_SESSION[RequestKey::$USER_ID];
-  $user = $db->getUserById($uid);
+  if (isset($_GET[RequestKey::$USER_ID])) {
+    $uid  = $_GET[RequestKey::$USER_ID];
+    $user = $db->getUserById($uid);
+  }elseif (isset($_POST[RequestKey::$USER_ID])) {
+    $uid  = $_POST[RequestKey::$USER_ID];
+    $user = $db->getUserById($uid);
+  }else {
+    header('Location: user.php');
+  }
 
   //VALIDASI
   if(isset($_POST[RequestKey::$USER_NAME]) && isset($_POST[RequestKey::$USER_USERNAME])){
@@ -77,10 +84,10 @@ else {
           <div class="container-fluid">
             <div class="row">
               <!-- Horizontal Form-->
-              <div class="col-lg-6">
+              <div class="col-lg">
                 <div class="card">
                   <div class="card-body">
-                    <form class="form-horizontal" action="edit_profil.php" method= "post" enctype="multipart/form-data">
+                    <form class="form-horizontal" action="edit_user.php?user_id=<?=$uid?>" method= "post" enctype="multipart/form-data">
                       <div class="form-group row">
                         <label class="col-sm-3 form-control-label">Nama</label>
                         <div class="col-sm-9">
@@ -98,7 +105,7 @@ else {
                       <div class="form-group row">
                         <div class="col-sm-9 offset-sm-3">
                           <input type="hidden" name="<?= RequestKey::$USER_ID ?>" value="<?=$uid?>">
-                          <a href="profil.php" class="btn btn-secondary">Cancel</a>
+                          <a href="detail_user.php?user-id=<?=$uid?>" class="btn btn-secondary">Cancel</a>
                           <button value="submit" name="submit" class="btn btn-primary">Submit</button>
                         </div>
                       </div>
@@ -126,7 +133,7 @@ else {
   $(document).ready(function() {
     if (status == 1) {
       swal("Success!","","success").then((value) => {
-        window.location.href = "profil.php";
+        window.location.href = "detail_user.php?user-id=<?=$uid?>" + escape(window.location.href);
       });
     }
     else if (status == 2) {

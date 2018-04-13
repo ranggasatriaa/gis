@@ -23,6 +23,19 @@ class DBHelper{
 
   //----------------------------------------------------------------------------
   // USER
+  //****CREATE USER
+  function createUser($array) {
+    // $user_id        = $array[RequestKey::$USER_ID];
+    $user_name      = $array[RequestKey::$USER_NAME];
+    $user_username  = $array[RequestKey::$USER_USERNAME];
+    $user_password  = $array[RequestKey::$USER_PASSWORD];
+    $user_level     = $array[RequestKey::$USER_LEVEL];
+    if($place = $this->link->query("INSERT INTO user (user_name, user_username, user_password, user_level) VALUES ('$user_name', '$user_username', '$user_password', '$user_level')")){
+      return true;
+    }
+    return false;
+  }
+
   //****CHANGE USER DETAIL
   function updateUser($array) {
     $user_id        = $array[RequestKey::$USER_ID];
@@ -33,6 +46,16 @@ class DBHelper{
       return true;
     }
     return false;
+  }
+
+  //DELETE User
+  function deleteUser($uid){
+    if($result = $this->link->query("DELETE FROM user WHERE user_id = '$uid'")){
+      return true;
+    }
+    else {
+      return false;
+    }
   }
 
   //***CHANGE USER PASSWORD
@@ -57,9 +80,29 @@ class DBHelper{
   }
 
   //GET USER BY id
+  function getAllUser($level){
+    if($result = $this->link->query("SELECT * FROM user WHERE user_level = '$level'")){
+      return $result;
+    }
+    else {
+      return false;
+    }
+  }
+
+  //GET USER BY id
   function getUserById($uid){
     if($result = $this->link->query("SELECT * FROM user WHERE user_id = '$uid'")){
       return $result->fetch_object();
+    }
+    else {
+      return false;
+    }
+  }
+
+  //GET USER BY id
+  function countUser($level){
+    if($result = $this->link->query("SELECT * FROM user WHERE user_level = '$level'")){
+      return $result->num_rows;
     }
     else {
       return false;
@@ -101,6 +144,7 @@ class DBHelper{
       return false;
     }
   }
+
   //DELETE PLACE
   function deletePlace($pid){
     if($result = $this->link->query("DELETE FROM place WHERE place_id = '$pid'")){
@@ -156,6 +200,7 @@ class DBHelper{
       return fail;
     }
   }
+
   //----------------------------------------------------------------------------
 
   //----------------------------------------------------------------------------

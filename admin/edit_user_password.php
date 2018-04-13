@@ -7,7 +7,7 @@ require_once('../includes/db-helper.php');
 $err_pw_1 = '';
 $err_pw_2 = '';
 $err_pw_3 = '';
-$side_bar = 4;
+$side_bar = 3;
 
 $status = 0;
 $message = '';
@@ -18,8 +18,12 @@ if(!isset($_SESSION[RequestKey::$USER_ID])) {
 else {
   //DB
   $db   = new DBHelper();
-  $uid  = $_SESSION[RequestKey::$USER_ID];
-  $user = $db->getUserById($uid);
+  if ($_GET[RequestKey::$USER_ID]) {
+    $uid  = $_GET[RequestKey::$USER_ID];
+    $user = $db->getUserById($uid);
+  }else {
+    header('Location: user.php');
+  }
 
   if(isset($_POST['password-lama']) && isset($_POST['password-baru']) && isset($_POST['password-baru-2'])) {
     $password_lama    = $db->escapeInput($_POST['password-lama']);
@@ -114,7 +118,7 @@ else {
                       </div>
                       <div class="form-group row">
                         <div class="col-sm-9 offset-sm-3">
-                          <a href="profil.php" class="btn btn-secondary">Cancel</a>
+                          <a href="detail_user.php?user-id=<?=$uid?>" class="btn btn-secondary">Cancel</a>
                           <button value="submit" name="submit" class="btn btn-primary">Submit</button>
                         </div>
                       </div>
@@ -142,7 +146,7 @@ else {
   $(document).ready(function() {
     if (status == 1) {
       swal("Success!","","success").then((value) => {
-        window.location.href = "profil.php";
+        window.location.href = "detail_user.php?user-id=<?=$uid?>" + escape(window.location.href);
       });
     }
     else if (status == 2) {

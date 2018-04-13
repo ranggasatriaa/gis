@@ -8,6 +8,7 @@ if(!isset($_SESSION[RequestKey::$USER_ID])) {
   header('Location: ../.');
 }
 else {
+  $side_bar     = 2;
   $status       = 0;
   $err_name     = '';
   $err_location = '';
@@ -59,22 +60,8 @@ else {
   <div class="page">
     <?php include('main-navbar.php'); ?>
     <div class="page-content d-flex align-items-stretch">
-      <!-- Side Navbar -->
-      <nav class="side-navbar">
-        <!-- Sidebar Header-->
-        <div class="sidebar-header d-flex align-items-center">
-          <div class="avatar"><img src="../assets/user_img/user/no_image_image.png" alt="..." class="img-fluid rounded-circle" style="height:55px; width: 55px; object-fit: contain;"></div>
-          <div class="title">
-            <h1 class="h4">ADMIN</h1>
-          </div>
-        </div>
-        <!-- Sidebar Navidation Menus--><span class="heading">Main</span>
-        <ul class="list-unstyled">
-          <li class="active"><a href="."> <i class="icon-home"></i>Dashboard </a></li>
-          <li><a href="place.php"> <i class="fa fa-map-o"></i>Place </a></li>
-          <li><a href="profil.php"> <i class="icon-user"></i>Profil </a></li>
-        </ul>
-      </nav>
+      <?php include('side-navbar.php') ?>
+
       <div class="content-inner">
         <!-- Page Header-->
         <header class="page-header">
