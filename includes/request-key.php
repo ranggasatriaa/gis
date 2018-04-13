@@ -50,7 +50,7 @@ class RequestKey {
   public static $FAMILY_NAME          = 'family-name';
   public static $FAMILY_STATUS        = 'family-status';
   public static $FAMILY_RELIGION      = 'family-religion';
-  // public static $FAMILY_AGE        = 'family-age';
+  public static $FAMILY_AGE        = 'family-age';
   public static $FAMILY_GENDER        = 'family-gender';
   public static $FAMILY_BORN_PLACE    = 'family-born-place';
   public static $FAMILY_BORN_DATE     = 'family-born-date';

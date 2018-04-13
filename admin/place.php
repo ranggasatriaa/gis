@@ -10,10 +10,8 @@ if(!isset($_SESSION[RequestKey::$USER_ID])) {
 else {
   $db = new DBHelper();
   $side_bar = 2;
-
   $count    = $db->countPlace();
   $places  = $db->getAllPlace();
-
 }
 ?>
 

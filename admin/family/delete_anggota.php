@@ -17,7 +17,7 @@ else {
     $fid = $db->escapeInput($_GET[RequestKey::$FAMILY_ID]);
     $family_old = $db->getFamilyById($fid);
     $pid = $family_old->place_id;
-    if ($result = $db->deleteAnggota($fid)) {
+    if ($result = $db->deleteFamilyById($fid)) {
       //MASUK DELETE
       $status = 1;
     }
@@ -103,9 +103,6 @@ else {
     }
     else if (status == 2) {
       swal("Failed!","gagal query","error");
-    }
-    else if (status == 3) {
-      swal("Failed!","Cek inputan","error");
     }
   });
   </script>

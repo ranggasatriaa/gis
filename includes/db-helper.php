@@ -536,6 +536,7 @@ class DBHelper{
     $family_place_id    = $array[RequestKey::$FAMILY_PLACE_ID];
     $family_name        = $array[RequestKey::$FAMILY_NAME];
     $family_status      = $array[RequestKey::$FAMILY_STATUS];
+    $family_age         = $array[RequestKey::$FAMILY_AGE];
     $family_religion    = $array[RequestKey::$FAMILY_RELIGION];
     $family_gender      = $array[RequestKey::$FAMILY_GENDER];
     $family_born_place  = $array[RequestKey::$FAMILY_BORN_PLACE];
@@ -544,7 +545,7 @@ class DBHelper{
     $family_salary      = $array[RequestKey::$FAMILY_SALARY];
     $family_blood       = $array[RequestKey::$FAMILY_BLOOD];
 
-    if ($result = $this->link->query("INSERT INTO family(place_id, family_name, family_status, family_religion, family_gender, family_born_place, family_born_date, family_education, family_salary, family_blood) VALUES ( '$family_place_id', '$family_name', '$family_status', '$family_religion', '$family_gender', '$family_born_place', '$family_born_date', '$family_education', '$family_salary', '$family_blood') ")){
+    if ($result = $this->link->query("INSERT INTO family(place_id, family_name, family_status, family_age, family_religion, family_gender, family_born_place, family_born_date, family_education, family_salary, family_blood) VALUES ( '$family_place_id', '$family_name', '$family_status', '$family_age', '$family_religion', '$family_gender', '$family_born_place', '$family_born_date', '$family_education', '$family_salary', '$family_blood') ")){
       return true;
     }
     else{
@@ -556,6 +557,7 @@ class DBHelper{
     $family_id          = $array[RequestKey::$FAMILY_ID];
     $family_name        = $array[RequestKey::$FAMILY_NAME];
     $family_status      = $array[RequestKey::$FAMILY_STATUS];
+    $family_age         = $array[RequestKey::$FAMILY_AGE];
     $family_religion    = $array[RequestKey::$FAMILY_RELIGION];
     $family_gender      = $array[RequestKey::$FAMILY_GENDER];
     $family_born_place  = $array[RequestKey::$FAMILY_BORN_PLACE];
@@ -564,7 +566,7 @@ class DBHelper{
     $family_salary      = $array[RequestKey::$FAMILY_SALARY];
     $family_blood       = $array[RequestKey::$FAMILY_BLOOD];
 
-    if ($result = $this->link->query("UPDATE family SET family_name = '$family_name', family_status = '$family_status', family_religion = '$family_religion', family_gender = '$family_gender', family_born_place = '$family_born_place', family_born_date = '$family_born_date', family_education = '$family_education', family_salary = '$family_salary', family_blood = '$family_blood' WHERE family_id = '$family_id' ")){
+    if ($result = $this->link->query("UPDATE family SET family_name = '$family_name', family_status = '$family_status', family_age = '$family_age', family_religion = '$family_religion', family_gender = '$family_gender', family_born_place = '$family_born_place', family_born_date = '$family_born_date', family_education = '$family_education', family_salary = '$family_salary', family_blood = '$family_blood' WHERE family_id = '$family_id' ")){
       return true;
     }
     else{
@@ -573,7 +575,7 @@ class DBHelper{
   }
 
   //DELTE Anggota
-  function deleteAnggota($fid){
+  function deleteFamilyById($fid){
     if ($result = $this->link->query("DELETE FROM family WHERE family_id = '$fid'")) {
       return true;
     }
@@ -583,7 +585,7 @@ class DBHelper{
   }
 
   //DELETE FAMILY
-  function deleteFamily($pid){
+  function deleteFamilyByPlaceId($pid){
     if ($result = $this->link->query("DELETE FROM family WHERE place_id = '$pid'")) {
       return true;
     }
@@ -602,7 +604,21 @@ class DBHelper{
     }
   }
 
-  //GET gamilu by  id
+  //LAST PLACE ID
+  function lastFamilyId(){
+    if($result = $this->link->query("SELECT * FROM family")){
+      $family_id = 0;
+      while ($re = $result->fetch_object()) {
+        if ($family_id < $re->family_id){
+          $family_id = $re->family_id;
+        }
+      }
+      return $family_id;
+    }
+    return false;
+  }
+
+  //GET FAMILY by id
   function getFamilyById($fid) {
     if ($result = $this->link->query("SELECT * FROM family WHERE family_id = '$fid'")) {
       return $result->fetch_object();
@@ -635,16 +651,52 @@ class DBHelper{
 
   //----------------------------------------------------------------------------
   //KAIMANAN
-  //Get KEIMANAN
-  function getKeimanan() {
-    if ($result = $this->link->query("SELECT * FROM place WHERE place_category = 1")) {
-      return $result;
+  //GeT ALL KEIMANAN
+  function getKeimananByFamilyId($fid) {
+    if ($result = $this->link->query("SELECT * FROM keimanan WHERE family_id = '$fid'")) {
+      return $result->fetch_object();
     }
     else{
       return false;
     }
   }
 
+  //CREATE KEGIATAN
+  function createKeimanan($array){
+    $keimanan_family_id     = $array[RequestKey::$KEIMANAN_FAMILY_ID];
+    $keimanan_sholat        = $array[RequestKey::$KEIMANAN_SHOLAT];
+    $keimanan_mengaji       = $array[RequestKey::$KEIMANAN_MENGAJI];
+
+    if($result = $this->link->query("INSERT INTO keimanan(family_id, keimanan_sholat, keimanan_mengaji) VALUES('$keimanan_family_id', '$keimanan_sholat', '$keimanan_mengaji') ")){
+      return true;
+    }
+    else {
+      return false;
+    }
+  }
+
+  //EDIT KEGIATAN
+  function editKeimanan($array){
+    $family_id            = $array[RequestKey::$FAMILY_ID];
+    $keimanan_sholat        = $array[RequestKey::$KEIMANAN_SHOLAT];
+    $keimanan_mengaji       = $array[RequestKey::$KEIMANAN_MENGAJI];
+    if($result = $this->link->query("UPDATE keimanan SET keimanan_sholat = '$keimanan_sholat', keimanan_mengaji = '$keimanan_mengaji' WHERE family_id = '$family_id'")){
+      return true;
+    }
+    else {
+      return false;
+    }
+  }
+
+  //DELETE kegiatan_id
+  function deleteKemanan($kid){
+    if ($result = $this->link->query("DELETE FROM keimanan WHERE keimanan_id = '$kid'")) {
+      return true;
+    }
+    else {
+      return false;
+    }
+  }
 
 
 }

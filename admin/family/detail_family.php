@@ -111,6 +111,7 @@ else {
                           }
                           ?></td>
                           <td>
+                            <a class="btn btn-primary btn-sm" href="detail_anggota.php?<?=RequestKey::$FAMILY_ID?>=<?=$family->family_id?>">DETAIL LINK</a>
                             <!-- <?=$family->family_name?> -->
                             <a class="btn btn-sm btn-primary" href="#" data-toggle="modal" data-target="#modalAnggotaKeluarga"
                             data-id="<?=$family->family_id?>"
@@ -167,7 +168,6 @@ else {
                             <!-- <a class="btn btn-primary btn-sm" href="detail_anggota_family.php">Detail</a> -->
                           </td>
                         </tr>
-
                         <?php
                         $i+=1;
                         } ?>
