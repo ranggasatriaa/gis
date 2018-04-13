@@ -9,9 +9,9 @@
   </div>
   <!-- Sidebar Navidation Menus--><span class="heading">Main</span>
   <ul class="list-unstyled">
-    <li><a href="../."> <i class="icon-home"></i>Dashboard </a></li>
-    <li class="active"><a href="../place.php"> <i class="fa fa-map-o"></i>Place </a></li>
-    <li><a href="../user.php"> <i class="fa fa-group"></i>Users </a></li>
-    <li><a href="../profil.php"> <i class="fa fa-user"></i>Profil </a></li>
+    <li ><a href="."> <i class="icon-home"></i>Dashboard </a></li>
+    <li class="active" ><a href="place.php"> <i class="fa fa-map-o"></i>Place </a></li>
+    <li><a href="user.php"> <i class="fa fa-group"></i>Users </a></li>
+    <li><a href="profil.php"> <i class="fa fa-user"></i>Profil </a></li>
   </ul>
 </nav>

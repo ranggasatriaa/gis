@@ -677,7 +677,7 @@ class DBHelper{
 
   //EDIT KEGIATAN
   function editKeimanan($array){
-    $family_id            = $array[RequestKey::$FAMILY_ID];
+    $family_id              = $array[RequestKey::$FAMILY_ID];
     $keimanan_sholat        = $array[RequestKey::$KEIMANAN_SHOLAT];
     $keimanan_mengaji       = $array[RequestKey::$KEIMANAN_MENGAJI];
     if($result = $this->link->query("UPDATE keimanan SET keimanan_sholat = '$keimanan_sholat', keimanan_mengaji = '$keimanan_mengaji' WHERE family_id = '$family_id'")){
