@@ -215,7 +215,18 @@ else {
                       <div class="form-group row">
                         <label class="col-sm-2 form-control-label ">Pendidikan Terakhir</label>
                         <div class="col-sm-10">
-                          <input class="form-control" type="text" name="<?= RequestKey::$FAMILY_EDUCATION ?>" value="<?=$family->family_education?>" placeholder="Masukkan Pendidikan Terakhir" required="">
+                          <select class="form-control" name="<?=RequestKey::$FAMILY_EDUCATION?>" required>
+                            <option value=""> - Pilih-</option>
+                            <option value="0"<?=$family->family_education == 0 ? "selected":""?>>Tidak Ada</option>
+                            <option value="1"<?=$family->family_education == 1 ? "selected":""?>>SD/MI</option>
+                            <option value="2"<?=$family->family_education == 2 ? "selected":""?>>SMP/MTS</option>
+                            <option value="3"<?=$family->family_education == 3 ? "selected":""?>>SMA/MA</option>
+                            <option value="4"<?=$family->family_education == 4 ? "selected":""?>>SMK</option>
+                            <option value="5"<?=$family->family_education == 5 ? "selected":""?>>Diploma (D3/4)</option>
+                            <option value="6"<?=$family->family_education == 6 ? "selected":""?> >Sarjana (S1)</option>
+                            <option value="7"<?=$family->family_education == 7 ? "selected":""?> >Magister (S2)</option>
+                            <option value="8"<?=$family->family_education == 8 ? "selected":""?> >Doktor (S3)</option>
+                          </select>
                           <small class="form-text" ><?=$err_education?></small>
                         </div>
                       </div>
@@ -267,7 +278,7 @@ else {
                       </div>
                       <div class="form-group">
                         <input type="hidden" name="<?=RequestKey::$FAMILY_ID?>" value="<?=$fid?>">
-                        <a class="btn btn-secondary" href="../place.php">Cancel</a>
+                        <a class="btn btn-secondary" href="detail_family.php?<?=RequestKey::$PLACE_ID?>=<?=$family->place_id?>">Cancel</a>
                         <input class="btn btn-primary" type="submit" name="submit" value="Submit">
                       </div>
                     </form>

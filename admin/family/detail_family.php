@@ -98,60 +98,9 @@ else {
                           }
                           ?></td>
                           <td>
-                            <a class="btn btn-primary btn-sm" href="detail_anggota.php?<?=RequestKey::$FAMILY_ID?>=<?=$family->family_id?>">DETAIL LINK</a>
+                            <a class="btn btn-primary btn-sm" href="detail_anggota.php?<?=RequestKey::$FAMILY_ID?>=<?=$family->family_id?>">Detail</a>
                             <!-- <?=$family->family_name?> -->
-                            <a class="btn btn-sm btn-primary" href="#" data-toggle="modal" data-target="#modalAnggotaKeluarga"
-                            data-id="<?=$family->family_id?>"
-                            data-name="<?=strtoupper($family->family_name)?>"
-                            data-status="<?php if ($family->family_status = 0) {
-                              echo 'Kepala keluarga';
-                            }elseif ($family->family_status = 1) {
-                              echo 'Anak Pertama';
-                            }elseif ($family->family_status = 2) {
-                              echo 'Anggota Keluarga';
-                            }elseif ($family->family_status = 3) {
-                              echo 'Pembantu';
-                            }
-                            ?>"
-                            data-gender="
-                            <?php if ($family->family_gender = 1) {
-                              echo 'Laki-laki';
-                            }elseif ($family->family_gender = 2) {
-                              echo 'Perempuan';
-                            }else{
-                              echo 'Lain-lain';
-                            }
-                            ?>"
-                            data-religion="<?php if($family->family_religion = 1){
-                              echo 'Islam';
-                            }elseif($family->family_religion = 2){
-                              echo 'Kristen';
-                            }elseif($family->family_religion = 3){
-                              echo 'Katolik';
-                            }elseif($family->family_religion = 4){
-                              echo 'Budha';
-                            }elseif($family->family_religion = 5){
-                              echo 'Hindu';
-                            }else{
-                              echo 'Lainnya';
-                            }
-                            ?>"
-                            data-born-place="<?=strtoupper($family->family_born_place)?>"
-                            data-born-date="<?=date('d F Y',strtotime($family->family_born_date))?>"
-                            data-education="<?=$family->family_education?>"
-                            data-salary="<?=$family->family_salary?>"
-                            data-blood="<?php if($family->family_blood = 1){
-                              echo 'A';
-                            }elseif($family->family_blood = 2){
-                              echo 'B';
-                            }elseif($family->family_blood = 3){
-                              echo 'AB';
-                            }elseif($family->family_blood = 4){
-                              echo 'O';
-                            }else{
-                              echo 'Lainnya';
-                            }?>" >
-                            <i class=""></i> Detail</a>
+                            
                             <!-- <a class="btn btn-primary btn-sm" href="detail_anggota_family.php">Detail</a> -->
                           </td>
                         </tr>

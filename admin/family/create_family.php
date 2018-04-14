@@ -235,7 +235,18 @@ else {
                       <div class="form-group row">
                         <label class="col-sm-2 form-control-label ">Pendidikan Terakhir</label>
                         <div class="col-sm-10">
-                          <input class="form-control" type="text" name="<?= RequestKey::$FAMILY_EDUCATION ?>" value="" placeholder="Masukkan Pendidikan Terakhir" required="">
+                          <select class="form-control" name="<?=RequestKey::$FAMILY_EDUCATION?>" required>
+                            <option value=""> - Pilih-</option>
+                            <option value="0">Tidak Ada</option>
+                            <option value="1">SD/MI</option>
+                            <option value="2">SMP/MTS</option>
+                            <option value="3">SMA/MA</option>
+                            <option value="4">SMK</option>
+                            <option value="5">Diploma (D3/4)</option>
+                            <option value="6">Sarjana (S1)</option>
+                            <option value="7">Magister (S2)</option>
+                            <option value="8">Doktor (S3)</option>
+                          </select>
                           <small class="form-text" ><?=$err_education?></small>
                         </div>
                       </div>

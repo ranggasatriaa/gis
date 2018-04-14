@@ -690,6 +690,52 @@ class DBHelper{
       return false;
     }
   }
+
+  //COUNT FOR CHARTS
+  function countAge($age) {
+    if ($result = $this->link->query("SELECT * FROM family WHERE family_age = '$age'")) {
+      return $result->num_rows;
+    }
+    else{
+      return false;
+    }
+  }
+
+  function countEducation($education) {
+    if ($result = $this->link->query("SELECT * FROM family WHERE family_education = '$education'")) {
+      return $result->num_rows;
+    }
+    else{
+      return false;
+    }
+  }
+
+  function countReligion($religion) {
+    if ($result = $this->link->query("SELECT * FROM family WHERE family_religion = '$religion'")) {
+      return $result->num_rows;
+    }
+    else{
+      return false;
+    }
+  }
+
+  function countSholat($sholat) {
+    if ($result = $this->link->query("SELECT * FROM keimanan WHERE keimanan_sholat = '$sholat'")) {
+      return $result->num_rows;
+    }
+    else{
+      return false;
+    }
+  }
+
+  function countMengaji($mengaji) {
+    if ($result = $this->link->query("SELECT * FROM keimanan WHERE keimanan_mengaji = '$mengaji'")) {
+      return $result->num_rows;
+    }
+    else{
+      return false;
+    }
+  }
   //----------------------------------------------------------------------------
 
   //----------------------------------------------------------------------------

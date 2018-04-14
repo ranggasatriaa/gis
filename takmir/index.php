@@ -69,11 +69,64 @@ else {
             <h2 class="no-margin-bottom">Dashboard</h2>
           </div>
         </header>
+        <section class="charts">
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-lg-6">
+                <div class="pie-chart-example card">
+                  <div class="card-header">
+                    <h3>Umur</h3>
+                  </div>
+                  <div class="card-body">
+                    <canvas id="chartAge"></canvas>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <div class="pie-chart-example card">
+                  <div class="card-header">
+                    <h3> Pendidikan</h3>
+                  </div>
+                  <div class="card-body">
+                    <canvas id="chartEducation"></canvas>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <div class="pie-chart-example card">
+                  <div class="card-header">
+                    <h3> Agama</h3>
+                  </div>
+                  <div class="card-body">
+                    <canvas id="chartReligion"></canvas>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <div class="pie-chart-example card">
+                  <div class="card-header">
+                    <h3> Intensitas Sholat</h3>
+                  </div>
+                  <div class="card-body">
+                    <canvas id="chartSholat"></canvas>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <div class="pie-chart-example card">
+                  <div class="card-header">
+                    <h3> Kemampuan Mengaji</h3>
+                  </div>
+                  <div class="card-body">
+                    <canvas id="chartMengaji"></canvas>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </section>
         <!-- Dashboard Header Section    -->
-        <div id="floating-panel">
-          <input id="address" type="textbox" value="Sydney, NSW">
-          <input id="submit" type="button" value="Geocode">
-        </div>
         <div id="map"></div>
         <?php include('page-footer.php'); ?>
       </div>
@@ -82,6 +135,221 @@ else {
   <?php include('foot.php'); ?>
 
   <script>
+
+
+  // ------------------------------------------------------- //
+  // Pie Chart Umur
+  // ------------------------------------------------------ //
+  var chartAge = new Chart($('#chartAge'), {
+    type: 'pie',
+    data: {
+      labels: [
+        "Balita",
+        "Anak-anak",
+        "Remaja",
+        "Dewasa",
+        "Lansia"
+      ],
+      datasets: [
+        {
+          data: [<?=$db->countAge(1)?>,<?=$db->countAge(2)?>,<?=$db->countAge(3)?>,<?=$db->countAge(4)?>,<?=$db->countAge(5)?>],
+          borderWidth: 0,
+          backgroundColor: [
+            '#44b2d7',
+            "#59c2e6",
+            "#96e5ff",
+            "#71d1f2",
+            "#96e5ff"
+
+          ],
+          hoverBackgroundColor: [
+            '#44b2d7',
+            "#59c2e6",
+            "#96e5ff",
+            "#71d1f2",
+            "#96e5ff"
+          ]
+        }
+      ]
+    }
+  });
+
+  var chartAge = {
+    responsive: true
+  };
+
+  // ------------------------------------------------------- //
+  // Pie Chart EDUCATION
+  // ------------------------------------------------------ //
+  var chartEducation = new Chart($('#chartEducation'), {
+   type: 'pie',
+   data: {
+     labels: [
+       "Tidak ada",
+       "SD/MI",
+       "SMP/STM",
+       "SMA/MA",
+       "SMK",
+       "Sarjana (S1)",
+       "Magister (S2)",
+       "Doktor (S3)"
+     ],
+     datasets: [
+       {
+         data: [<?=$db->countEducation(0)?>,<?=$db->countEducation(1)?>,<?=$db->countEducation(2)?>,<?=$db->countEducation(3)?>,<?=$db->countEducation(4)?>,<?=$db->countEducation(5)?>,<?=$db->countEducation(6)?>,<?=$db->countEducation(7)?>,<?=$db->countEducation(8)?>],
+         borderWidth: 0,
+         backgroundColor: [
+           '#44b2d7',
+           "#59c2e6",
+           "#96e5ff",
+           "#71d1f2",
+           "#96e5ff",
+           '#44b2d7',
+           "#59c2e6",
+           "#96e5ff",
+           "#71d1f2",
+           "#96e5ff"
+
+         ],
+         hoverBackgroundColor: [
+           '#44b2d7',
+           "#59c2e6",
+           "#96e5ff",
+           "#71d1f2",
+           "#96e5ff",
+           '#44b2d7',
+           "#59c2e6",
+           "#96e5ff",
+           "#71d1f2",
+           "#96e5ff"
+         ]
+       }
+     ]
+   }
+  });
+
+  var chartEducation = {
+   responsive: true
+  };
+
+  // ------------------------------------------------------- //
+  // Pie Chart RELIGION
+  // ------------------------------------------------------ //
+  var chartReligion = new Chart($('#chartReligion'), {
+   type: 'pie',
+   data: {
+     labels: [
+       "Islam",
+       "Kristen",
+       "Katolok",
+       "Budha",
+       "Hindu"
+     ],
+     datasets: [
+       {
+         data: [<?=$db->countReligion(1)?>,<?=$db->countReligion(2)?>,<?=$db->countReligion(3)?>,<?=$db->countReligion(4)?>,<?=$db->countReligion(5)?>],
+         borderWidth: 0,
+         backgroundColor: [
+           '#44b2d7',
+           "#59c2e6",
+           "#96e5ff",
+           "#71d1f2",
+           "#96e5ff"
+
+         ],
+         hoverBackgroundColor: [
+           '#44b2d7',
+           "#59c2e6",
+           "#96e5ff",
+           "#71d1f2",
+           "#96e5ff"
+         ]
+       }
+     ]
+   }
+  });
+
+  var chartReligion = {
+   responsive: true
+  };
+  // ------------------------------------------------------- //
+  // Pie Chart Sholat
+  // ------------------------------------------------------ //
+  var chartSholat = new Chart($('#chartSholat'), {
+   type: 'pie',
+   data: {
+     labels: [
+       "5 Waktu",
+       "Tidak 5 waktu",
+       "Sholat Jumat Saja",
+       "Sholat Hari Raya Saja",
+     ],
+     datasets: [
+       {
+         data: [<?=$db->countSholat(1)?>,<?=$db->countSholat(2)?>,<?=$db->countSholat(3)?>,<?=$db->countSholat(4)?>],
+         borderWidth: 0,
+         backgroundColor: [
+           '#44b2d7',
+           "#59c2e6",
+           "#71d1f2",
+           "#96e5ff"
+
+         ],
+         hoverBackgroundColor: [
+           '#44b2d7',
+           "#59c2e6",
+           "#71d1f2",
+           "#96e5ff"
+         ]
+       }
+     ]
+   }
+  });
+
+  var chartSholat = {
+   responsive: true
+  };
+
+  // ------------------------------------------------------- //
+  // Pie Chart Mengaji
+  // ------------------------------------------------------ //
+  var chartMengaji = new Chart($('#chartMengaji'), {
+   type: 'pie',
+   data: {
+     labels: [
+       "Balita",
+       "Anak-anak",
+       "Remaja",
+       "Dewasa",
+       "Lansia"
+     ],
+     datasets: [
+       {
+         data: [<?=$db->countMengaji(1)?>,<?=$db->countMengaji(2)?>,<?=$db->countMengaji(3)?>,<?=$db->countMengaji(4)?>,<?=$db->countMengaji(5)?>],
+         borderWidth: 0,
+         backgroundColor: [
+           '#44b2d7',
+           "#59c2e6",
+           "#96e5ff",
+           "#71d1f2",
+           "#96e5ff"
+
+         ],
+         hoverBackgroundColor: [
+           '#44b2d7',
+           "#59c2e6",
+           "#96e5ff",
+           "#71d1f2",
+           "#96e5ff"
+         ]
+       }
+     ]
+   }
+  });
+
+  var chartMengaji = {
+   responsive: true
+  };
 
   // The following example creates complex markers to indicate beaches near
   // Sydney, NSW, Australia. Note that the anchor is set to (0,32) to correspond
@@ -127,49 +395,49 @@ else {
 
   // ADDS MAEKER TO MAPS.
   function setMarkers(map) {
-        //ICON CALLER
-        var masjid_icon={
-          // url: 'https://maps.google.com/mapfiles/kml/shapes/library_maps.png',
-          url: '../img/masjid.png',
-          // This marker is 20 pixels wide by 32 pixels high.
-          size: new google.maps.Size(32, 32),
-          // The origin for this image is (0, 0).
-          origin: new google.maps.Point(0, 0),
-          // The anchor for this image is the base of the flagpole at (0, 32).
-          anchor: new google.maps.Point(16, 32)
-        }
+    //ICON CALLER
+    var masjid_icon={
+      // url: 'https://maps.google.com/mapfiles/kml/shapes/library_maps.png',
+      url: '../img/masjid.png',
+      // This marker is 20 pixels wide by 32 pixels high.
+      size: new google.maps.Size(32, 32),
+      // The origin for this image is (0, 0).
+      origin: new google.maps.Point(0, 0),
+      // The anchor for this image is the base of the flagpole at (0, 32).
+      anchor: new google.maps.Point(16, 32)
+    }
 
-        var islam_icon={
-          url: '../img/islam_icon.png',
-          size: new google.maps.Size(32, 32),
-          origin: new google.maps.Point(0, 0),
-          anchor: new google.maps.Point(16, 32)
-        }
+    var islam_icon={
+      url: '../img/islam_icon.png',
+      size: new google.maps.Size(32, 32),
+      origin: new google.maps.Point(0, 0),
+      anchor: new google.maps.Point(16, 32)
+    }
 
-        var kristen_icon={
-          url: '../img/kristen_icon.png',
-          size: new google.maps.Size(32, 32),
-          origin: new google.maps.Point(0, 0),
-          anchor: new google.maps.Point(16, 32)
-        }
-        var katolik_icon={
-          url: '../img/katolik_icon.png',
-          size: new google.maps.Size(32, 32),
-          origin: new google.maps.Point(0, 0),
-          anchor: new google.maps.Point(16, 32)
-        }
-        var budha_icon={
-          url: '../img/budha_icon.png',
-          size: new google.maps.Size(32, 32),
-          origin: new google.maps.Point(0, 0),
-          anchor: new google.maps.Point(16, 32)
-        }
-        var hindu_icon={
-          url: '../img/hindu_icon.png',
-          size: new google.maps.Size(32, 32),
-          origin: new google.maps.Point(0, 0),
-          anchor: new google.maps.Point(16, 32)
-        }
+    var kristen_icon={
+      url: '../img/kristen_icon.png',
+      size: new google.maps.Size(32, 32),
+      origin: new google.maps.Point(0, 0),
+      anchor: new google.maps.Point(16, 32)
+    }
+    var katolik_icon={
+      url: '../img/katolik_icon.png',
+      size: new google.maps.Size(32, 32),
+      origin: new google.maps.Point(0, 0),
+      anchor: new google.maps.Point(16, 32)
+    }
+    var budha_icon={
+      url: '../img/budha_icon.png',
+      size: new google.maps.Size(32, 32),
+      origin: new google.maps.Point(0, 0),
+      anchor: new google.maps.Point(16, 32)
+    }
+    var hindu_icon={
+      url: '../img/hindu_icon.png',
+      size: new google.maps.Size(32, 32),
+      origin: new google.maps.Point(0, 0),
+      anchor: new google.maps.Point(16, 32)
+    }
 
     //MARKER FOR HOME
     var infowindow = new google.maps.InfoWindow()
