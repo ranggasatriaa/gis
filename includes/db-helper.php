@@ -631,7 +631,9 @@ class DBHelper{
   }
 
   //GET FILTER Family
-  function getFilterFamily($age, $religon){
+  function getFilterFamily($array){
+    $age  = $array['age'];
+    $religion = $array['religion'];
     if(empty($age)){
       if(empty($religion)){
           if($result = $this->link->query("SELECT * FROM family ORDER BY place_id")){
@@ -642,7 +644,7 @@ class DBHelper{
           }
       }
       else {
-        if($result - $this->link->query("SELECT * FROM family WHERE family_religion = '$religion' ORDER BY family_religion")){
+        if($result = $this->link->query("SELECT * FROM family WHERE family_religion = '$religion' ORDER BY family_religion")){
           return $result;
         }
         else {
@@ -651,7 +653,7 @@ class DBHelper{
       }
     }else {
       if(empty($religion)){
-        if($result - $this->link->query("SELECT * FROM family WHERE family_age = '$age' ORDER BY family_age")){
+        if($result = $this->link->query("SELECT * FROM family WHERE family_age = '$age' ORDER BY family_age")){
           return $result;
         }
         else {
@@ -659,7 +661,7 @@ class DBHelper{
         }
       }
       else {
-        if($result - $this->link->query("SELECT * FROM family WHERE family_religion = '$religion' AND family_age = '$age' ORDER BY place_id")){
+        if($result = $this->link->query("SELECT * FROM family WHERE family_religion = '$religion' AND family_age = '$age' ORDER BY place_id")){
           return $result;
         }
         else {

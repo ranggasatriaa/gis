@@ -9,12 +9,26 @@ if(!isset($_SESSION[RequestKey::$USER_ID])) {
 }
 else {
   $db = new DBHelper();
-  $side_bar = 2;
-  $age      = '';
-  $religion = '';
-  $familys   = $db->getFilterFamily($age, $religion);
-  // $count    = $db->countPlace();
-  // $places   = $db->getAllPlace();
+  $side_bar   = 2;
+  if (isset($_GET['filter'])) {
+    $age                = $db->escapeInput($_GET['age']);
+    $religion           = $db->escapeInput($_GET['religion']);
+    $array              = array();
+    $array['age']       = $age;
+    $array['religion']  = $religion;
+    $familys            = $db->getFilterFamily($array);
+    if ($familys->num_rows == 0) {
+      $message = "Tidak ditemukan";
+    }
+  }
+  else{
+    $age        = '';
+    $religion   = '';
+    $array              = array();
+    $array['age']       = $age;
+    $array['religion']  = $religion;
+    $familys    = $db->getFilterFamily($array);
+  }
 }
 ?>
 
@@ -40,29 +54,56 @@ else {
             <h2 class="no-margin-bottom">Masyarakat</h2>
           </div>
         </header>
-        <section class="dashboard-header no-padding-bottom">
-          <div class="container-fluid">
-            <div class="row">
-
-              <div class="statistics col-lg-4">
-                <div class="statistic d-flex align-items-center bg-white has-shadow">
-                  <div class="icon bg-blue"><i class="fa fa-map-marker"></i></div>
-                  <div class="text"><strong><?=$familys->num_rows?></strong><br><small>Orang</small></div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
         <section class="dashboard-header">
           <div class="container-fluid">
             <div class="row">
               <div class="col-md-12">
                 <div class="card">
                   <div class="card-header">
-                    <h4>Daftar Masyarakat</h4>
+                    <form class="form-horisontal" action="index.php" method="get">
+                      <label>Tampilkan menurut</label>
+                      <div class="row">
+                        <div class="col-4 no-margin">
+                          <small>Agama</small>
+                        </div>
+                        <div class="col-4 no-margin">
+                          <small>Kelompok Umur</small>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="form-group col-4 no-margin">
+                          <!-- <label>Agama</label> -->
+                          <select class="form-control" name="religion">
+                            <option value="">Semua Agama</option>
+                            <option <?= $religion == 1 ?"selected":""?> value="1">Islam</option>
+                            <option <?= $religion == 2 ?"selected":""?> value="2">Kristen</option>
+                            <option <?= $religion == 3 ?"selected":""?> value="3">Katolik</option>
+                            <option <?= $religion == 4 ?"selected":""?> value="4">Budha</option>
+                            <option <?= $religion == 5 ?"selected":""?> value="5">Hindu</option>
+                          </select>
+                        </div>
+                        <div class="from-groip col-4 no-margin">
+                          <!-- <label>Kolompok Umur</label> -->
+                          <select class="form-control" name="age">
+                            <option value="">Semua Umur</option>
+                            <option <?= $age == 1 ?"selected":""?> value="1">Balita</option>
+                            <option <?= $age == 2 ?"selected":""?> value="2">Anak-anak</option>
+                            <option <?= $age == 3 ?"selected":""?> value="3">Remaja</option>
+                            <option <?= $age == 4 ?"selected":""?> value="4">Dewasa</option>
+                            <option <?= $age == 5 ?"selected":""?> value="5">Lansia</option>
+                          </select>
+                        </div>
+                        <div class="col-1">
+
+                        </div>
+                        <div style="text-align:right" class="col-3 no-margin">
+                          <input class="btn btn-primary"type="submit" name="filter" value="Tampilkan">
+                          <a class="btn btn-secondary" href=".">Reset</a>
+                        </div>
+                      </div>
+                    </form>
                   </div>
                   <div class="card-body">
-
                     <div class="table-responsive">
                       <table class="table table-striped ">
                         <thead>
@@ -76,55 +117,64 @@ else {
                         </thead>
                         <tbody>
                           <?php
-                          $i=1;
-                          while ($family = $familys->fetch_object()) {
-                            ?>
-                            <tr>
-                              <td>
-                                <?= $i; ?>
-                              </td>
-                              <td>
-                                <?= ucwords($family->family_name); ?>
-                              </td>
-                              <td>
-                                <?php
-                                if ($family->family_religion == 1) {
-                                  echo "Islam";
-                                }elseif ($family->family_religion == 2) {
-                                  echo "Kristen";
-                                }elseif ($family->family_religion == 3) {
-                                  echo "Katolik";
-                                }elseif ($family->family_religion == 4) {
-                                  echo "Budha";
-                                }elseif ($family->family_religion == 5) {
-                                  echo "Hindu";
-                                }else {
-                                  echo "Ateis";
-                                }
-                                ?>
-                              </td>
-                              <td>
-                                <?php
-                                if ($family->family_age == 1) {
-                                  echo "Balita";
-                                }elseif ($family->family_age == 2) {
-                                  echo "Anak-anak";
-                                }elseif ($family->family_age == 3) {
-                                  echo "Remaja";
-                                }elseif ($family->family_age == 4) {
-                                  echo "Dewasa";
-                                }elseif ($family->family_age == 5) {
-                                  echo "Lansia";
-                                }else {
-                                  echo "Lainnya";
-                                }
-                                ?>
-                              </td>
-                              <td>
-                                <a  class="btn btn-primary btn-sm" href="detail_anggota.php?<?=RequestKey::$FAMILY_ID?>=<?=$family->family_id?>">Detail</a>
-                              </td>
-                            </tr>
-                            <?php
+                          if ($familys->num_rows == 0) {
+                            echo "<tr>";
+                            echo "<th colspan='5' style='text-align:center'>";
+                            echo "<h2>Data tidak ditemukan</h2>";
+                            echo "</th>";
+                            echo "</tr>";
+                          }
+                          else{
+                            $i=1;
+                            while ($family = $familys->fetch_object()) {
+                              ?>
+                              <tr>
+                                <td>
+                                  <?= $i; ?>
+                                </td>
+                                <td>
+                                  <?= ucwords($family->family_name); ?>
+                                </td>
+                                <td>
+                                  <?php
+                                  if ($family->family_religion == 1) {
+                                    echo "Islam";
+                                  }elseif ($family->family_religion == 2) {
+                                    echo "Kristen";
+                                  }elseif ($family->family_religion == 3) {
+                                    echo "Katolik";
+                                  }elseif ($family->family_religion == 4) {
+                                    echo "Budha";
+                                  }elseif ($family->family_religion == 5) {
+                                    echo "Hindu";
+                                  }else {
+                                    echo "Ateis";
+                                  }
+                                  ?>
+                                </td>
+                                <td>
+                                  <?php
+                                  if ($family->family_age == 1) {
+                                    echo "Balita";
+                                  }elseif ($family->family_age == 2) {
+                                    echo "Anak-anak";
+                                  }elseif ($family->family_age == 3) {
+                                    echo "Remaja";
+                                  }elseif ($family->family_age == 4) {
+                                    echo "Dewasa";
+                                  }elseif ($family->family_age == 5) {
+                                    echo "Lansia";
+                                  }else {
+                                    echo "Lainnya";
+                                  }
+                                  ?>
+                                </td>
+                                <td>
+                                  <a  class="btn btn-primary btn-sm" href="detail_anggota.php?<?=RequestKey::$FAMILY_ID?>=<?=$family->family_id?>">Detail</a>
+                                </td>
+                              </tr>
+                              <?php
+                            }
                             $i += 1;
                           }
                           ?>
@@ -185,16 +235,16 @@ else {
     </div>
   </div>
 </div>
-  <script>
+<script>
 
-  $('#modalMasjidDelete').on('show.bs.modal', function (event) {
-    var button = $(event.relatedTarget)
-    var modal = $(this)
-    modal.find('#form-masjid-delete').attr('action','delete_masjid.php');
-    modal.find('.modal-body #masjid-name').text(button.data('name'));
-    modal.find('.modal-body #masjid-history').text(button.data('history'))
-    document.getElementById('masjid-id-delete').value=button.data('id') ;
-  })
-  </script>
+$('#modalMasjidDelete').on('show.bs.modal', function (event) {
+  var button = $(event.relatedTarget)
+  var modal = $(this)
+  modal.find('#form-masjid-delete').attr('action','delete_masjid.php');
+  modal.find('.modal-body #masjid-name').text(button.data('name'));
+  modal.find('.modal-body #masjid-history').text(button.data('history'))
+  document.getElementById('masjid-id-delete').value=button.data('id') ;
+})
+</script>
 </body>
 </html>
