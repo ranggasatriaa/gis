@@ -42,21 +42,8 @@ else {
 
     <div class="page-content d-flex align-items-stretch">
       <!-- Side Navbar -->
-      <nav class="side-navbar">
-        <!-- Sidebar Header-->
-        <div class="sidebar-header d-flex align-items-center">
-          <div class="avatar"><img src="../../img/no_image_image.png" alt="..." class="img-fluid rounded-circle" style="height:55px; width: 55px; object-fit: contain;"></div>
-          <div class="title">
-            <h1 class="h4">ADMIN</h1>
-          </div>
-        </div>
-        <!-- Sidebar Navidation Menus--><span class="heading">Main</span>
-        <ul class="list-unstyled">
-          <li><a href="../."> <i class="icon-home"></i>Dashboard </a></li>
-          <li class="active"><a href="../place.php"> <i class="fa fa-map-o"></i>Place </a></li>
-          <li><a href="../profil.php"> <i class="icon-user"></i>Profil </a></li>
-        </ul>
-      </nav>
+      <?php include('side-navbar.php') ?>
+
       <div class="content-inner">
         <!-- Page Header-->
         <header class="page-header">
@@ -69,18 +56,11 @@ else {
             <div class="row">
               <div class="col-md-12">
                 <div class="card">
-                  <div class="card-close">
-                    <!-- <a class="btn btn-sm btn-primary" href="edit_masjid.php?<?=RequestKey::$MASJID_ID?>=<?=$masjid->masjid_id?>"><i class="fa fa-edit"></i> Edit</a> -->
-                    <a class="btn btn-sm btn-secondary" href="#" data-toggle="modal" data-target="#modalFamilyDelete" data-id="<?=$place->place_id?>" data-name="<?=strtoupper($place->place_name)?>"><i class="fa fa-eraser"></i> Delete</a>
-
-                    <!-- <a class="btn btn-sm btn-secondary" href="delete_masjid.php<?=$masjid->masjid_id?>"><i class="fa fa-eraser"></i> Delete</a> -->
-                  </div>
                   <div class="card-header">
                     <h4> Rumah Keluarga <?=$family_leader->family_gender = 1 ? "Pak" : "Bu"?> <?= $family_leader->family_name ?></h4>
                   </div>
                   <div class="card-body">
                     <h5>Anggota Keluarga
-                    <a class="pull-right btn btn-primary btn-sm" href="create_anggota.php?<?=RequestKey::$PLACE_ID?>=<?=$place->place_id?>">+ Add</a>
                   </h5>
                     <table class="table table-striped">
                       <thead>
@@ -111,63 +91,9 @@ else {
                           }
                           ?></td>
                           <td>
-                            <!-- <?=$family->family_name?> -->
-                            <a class="btn btn-sm btn-primary" href="#" data-toggle="modal" data-target="#modalAnggotaKeluarga"
-                            data-id="<?=$family->family_id?>"
-                            data-name="<?=strtoupper($family->family_name)?>"
-                            data-status="<?php if ($family->family_status = 0) {
-                              echo 'Kepala keluarga';
-                            }elseif ($family->family_status = 1) {
-                              echo 'Anak Pertama';
-                            }elseif ($family->family_status = 2) {
-                              echo 'Anggota Keluarga';
-                            }elseif ($family->family_status = 3) {
-                              echo 'Pembantu';
-                            }
-                            ?>"
-                            data-gender="
-                            <?php if ($family->family_gender = 1) {
-                              echo 'Laki-laki';
-                            }elseif ($family->family_gender = 2) {
-                              echo 'Perempuan';
-                            }else{
-                              echo 'Lain-lain';
-                            }
-                            ?>"
-                            data-religion="<?php if($family->family_religion = 1){
-                              echo 'Islam';
-                            }elseif($family->family_religion = 2){
-                              echo 'Kristen';
-                            }elseif($family->family_religion = 3){
-                              echo 'Katolik';
-                            }elseif($family->family_religion = 4){
-                              echo 'Budha';
-                            }elseif($family->family_religion = 5){
-                              echo 'Hindu';
-                            }else{
-                              echo 'Lainnya';
-                            }
-                            ?>"
-                            data-born-place="<?=strtoupper($family->family_born_place)?>"
-                            data-born-date="<?=date('d F Y',strtotime($family->family_born_date))?>"
-                            data-education="<?=$family->family_education?>"
-                            data-salary="<?=$family->family_salary?>"
-                            data-blood="<?php if($family->family_blood = 1){
-                              echo 'A';
-                            }elseif($family->family_blood = 2){
-                              echo 'B';
-                            }elseif($family->family_blood = 3){
-                              echo 'AB';
-                            }elseif($family->family_blood = 4){
-                              echo 'O';
-                            }else{
-                              echo 'Lainnya';
-                            }?>" >
-                            <i class=""></i> Detail</a>
-                            <!-- <a class="btn btn-primary btn-sm" href="detail_anggota_family.php">Detail</a> -->
+                            <a class="btn btn-primary btn-sm" href="detail_anggota.php?<?=RequestKey::$FAMILY_ID?>=<?=$family->family_id?>">Detail</a>
                           </td>
                         </tr>
-
                         <?php
                         $i+=1;
                         } ?>

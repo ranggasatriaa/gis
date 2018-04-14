@@ -553,6 +553,7 @@ class DBHelper{
     }
   }
 
+  //EDIT FAMILY TAKMIR
   function editFamily($array){
     $family_id          = $array[RequestKey::$FAMILY_ID];
     $family_name        = $array[RequestKey::$FAMILY_NAME];
@@ -573,6 +574,7 @@ class DBHelper{
       return false;
     }
   }
+
 
   //DELTE Anggota
   function deleteFamilyById($fid){
@@ -625,6 +627,45 @@ class DBHelper{
     }
     else{
       return false;
+    }
+  }
+
+  //GET FILTER Family
+  function getFilterFamily($age, $religon){
+    if(empty($age)){
+      if(empty($religion)){
+          if($result = $this->link->query("SELECT * FROM family ORDER BY place_id")){
+            return $result;
+          }
+          else {
+            return false;
+          }
+      }
+      else {
+        if($result - $this->link->query("SELECT * FROM family WHERE family_religion = '$religion' ORDER BY family_religion")){
+          return $result;
+        }
+        else {
+          return false;
+        }
+      }
+    }else {
+      if(empty($religion)){
+        if($result - $this->link->query("SELECT * FROM family WHERE family_age = '$age' ORDER BY family_age")){
+          return $result;
+        }
+        else {
+          return false;
+        }
+      }
+      else {
+        if($result - $this->link->query("SELECT * FROM family WHERE family_religion = '$religion' AND family_age = '$age' ORDER BY place_id")){
+          return $result;
+        }
+        else {
+          return false;
+        }
+      }
     }
   }
 

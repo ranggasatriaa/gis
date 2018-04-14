@@ -1,17 +1,20 @@
 
 <?php
 session_start();
-require_once('../includes/request-key.php');
-require_once('../includes/db-helper.php');
+require_once('../../includes/request-key.php');
+require_once('../../includes/db-helper.php');
 
 if(!isset($_SESSION[RequestKey::$USER_ID])) {
-  header('Location: ../.');
+  header('Location: ../../.');
 }
 else {
   $db = new DBHelper();
   $side_bar = 2;
-  $count    = $db->countPlace();
-  $places  = $db->getAllPlace();
+  $age      = '';
+  $religion = '';
+  $familys   = $db->getFilterFamily($age, $religion);
+  // $count    = $db->countPlace();
+  // $places   = $db->getAllPlace();
 }
 ?>
 
@@ -34,7 +37,7 @@ else {
         <!-- Page Header-->
         <header class="page-header">
           <div class="container-fluid">
-            <h2 class="no-margin-bottom">Place</h2>
+            <h2 class="no-margin-bottom">Masyarakat</h2>
           </div>
         </header>
         <section class="dashboard-header no-padding-bottom">
@@ -44,7 +47,7 @@ else {
               <div class="statistics col-lg-4">
                 <div class="statistic d-flex align-items-center bg-white has-shadow">
                   <div class="icon bg-blue"><i class="fa fa-map-marker"></i></div>
-                  <div class="text"><strong><?=$count?></strong><br><small>Place</small></div>
+                  <div class="text"><strong><?=$familys->num_rows?></strong><br><small>Orang</small></div>
                 </div>
               </div>
             </div>
@@ -56,7 +59,7 @@ else {
               <div class="col-md-12">
                 <div class="card">
                   <div class="card-header">
-                    <h4>Place List</h4>
+                    <h4>Daftar Masyarakat</h4>
                   </div>
                   <div class="card-body">
 
@@ -65,35 +68,60 @@ else {
                         <thead>
                           <tr>
                             <th>No</th>
-                            <th>Nama Lokasi</th>
-                            <th>Lokasi</th>
-                            <th>Jenis</th>
+                            <th>Nama</th>
+                            <th>Agama</th>
+                            <th>Jenis Umur</th>
                             <th>Aksi</th>
                           </tr>
                         </thead>
                         <tbody>
                           <?php
                           $i=1;
-                          while ($place = $places->fetch_object()) {
+                          while ($family = $familys->fetch_object()) {
                             ?>
                             <tr>
                               <td>
                                 <?= $i; ?>
                               </td>
                               <td>
-                                <?= ucwords($place->place_name); ?>
+                                <?= ucwords($family->family_name); ?>
                               </td>
                               <td>
-                                <?= $place->place_location ?>
+                                <?php
+                                if ($family->family_religion == 1) {
+                                  echo "Islam";
+                                }elseif ($family->family_religion == 2) {
+                                  echo "Kristen";
+                                }elseif ($family->family_religion == 3) {
+                                  echo "Katolik";
+                                }elseif ($family->family_religion == 4) {
+                                  echo "Budha";
+                                }elseif ($family->family_religion == 5) {
+                                  echo "Hindu";
+                                }else {
+                                  echo "Ateis";
+                                }
+                                ?>
                               </td>
                               <td>
-                                <?= ((int)$place->place_category == 0 ? '<p class="text-success">Masjid</p>' : '<p class="text-danger">Rumah</p>' ) ?>
+                                <?php
+                                if ($family->family_age == 1) {
+                                  echo "Balita";
+                                }elseif ($family->family_age == 2) {
+                                  echo "Anak-anak";
+                                }elseif ($family->family_age == 3) {
+                                  echo "Remaja";
+                                }elseif ($family->family_age == 4) {
+                                  echo "Dewasa";
+                                }elseif ($family->family_age == 5) {
+                                  echo "Lansia";
+                                }else {
+                                  echo "Lainnya";
+                                }
+                                ?>
                               </td>
                               <td>
-                                <?= ((int)$place->place_category == 0 ? '<a class="btn btn-primary btn-sm " href="masjid/detail_masjid.php?'.RequestKey::$PLACE_ID.'='.$place->place_id.'">Detail</a>' : '<a class="btn btn-primary btn-sm" href="family/detail_family.php?'.RequestKey::$PLACE_ID.'='.$place->place_id.'">Detail</a>' ) ?>
-                                <!-- <a class="btn btn-sm btn-secondary" href="#" data-toggle="modal" data-target="#modalMasjidDelete" data-id="<?=$masjid->masjid_id?>" data-name="<?=strtoupper($masjid->masjid_name)?>" data-history="<?=$masjid->masjid_history?>" ><i class="fa fa-eraser"></i> Delete</a>
-
-                                <button type="button" data-toggle="modal" data-target="#modalMajisDelete" class="btn btn-secondary middle btn-sm" data-name="<?=$place->place_name?>" data-location="<?=$place->place_location?>" data-category="<?=$place->place_category?>">Delete</button> -->
+                                <a  class="btn btn-primary btn-sm" href="detail_anggota.php?<?=RequestKey::$FAMILY_ID?>=<?=$family->family_id?>">Detail</a>
                               </td>
                             </tr>
                             <?php

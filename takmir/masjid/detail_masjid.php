@@ -10,6 +10,8 @@ if(!isset($_SESSION[RequestKey::$USER_ID])) {
 else {
 
   $db        = new DBHelper();
+  $side_bar     = 2;
+
   $pid       = $_GET[RequestKey::$PLACE_ID];
   $masjid    = $db->getMasjidByPlaceId($pid);
   $place     = $db->getPlaceById($pid);
@@ -47,21 +49,8 @@ else {
 
     <div class="page-content d-flex align-items-stretch">
       <!-- Side Navbar -->
-      <nav class="side-navbar">
-        <!-- Sidebar Header-->
-        <div class="sidebar-header d-flex align-items-center">
-          <div class="avatar"><img src="../../img/no_image_image.png" alt="..." class="img-fluid rounded-circle" style="height:55px; width: 55px; object-fit: contain;"></div>
-          <div class="title">
-            <h1 class="h4">ADMIN</h1>
-          </div>
-        </div>
-        <!-- Sidebar Navidation Menus--><span class="heading">Main</span>
-        <ul class="list-unstyled">
-          <li><a href="../."> <i class="icon-home"></i>Dashboard </a></li>
-          <li class="active"><a href="../place.php"> <i class="fa fa-map-o"></i>Place </a></li>
-          <li><a href="../profil.php"> <i class="icon-user"></i>Profil </a></li>
-        </ul>
-      </nav>
+      <?php include('side-navbar.php') ?>
+
       <div class="content-inner">
         <!-- Page Header-->
         <header class="page-header">
@@ -76,9 +65,6 @@ else {
                 <div class="card">
                   <div class="card-close">
                     <a class="btn btn-sm btn-primary" href="edit_masjid.php?<?=RequestKey::$MASJID_ID?>=<?=$masjid->masjid_id?>"><i class="fa fa-edit"></i> Edit</a>
-                    <a class="btn btn-sm btn-secondary" href="#" data-toggle="modal" data-target="#modalMasjidDelete" data-id="<?=$masjid->masjid_id?>" data-name="<?=strtoupper($masjid->masjid_name)?>" data-history="<?=$masjid->masjid_history?>" ><i class="fa fa-eraser"></i> Delete</a>
-
-                    <!-- <a class="btn btn-sm btn-secondary" href="delete_masjid.php<?=$masjid->masjid_id?>"><i class="fa fa-eraser"></i> Delete</a> -->
                   </div>
                   <div class="card-header">
                     <h4> Masjid <?= $masjid->masjid_name ?></h4>

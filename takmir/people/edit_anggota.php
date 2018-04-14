@@ -266,7 +266,7 @@ else {
     if (status == 1) {
       swal("Success!",message,"success")
       .then((value) => {
-        window.location.href = "detail_family.php?<?=RequestKey::$PLACE_ID?>=<?=$family->place_id?>" + escape(window.location.href);
+        window.location.href = "detail_anggota.php?family-id=<?=$family->family_id?>" + escape(window.location.href);
       });
     }
     else if (status == 2) {
