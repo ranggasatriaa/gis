@@ -155,19 +155,19 @@ else {
           data: [<?=$db->countAge(1)?>,<?=$db->countAge(2)?>,<?=$db->countAge(3)?>,<?=$db->countAge(4)?>,<?=$db->countAge(5)?>],
           borderWidth: 0,
           backgroundColor: [
-            '#44b2d7',
-            "#59c2e6",
-            "#96e5ff",
-            "#71d1f2",
-            "#96e5ff"
+            '#b7dfcb',
+            "#5abad1",
+            "#3984b6",
+            "#264992",
+            "#151e5e"
 
           ],
           hoverBackgroundColor: [
-            '#44b2d7',
-            "#59c2e6",
-            "#96e5ff",
-            "#71d1f2",
-            "#96e5ff"
+            '#b7dfcb',
+            "#5abad1",
+            "#3984b6",
+            "#264992",
+            "#151e5e"
           ]
         }
       ]
@@ -190,6 +190,7 @@ else {
        "SMP/STM",
        "SMA/MA",
        "SMK",
+       "Diploma",
        "Sarjana (S1)",
        "Magister (S2)",
        "Doktor (S3)"
@@ -199,29 +200,27 @@ else {
          data: [<?=$db->countEducation(0)?>,<?=$db->countEducation(1)?>,<?=$db->countEducation(2)?>,<?=$db->countEducation(3)?>,<?=$db->countEducation(4)?>,<?=$db->countEducation(5)?>,<?=$db->countEducation(6)?>,<?=$db->countEducation(7)?>,<?=$db->countEducation(8)?>],
          borderWidth: 0,
          backgroundColor: [
-           '#44b2d7',
-           "#59c2e6",
-           "#96e5ff",
-           "#71d1f2",
-           "#96e5ff",
-           '#44b2d7',
-           "#59c2e6",
-           "#96e5ff",
-           "#71d1f2",
-           "#96e5ff"
+           "#d5e9ca",
+           "#9ed5cd",
+           "#69c0d1",
+           "#44a7cb",
+           "#3984b6",
+           "#2e62a1",
+           "#233f8c",
+           "#192473",
+           "#121850"
 
          ],
          hoverBackgroundColor: [
-           '#44b2d7',
-           "#59c2e6",
-           "#96e5ff",
-           "#71d1f2",
-           "#96e5ff",
-           '#44b2d7',
-           "#59c2e6",
-           "#96e5ff",
-           "#71d1f2",
-           "#96e5ff"
+           "#d5e9ca",
+           "#9ed5cd",
+           "#69c0d1",
+           "#44a7cb",
+           "#3984b6",
+           "#2e62a1",
+           "#233f8c",
+           "#192473",
+           "#121850"
          ]
        }
      ]
@@ -250,19 +249,19 @@ else {
          data: [<?=$db->countReligion(1)?>,<?=$db->countReligion(2)?>,<?=$db->countReligion(3)?>,<?=$db->countReligion(4)?>,<?=$db->countReligion(5)?>],
          borderWidth: 0,
          backgroundColor: [
-           '#44b2d7',
-           "#59c2e6",
-           "#96e5ff",
-           "#71d1f2",
-           "#96e5ff"
+           '#b7dfcb',
+           "#5abad1",
+           "#3984b6",
+           "#264992",
+           "#151e5e"
 
          ],
          hoverBackgroundColor: [
-           '#44b2d7',
-           "#59c2e6",
-           "#96e5ff",
-           "#71d1f2",
-           "#96e5ff"
+           '#b7dfcb',
+           "#5abad1",
+           "#3984b6",
+           "#264992",
+           "#151e5e"
          ]
        }
      ]
@@ -289,17 +288,17 @@ else {
          data: [<?=$db->countSholat(1)?>,<?=$db->countSholat(2)?>,<?=$db->countSholat(3)?>,<?=$db->countSholat(4)?>],
          borderWidth: 0,
          backgroundColor: [
-           '#44b2d7',
-           "#59c2e6",
-           "#71d1f2",
-           "#96e5ff"
+           '#9ed5cd',
+           "#44a7cb",
+           "#2e62a1",
+           "#192574"
 
          ],
          hoverBackgroundColor: [
-           '#44b2d7',
-           "#59c2e6",
-           "#71d1f2",
-           "#96e5ff"
+           '#9ed5cd',
+           "#44a7cb",
+           "#2e62a1",
+           "#192574"
          ]
        }
      ]
@@ -328,19 +327,19 @@ else {
          data: [<?=$db->countMengaji(1)?>,<?=$db->countMengaji(2)?>,<?=$db->countMengaji(3)?>,<?=$db->countMengaji(4)?>,<?=$db->countMengaji(5)?>],
          borderWidth: 0,
          backgroundColor: [
-           '#44b2d7',
-           "#59c2e6",
-           "#96e5ff",
-           "#71d1f2",
-           "#96e5ff"
+           '#b7dfcb',
+           "#5abad1",
+           "#3984b6",
+           "#264992",
+           "#151e5e"
 
          ],
          hoverBackgroundColor: [
-           '#44b2d7',
-           "#59c2e6",
-           "#96e5ff",
-           "#71d1f2",
-           "#96e5ff"
+           '#b7dfcb',
+           "#5abad1",
+           "#3984b6",
+           "#264992",
+           "#151e5e"
          ]
        }
      ]
