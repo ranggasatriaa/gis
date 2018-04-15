@@ -60,13 +60,13 @@ else {
                       <tr>
                         <th width="20%">Status</th>
                         <td>:</td>
-                        <td><?php if ($family->family_status = 0) {
+                        <td><?php if ($family->family_status == 0) {
                           echo 'Kepala keluarga';
-                        }elseif ($family->family_status = 1) {
+                        }elseif ($family->family_status == 1) {
                           echo 'Anak Pertama';
-                        }elseif ($family->family_status = 2) {
+                        }elseif ($family->family_status == 2) {
                           echo 'Anggota Keluarga';
-                        }elseif ($family->family_status = 3) {
+                        }elseif ($family->family_status == 3) {
                           echo 'Pembantu';
                         }
                         ?></td>
@@ -74,9 +74,9 @@ else {
                       <tr>
                         <th width="20%">Jenis Kelamin</th>
                         <td>:</td>
-                        <td><?php if ($family->family_gender = 1) {
+                        <td><?php if ($family->family_gender == 1) {
                           echo 'Laki-laki';
-                        }elseif ($family->family_gender = 2) {
+                        }elseif ($family->family_gender == 2) {
                           echo 'Perempuan';
                         }else{
                           echo 'Lain-lain';
@@ -84,17 +84,17 @@ else {
                         ?></td>
                       </tr>
                       <tr>
-                        <th width="20%">Agama</th>
+                        <th width ="20%">Agama</th>
                         <td>:</td>
-                        <td><?php if($family->family_religion = 1){
+                        <td><?php if($family->family_religion == 1){
                           echo 'Islam';
-                        }elseif($family->family_religion = 2){
+                        }elseif($family->family_religion == 2){
                           echo 'Kristen';
-                        }elseif($family->family_religion = 3){
+                        }elseif($family->family_religion == 3){
                           echo 'Katolik';
-                        }elseif($family->family_religion = 4){
+                        }elseif($family->family_religion == 4){
                           echo 'Budha';
-                        }elseif($family->family_religion = 5){
+                        }elseif($family->family_religion == 5){
                           echo 'Hindu';
                         }else{
                           echo 'Lainnya';
@@ -109,15 +109,15 @@ else {
                       <tr>
                         <th width="20%">Golongan Umur</th>
                         <td>:</td>
-                        <td><?php if($family->family_age = 1){
+                        <td><?php if($family->family_age == 1){
                           echo 'Balita';
-                        }elseif($family->family_age = 2){
+                        }elseif($family->family_age == 2){
                           echo 'Anak-anak';
-                        }elseif($family->family_age = 3){
+                        }elseif($family->family_age == 3){
                           echo 'Remaja';
-                        }elseif($family->family_age = 4){
+                        }elseif($family->family_age == 4){
                           echo 'Dewasa';
-                        }elseif($family->family_age = 5){
+                        }elseif($family->family_age == 5){
                           echo 'Lansia';
                         }else{
                           echo 'Lainnya';
@@ -136,13 +136,13 @@ else {
                       <tr>
                         <th width="20%">Golongan Darah</th>
                         <td>:</td>
-                        <td><?php if($family->family_blood = 1){
+                        <td><?php if($family->family_blood == 1){
                           echo 'A';
-                        }elseif($family->family_blood = 2){
+                        }elseif($family->family_blood == 2){
                           echo 'B';
-                        }elseif($family->family_blood = 3){
+                        }elseif($family->family_blood == 3){
                           echo 'AB';
-                        }elseif($family->family_blood = 4){
+                        }elseif($family->family_blood == 4){
                           echo 'O';
                         }else{
                           echo 'Lainnya';
@@ -152,13 +152,13 @@ else {
                       <tr>
                         <th>Kebiasaan Shalat</th>
                         <td>:</td>
-                        <td><?php if($family->family_blood = 1){
+                        <td><?php if($keimanan->keimanan_sholat == 1){
                           echo '5 Waktu';
-                        }elseif($family->family_blood = 2){
+                        }elseif($keimanan->keimanan_sholat == 2){
                           echo 'Tidak 5 Waktu';
-                        }elseif($family->family_blood = 3){
+                        }elseif($keimanan->keimanan_sholat == 3){
                           echo 'Sholat Jumat Saja';
-                        }elseif($family->family_blood = 4){
+                        }elseif($keimanan->keimanan_sholat == 4){
                           echo 'Sholat Hari Raya Saja';
                         }else{
                           echo 'Lainnya';
@@ -167,13 +167,13 @@ else {
                       <tr>
                         <th>Kemampuan Mengaji</th>
                         <td>:</td>
-                        <td><?php if($family->family_blood = 1){
+                        <td><?php if($keimanan->keimanan_mengaji == 1){
                           echo 'Tidak Bisa';
-                        }elseif($family->family_blood = 2){
+                        }elseif($keimanan->keimanan_mengaji == 2){
                           echo 'Kurang Lancar';
-                        }elseif($family->family_blood = 3){
+                        }elseif($keimanan->keimanan_mengaji == 3){
                           echo 'Lancar Membaca';
-                        }elseif($family->family_blood = 4){
+                        }elseif($keimanan->keimanan_mengaji == 4){
                           echo 'Hafal Al-Quran';
                         }else{
                           echo 'Lainnya';

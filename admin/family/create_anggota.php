@@ -152,7 +152,7 @@ else {
                       <div class="form-group row">
                         <label class="col-sm-2 form-control-label ">Nama Lengkap</label>
                         <div class="col-sm-10">
-                          <input class="form-control" type="text" name="<?= RequestKey::$FAMILY_NAME ?>" value="" placeholder="Masukkan Nama Kepala keluarga">
+                          <input class="form-control" type="text" name="<?= RequestKey::$FAMILY_NAME ?>" value="" placeholder="Masukkan Nama Lengkap">
                           <small class="form-text" ><?=$err_name?></small>
                         </div>
                       </div>
@@ -287,7 +287,7 @@ else {
                       </div>
                       <div class="form-group">
                         <input type="hidden" name="<?=RequestKey::$FAMILY_PLACE_ID?>" value="<?=$pid?>">
-                        <a class="btn btn-secondary" href="../place.php">Cancel</a>
+                        <a class="btn btn-secondary" href="detail_family.php?<?=RequestKey::$PLACE_ID?>=<?=$pid?>">Cancel</a>
                         <input class="btn btn-primary" type="submit" name="submit" value="Submit">
                       </div>
                     </form>

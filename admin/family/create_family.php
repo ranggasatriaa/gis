@@ -69,7 +69,7 @@ else {
       $array_place[RequestKey::$FAMILY_NAME]        = $place_name;
       $array_place[RequestKey::$PLACE_LOCATION]     = $place_location;
       $array_place[RequestKey::$PLACE_CATEGORY]     = '1';
-      print_r($array_place);
+      // print_r($array_place);
       if (!$db->isLocationExist($place_location)) {
         if ($place = $db->createPlace($array_place)) {
           // echo "masuk create place | ";
@@ -90,7 +90,7 @@ else {
           $array_family[RequestKey::$FAMILY_SALARY]      = $family_salary;
           $array_family[RequestKey::$FAMILY_BLOOD]       = $family_blood;
 
-          print_r($array_family);
+          // print_r($array_family);
           if ($family = $db->createFamily($array_family)) {
             // echo "Masuk create family | ";
             $keimanan_family_id = (int)$db->lastFamilyId();
@@ -99,7 +99,7 @@ else {
             $array_keimanan[RequestKey::$KEIMANAN_FAMILY_ID]  = $keimanan_family_id;
             $array_keimanan[RequestKey::$KEIMANAN_SHOLAT]     = $keimanan_sholat;
             $array_keimanan[RequestKey::$KEIMANAN_MENGAJI]    = $keimanan_mengaji;
-            print_r($array_keimanan);
+            // print_r($array_keimanan);
 
             if ($keimanan = $db->createKeimanan($array_keimanan)) {
               // echo "Masuk create keimanan |";
@@ -223,8 +223,8 @@ else {
                         <div class="col-sm-10">
                           <select class="form-control" name="<?=RequestKey::$FAMILY_AGE?>" required>
                             <option value=""> - Pilih -</option>
-                            <option value="1">Balita</option>
-                            <option value="2">Anak-anak</option>
+                            <!-- <option value="1">Balita</option>
+                            <option value="2">Anak-anak</option> -->
                             <option value="3">Remaja</option>
                             <option value="4">Dewasa</option>
                             <option value="5">Lansia</option>

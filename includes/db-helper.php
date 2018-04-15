@@ -287,7 +287,7 @@ class DBHelper{
 
   //GET ALL KAJIAN
   function getAllKajian($mid) {
-    if ($result = $this->link->query("SELECT * FROM masjid_kajian WHERE masjid_id = $mid ORDER BY kajian_date ASC, kajian_time ASC ")) {
+    if ($result = $this->link->query("SELECT * FROM masjid_kajian WHERE masjid_id = $mid ORDER BY kajian_date DESC, kajian_time DESC ")) {
       return $result;
     }
     else{
@@ -446,7 +446,7 @@ class DBHelper{
   //KAGIATAN
   //GET KEGIATAN
   function getAllKegiatan($mid) {
-    if ($result = $this->link->query("SELECT * FROM masjid_kegiatan WHERE masjid_id = '$mid'")) {
+    if ($result = $this->link->query("SELECT * FROM masjid_kegiatan WHERE masjid_id = '$mid' ORDER BY kegiatan_date DESC")) {
       return $result;
     }
     else{

@@ -60,13 +60,13 @@ else {
                       <tr>
                         <th width="20%">Status</th>
                         <td>:</td>
-                        <td><?php if ($family->family_status = 0) {
+                        <td><?php if ($family->family_status == 0) {
                           echo 'Kepala keluarga';
-                        }elseif ($family->family_status = 1) {
+                        }elseif ($family->family_status == 1) {
                           echo 'Anak Pertama';
-                        }elseif ($family->family_status = 2) {
+                        }elseif ($family->family_status == 2) {
                           echo 'Anggota Keluarga';
-                        }elseif ($family->family_status = 3) {
+                        }elseif ($family->family_status == 3) {
                           echo 'Pembantu';
                         }
                         ?></td>
@@ -74,9 +74,9 @@ else {
                       <tr>
                         <th width="20%">Jenis Kelamin</th>
                         <td>:</td>
-                        <td><?php if ($family->family_gender = 1) {
+                        <td><?php if ($family->family_gender == 1) {
                           echo 'Laki-laki';
-                        }elseif ($family->family_gender = 2) {
+                        }elseif ($family->family_gender == 2) {
                           echo 'Perempuan';
                         }else{
                           echo 'Lain-lain';
@@ -86,15 +86,15 @@ else {
                       <tr>
                         <th width="20%">Agama</th>
                         <td>:</td>
-                        <td><?php if($family->family_religion = 1){
+                        <td><?php if($family->family_religion == 1){
                           echo 'Islam';
-                        }elseif($family->family_religion = 2){
+                        }elseif($family->family_religion == 2){
                           echo 'Kristen';
-                        }elseif($family->family_religion = 3){
+                        }elseif($family->family_religion == 3){
                           echo 'Katolik';
-                        }elseif($family->family_religion = 4){
+                        }elseif($family->family_religion == 4){
                           echo 'Budha';
-                        }elseif($family->family_religion = 5){
+                        }elseif($family->family_religion == 5){
                           echo 'Hindu';
                         }else{
                           echo 'Lainnya';
@@ -109,15 +109,15 @@ else {
                       <tr>
                         <th width="20%">Golongan Umur</th>
                         <td>:</td>
-                        <td><?php if($family->family_age = 1){
+                        <td><?php if($family->family_age == 1){
                           echo 'Balita';
-                        }elseif($family->family_age = 2){
+                        }elseif($family->family_age == 2){
                           echo 'Anak-anak';
-                        }elseif($family->family_age = 3){
+                        }elseif($family->family_age == 3){
                           echo 'Remaja';
-                        }elseif($family->family_age = 4){
+                        }elseif($family->family_age == 4){
                           echo 'Dewasa';
-                        }elseif($family->family_age = 5){
+                        }elseif($family->family_age == 5){
                           echo 'Lansia';
                         }else{
                           echo 'Lainnya';
@@ -136,13 +136,13 @@ else {
                       <tr>
                         <th width="20%">Golongan Darah</th>
                         <td>:</td>
-                        <td><?php if($family->family_blood = 1){
+                        <td><?php if($family->family_blood == 1){
                           echo 'A';
-                        }elseif($family->family_blood = 2){
+                        }elseif($family->family_blood == 2){
                           echo 'B';
-                        }elseif($family->family_blood = 3){
+                        }elseif($family->family_blood == 3){
                           echo 'AB';
-                        }elseif($family->family_blood = 4){
+                        }elseif($family->family_blood == 4){
                           echo 'O';
                         }else{
                           echo 'Lainnya';
@@ -152,13 +152,13 @@ else {
                       <tr>
                         <th>Kebiasaan Shalat</th>
                         <td>:</td>
-                        <td><?php if($family->family_blood = 1){
+                        <td><?php if($family->family_blood == 1){
                           echo '5 Waktu';
-                        }elseif($family->family_blood = 2){
+                        }elseif($family->family_blood == 2){
                           echo 'Tidak 5 Waktu';
-                        }elseif($family->family_blood = 3){
+                        }elseif($family->family_blood == 3){
                           echo 'Sholat Jumat Saja';
-                        }elseif($family->family_blood = 4){
+                        }elseif($family->family_blood == 4){
                           echo 'Sholat Hari Raya Saja';
                         }else{
                           echo 'Lainnya';
@@ -167,13 +167,13 @@ else {
                       <tr>
                         <th>Kemampuan Mengaji</th>
                         <td>:</td>
-                        <td><?php if($family->family_blood = 1){
+                        <td><?php if($family->family_blood == 1){
                           echo 'Tidak Bisa';
-                        }elseif($family->family_blood = 2){
+                        }elseif($family->family_blood == 2){
                           echo 'Kurang Lancar';
-                        }elseif($family->family_blood = 3){
+                        }elseif($family->family_blood == 3){
                           echo 'Lancar Membaca';
-                        }elseif($family->family_blood = 4){
+                        }elseif($family->family_blood == 4){
                           echo 'Hafal Al-Quran';
                         }else{
                           echo 'Lainnya';
@@ -183,7 +183,9 @@ else {
                         <td style="text-align:right" colspan="3">
                           <a class="pull-left btn btn-secondary btn-sm" href="detail_family.php?<?=RequestKey::$PLACE_ID?>=<?=$family->place_id?>">Kembali</a>
                           <a class="btn btn-primary btn-sm" href="edit_anggota.php?<?=RequestKey::$FAMILY_ID?>=<?=$family->family_id?>">Edit</a>
-                          <a class="btn btn-danger btn-sm" href="delete_anggota.php?<?=RequestKey::$FAMILY_ID?>=<?=$family->family_id?>">Delete</a>
+                          <a class="btn btn-sm btn-danger" href="#" data-toggle="modal" data-target="#modalAnggotaDelete" data-id="<?=$family->family_id?>" data-name="<?=strtoupper($family->family_name)?>"></i> Delete</a>
+
+                          <!-- <a class="btn btn-danger btn-sm" href="delete_anggota.php?<?=RequestKey::$FAMILY_ID?>=<?=$family->family_id?>">Delete</a> -->
                         </td>
                       </tr>
                     </tbody>
@@ -269,7 +271,7 @@ else {
     </div>
   </div>
 
-  <!-- MODAL DETAIL KAJIAN -->
+  <!-- MODAL Delete Family -->
   <div id="modalFamilyDelete" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" class="modal fade text-left">
     <div role="document" class="modal-dialog">
       <div class="modal-content">
@@ -306,12 +308,51 @@ else {
       </div>
     </div>
   </div>
-
+  <!-- MODAL Delete anggota-->
+  <div id="modalAnggotaDelete" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" class="modal fade text-left">
+    <div role="document" class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 id="exampleModalLabel" class="modal-title">Delete Anggota</h4>
+          <button type="button" data-dismiss="modal" aria-label="Close" class="close"><span aria-hidden="true">×</span></button>
+        </div>
+        <div class="modal-body">
+          <div class="table-responsive">
+            <table class="table">
+              <tr>
+                <td>Nama</td>
+                <td id="user-name"></td>
+              </tr>
+            </table>
+          </div>
+          <div class="dropdown-divider"></div>
+          <!-- <input type="hidden" name="kaji" class="form-control" id="file-key"> -->
+        </div>
+        <div class="modal-footer">
+          <div class="row col-12 no-padding ">
+            <div class="row col-12">
+              <h4>Anda yakin akan menghapus?</h4>
+            </div>
+            <div class="row col-12">
+              <button type="button" data-dismiss="modal" class="btn btn-primary" style="margin-right:10px">No</button>
+              <form id="form-anggota-delete" method="get" class="pull-right no-margin">
+                <input type="hidden" name="family-id" id="user-id-anggota-delete">
+                <button class="btn btn-secondary">Yes</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
   <script>
+
   //javascript modal anggota keluarga
   $('#modalAnggotaKeluarga').on('show.bs.modal', function (event) {
     var button = $(event.relatedTarget)
     var modal = $(this)
+
     modal.find('#form-anggota-edit').attr('action','edit_anggota.php');
     modal.find('#form-anggota-delete').attr('action','delete_anggota.php');
     modal.find('.modal-body #family-name').text(button.data('name'));
@@ -328,6 +369,15 @@ else {
 
     // modal.find('.modal-body #family-id').text(button.data('id'))
   })
+
+  $('#modalAnggotaDelete').on('show.bs.modal', function (event) {
+    var button = $(event.relatedTarget)
+    var modal = $(this)
+    modal.find('#form-anggota-delete').attr('action','delete_anggota.php');
+    modal.find('.modal-body #user-name').text(button.data('name'));
+    document.getElementById('user-id-anggota-delete').value=button.data('id') ;
+  })
+
 
   //javascript modal kajian
   $('#modalFamilyDelete').on('show.bs.modal', function (event) {

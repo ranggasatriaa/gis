@@ -213,7 +213,8 @@ else {
                               </div>
                             </div>
                             <div class="col-9 content no-margin">
-                              <a class="pull-right" href="#" data-toggle="modal" data-target="#modaKkegiatan" data-id="<?=$kegiatan->kegiatan_id?>" data-date="<?=date('d F Y',strtotime($kegiatan->kegiatan_date))?>" data-time="<?=date('g:i',strtotime($kegiatan->kegiatan_time))?>" data-title="<?=$kegiatan->kegiatan_title?>" data-description="<?=$kegiatan->kegiatan_description?>" ><i class="fa fa-edit"></i></a>
+                              <a class="pull-right" href="#" data-toggle="modal" data-target="#modalKegiatan" data-id="<?=$kegiatan->kegiatan_id?>" data-date="<?=date('d F Y',strtotime($kegiatan->kegiatan_date))?>" data-time="<?=date('g:i',strtotime($kegiatan->kegiatan_time))?>" data-title="<?=$kegiatan->kegiatan_title?>"
+                                data-description="<?=$kegiatan->kegiatan_description?>" ><i class="fa fa-edit"></i></a>
                               <h5><?=strtoupper($kegiatan->kegiatan_title)?>
                                 <!-- <a href="detail_kegiatan.php"><i class="fa fa-edit"></i></a> -->
                               </h5>
@@ -337,7 +338,7 @@ else {
       </div>
     </div>
 
-    <!-- MODAL DETAIL KAJIAN -->
+    <!-- MODAL DETAIL KEGIATAN -->
     <div id="modalKegiatan" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" class="modal fade text-left">
       <div role="document" class="modal-dialog">
         <div class="modal-content">
@@ -467,8 +468,8 @@ else {
     document.getElementById('jumat-id-delete').value=button.data('id') ;
   })
 
-  //javascript modal kajian
-  $('#modalKegi').on('show.bs.modal', function (event) {
+  //javascript modal kegiatan
+  $('#modalKegiatan').on('show.bs.modal', function (event) {
     var button = $(event.relatedTarget)
     var modal = $(this)
     modal.find('#formedit').attr('action','edit_kajian.php');
@@ -477,7 +478,6 @@ else {
     modal.find('.modal-body #kajian-time').text(button.data('time'))
     modal.find('.modal-body #kajian-title').text(button.data('title'))
     modal.find('.modal-body #kajian-description').text(button.data('description'))
-    modal.find('.modal-body #kajian-speaker').text(button.data('speaker'))
     document.getElementById('kajian-id-edit').value=button.data('id') ;
     document.getElementById('kajian-id-delete').value=button.data('id') ;
     modal.find('.modal-body #kajian-id2').text(button.data('id'))

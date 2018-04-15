@@ -39,14 +39,14 @@ else {
     $status = 9;
     // header('Location: select_place.php');
   }
-  // echo "string";
+  echo "string";
   if(isset($_POST[RequestKey::$FAMILY_ID])&& isset($_POST[RequestKey::$FAMILY_NAME])
   && isset($_POST[RequestKey::$FAMILY_STATUS]) && isset($_POST[RequestKey::$FAMILY_AGE])
   && isset($_POST[RequestKey::$FAMILY_RELIGION]) && isset($_POST[RequestKey::$FAMILY_GENDER])
   && isset($_POST[RequestKey::$FAMILY_BORN_PLACE]) && isset($_POST[RequestKey::$FAMILY_BORN_DATE])
   && isset($_POST[RequestKey::$FAMILY_SALARY])  && isset($_POST[RequestKey::$FAMILY_BLOOD])
   && isset($_POST[RequestKey::$KEIMANAN_SHOLAT]) && isset($_POST[RequestKey::$KEIMANAN_MENGAJI])){
-    // echo "masuk if iset | ";
+    echo "masuk if iset | ";
     $db = new DBHelper();
 
     //escapeInput
@@ -68,7 +68,7 @@ else {
     if(empty($err_name) && empty($err_gender) && empty($err_born_place) && empty($err_age)
     && empty($err_religion) && empty($err_born_date) && empty($err_education)
     && empty($err_salary) && empty($err_blood) && empty($err_sholat) && empty($err_mengaji)){
-      // echo "masuk error | ";
+      echo "masuk error | ";
       $array_family = array();
       $array_family[RequestKey::$FAMILY_ID]          = $family_id;
       $array_family[RequestKey::$FAMILY_NAME]        = $family_name;
@@ -82,15 +82,17 @@ else {
       $array_family[RequestKey::$FAMILY_SALARY]      = $family_salary;
       $array_family[RequestKey::$FAMILY_BLOOD]       = $family_blood;
       $array_keimanan = array();
-      $array_keimanan[RequestKey::$FAMILY_ID]  = $family_id;
+      $array_keimanan[RequestKey::$FAMILY_ID]           = $family_id;
       $array_keimanan[RequestKey::$KEIMANAN_SHOLAT]     = $keimanan_sholat;
       $array_keimanan[RequestKey::$KEIMANAN_MENGAJI]    = $keimanan_mengaji;
 
-      // print_r($array_family);
+      print_r($array_family);
       if ($db->editFamily($array_family) && $db->editKeimanan($array_keimanan)) {
-        // echo "Masuk create keimanan |";
-        $message = 'Sukses edit anggota';
+        echo "Masuk edit |";
         $status = 1;
+        header('Location: detail_family.php?place-id='.$family->place_id.'');
+
+        // $message = 'Sukses edit anggota';
       }
       else {
         $status = 2;
@@ -294,26 +296,20 @@ else {
   </div>
   <?php
   include('foot.php');
-  echo '<script>var status = '.$status.'; var message = "'.$message.'"</script>';
+  echo '<script>var status = '.$status.'; </script>';
   $status = 0;
-  $message = '';
+  // $message = '';
   ?>
   <script>
   $(document).ready(function() {
     if (status == 1) {
-      swal("Success!",message,"success")
+      swal("Success!","Berhasil menghapus anggota","success")
       .then((value) => {
-        window.location.href = "detail_family.php?place-id=<?=$pid?>" + escape(window.location.href);
-      });
+        window.location.href = "detail_anggota.php?place-id=<?=$family->family_id?>" + escape(window.location.href);
+      })
     }
     else if (status == 2) {
-      swal("Failed!",message,"error");
-    }
-    else if (status == 3) {
-      swal("Failed!","Cek Inputan","error");
-    }
-    else if (status == 4) {
-      swal("Failed!","Same location","error");
+      swal("Failed!","gagal query","error");
     }
     else if (status == 9) {
       swal("Failed!","Tidak ada lokasi terpilih","error")

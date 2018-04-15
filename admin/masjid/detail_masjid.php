@@ -11,7 +11,7 @@ else {
 
   $db        = new DBHelper();
   $side_bar     = 2;
-  
+
   $pid       = $_GET[RequestKey::$PLACE_ID];
   $masjid    = $db->getMasjidByPlaceId($pid);
   $place     = $db->getPlaceById($pid);
@@ -216,7 +216,7 @@ else {
                               </div>
                             </div>
                             <div class="col-9 content no-margin">
-                              <a class="pull-right" href="#" data-toggle="modal" data-target="#modaKkegiatan" data-id="<?=$kegiatan->kegiatan_id?>" data-date="<?=date('d F Y',strtotime($kegiatan->kegiatan_date))?>" data-time="<?=date('g:i',strtotime($kegiatan->kegiatan_time))?>" data-title="<?=$kegiatan->kegiatan_title?>" data-description="<?=$kegiatan->kegiatan_description?>" ><i class="fa fa-edit"></i></a>
+                              <a class="pull-right" href="#" data-toggle="modal" data-target="#modalKegiatan" data-id="<?=$kegiatan->kegiatan_id?>" data-date="<?=date('d F Y',strtotime($kegiatan->kegiatan_date))?>" data-time="<?=date('g:i',strtotime($kegiatan->kegiatan_time))?>" data-title="<?=$kegiatan->kegiatan_title?>" data-description="<?=$kegiatan->kegiatan_description?>" ><i class="fa fa-edit"></i></a>
                               <h5><?=strtoupper($kegiatan->kegiatan_title)?>
                                 <!-- <a href="detail_kegiatan.php"><i class="fa fa-edit"></i></a> -->
                               </h5>
@@ -340,7 +340,7 @@ else {
       </div>
     </div>
 
-    <!-- MODAL DETAIL KAJIAN -->
+    <!-- MODAL DETAIL LEGIATAN -->
     <div id="modalKegiatan" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" class="modal fade text-left">
       <div role="document" class="modal-dialog">
         <div class="modal-content">
@@ -366,10 +366,6 @@ else {
                 <tr>
                   <td>Deskripsi</td>
                   <td id="kegiatan-description"></td>
-                </tr>
-                <tr>
-                  <td>Pengisi</td>
-                  <td id="kegiatan-speaker"></td>
                 </tr>
               </table>
             </div>
@@ -471,19 +467,18 @@ else {
   })
 
   //javascript modal kajian
-  $('#modalKegi').on('show.bs.modal', function (event) {
+  $('#modalKegiatan').on('show.bs.modal', function (event) {
     var button = $(event.relatedTarget)
     var modal = $(this)
-    modal.find('#formedit').attr('action','edit_kajian.php');
-    modal.find('#formdelete').attr('action','delete_kajian.php');
-    modal.find('.modal-body #kajian-date').text(button.data('date'))
-    modal.find('.modal-body #kajian-time').text(button.data('time'))
-    modal.find('.modal-body #kajian-title').text(button.data('title'))
-    modal.find('.modal-body #kajian-description').text(button.data('description'))
-    modal.find('.modal-body #kajian-speaker').text(button.data('speaker'))
-    document.getElementById('kajian-id-edit').value=button.data('id') ;
-    document.getElementById('kajian-id-delete').value=button.data('id') ;
-    modal.find('.modal-body #kajian-id2').text(button.data('id'))
+    modal.find('#formedit').attr('action','edit_kegiatan.php');
+    modal.find('#formdelete').attr('action','delete_kegiatan.php');
+    modal.find('.modal-body #kegiatan-date').text(button.data('date'))
+    modal.find('.modal-body #kegiatan-time').text(button.data('time'))
+    modal.find('.modal-body #kegiatan-title').text(button.data('title'))
+    modal.find('.modal-body #kegiatan-description').text(button.data('description'))
+    document.getElementById('kegiatan-id-edit').value=button.data('id') ;
+    document.getElementById('kegiatan-id-delete').value=button.data('id') ;
+    modal.find('.modal-body #kegiatan-id2').text(button.data('id'))
   })
 
   //javascript modal masjid

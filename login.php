@@ -5,8 +5,11 @@ require_once('includes/db-helper.php');
 
 $alert = false;
 
-if(isset($_SESSION[RequestKey::$USER_ID])) {
-  header('Location: admin/');
+if(isset($_SESSION[RequestKey::$USER_LEVEL])) {
+  if ($_SESSION[RequestKey::$USER_LEVEL == 0]) {
+  }else {
+    header('Location: takmir/');
+  }
 }
 else {
 
@@ -89,7 +92,7 @@ else {
           <div class="col-lg-6 bg-white">
             <div class="form d-flex align-items-center">
               <div class="content">
-                <form id="login-form" method="post">
+                <form id="login-form" action="login.php" method="post">
                   <div class="form-group">
                     <input id="login-email" type="username" name="<?=RequestKey::$USER_USERNAME?>" required="" class="input-material">
                     <label for="login-email" class="label-material">Username</label>

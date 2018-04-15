@@ -25,7 +25,6 @@ else {
       //GAGAL QUERY
       $status = 2;
     }
-
     // $place_id = $masjid->place_id;
   }else {
     header('location: ../place.php ');
