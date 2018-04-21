@@ -4,8 +4,12 @@ session_start();
 require_once('includes/request-key.php');
 require_once('includes/db-helper.php');
 
-if(isset($_SESSION[RequestKey::$USER_ID])) {
-  header('Location: admin/.');
+if(isset($_SESSION[RequestKey::$USER_LEVEL])) {
+  if ($_SESSION[RequestKey::$USER_LEVEL] == 0) {
+    header('Location: admin/.');
+  }else{
+    header('Location: takmir/.');
+  }
 }
 else {
   $db = new DBHelper();
@@ -61,12 +65,13 @@ else {
     <?php include('main-navbar.php'); ?>
 
     <div class="row">
-
       <div class="col-lg-12">
         <!-- Page Header-->
         <header class="page-header">
           <div class="container-fluid">
-            <h2 class="no-margin-bottom">Dashboard</h2>
+            <h2 class="no-margin-bottom">Dashboard
+              <a class=" pull-right" href="user/search.php"><i class="fa fa-search"></i></a>
+            </h2>
           </div>
         </header>
         <section class="projects no-padding-top ">

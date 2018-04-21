@@ -632,43 +632,191 @@ class DBHelper{
 
   //GET FILTER Family
   function getFilterFamily($array){
-    $age  = $array['age'];
     $religion = $array['religion'];
-    if(empty($age)){
-      if(empty($religion)){
-          if($result = $this->link->query("SELECT * FROM family ORDER BY place_id")){
-            return $result;
+    $age      = $array['age'];
+    $blood    = $array['blood'];
+    $sholat   = $array['sholat'];
+    $mengaji  = $array['mengaji'];
+    $case ='';
+
+    //CASE
+    if(empty($religion)){
+      if(empty($age)){
+        if(empty($blood)){
+          if(empty($sholat)){
+            if(empty($mengaji)){
+              // $result = $this->link->query("SELECT * FROM family");
+            }else {
+              //mengaji
+              $case = 'k.keimanan_mengaji = '.$mengaji;
+            }
+          }else{
+            //sholat
+            if(empty($mengaji)){
+              $case = 'k.keimanan_sholat = '.$sholat;
+            }else {
+              //mengaji
+              $case = 'k.keimanan_sholat = '.$sholat.' AND k.keimanan_mengaji = '.$mengaji;
+            }
           }
-          else {
-            return false;
+        }else {
+          //blood
+          if(empty($sholat)){
+            if(empty($mengaji)){
+              $case = 'f.family_blood = '.$blood;
+            }else {
+              //mengaji
+              $case = 'f.family_blood = '.$blood.' AND k.keimanan_mengaji = '.$mengaji;
+            }
+          }else{
+            //sholat
+            if(empty($mengaji)){
+              $case = 'f.family_blood = '.$blood.' AND k.keimanan_sholat = '.$sholat;
+            }else {
+              //mengaji
+              $case = 'f.family_blood = '.$blood.' AND k.keimanan_sholat = '.$sholat.' AND k.keimanan_mengaji = '.$mengaji;
+            }
           }
-      }
-      else {
-        if($result = $this->link->query("SELECT * FROM family WHERE family_religion = '$religion' ORDER BY family_religion")){
-          return $result;
         }
-        else {
-          return false;
+      }else {
+        //age
+        if(empty($blood)){
+          if(empty($sholat)){
+            if(empty($mengaji)){
+              $case = 'f.family_age = '.$age;
+            }else {
+              //mengaji
+              $case = 'f.family_age = '.$age.' AND k.keimanan_mengaji = '.$mengaji;
+            }
+          }else{
+            //sholat
+            if(empty($mengaji)){
+              $case = 'f.family_age = '.$age.' AND k.keimanan_sholat = '.$sholat;
+            }else {
+              //mengaji
+              $case = 'f.family_age = '.$age.' AND k.keimanan_sholat = '.$sholat.' AND k.keimanan_mengaji = '.$mengaji;
+            }
+          }
+        }else {
+          //blood
+          if(empty($sholat)){
+            if(empty($mengaji)){
+              $case = 'f.family_age = '.$age.' AND f.family_blood = '.$blood;
+            }else {
+              //mengaji
+              $case = 'f.family_age = '.$age.' AND f.family_blood = '.$blood.' AND k.keimanan_mengaji = '.$mengaji;
+            }
+          }else{
+            //sholat
+            if(empty($mengaji)){
+              $case = 'f.family_age = '.$age.' AND f.family_blood = '.$blood.' AND k.keimanan_sholat = '.$sholat;
+            }else {
+              //mengaji
+              $case = 'f.family_age = '.$age.' AND f.family_blood = '.$blood.' AND k.keimanan_sholat = '.$sholat.' AND k.keimanan_mengaji = '.$mengaji;
+            }
+          }
         }
       }
     }else {
-      if(empty($religion)){
-        if($result = $this->link->query("SELECT * FROM family WHERE family_age = '$age' ORDER BY family_age")){
-          return $result;
+      //religion
+      if(empty($age)){
+        if(empty($blood)){
+          if(empty($sholat)){
+            if(empty($mengaji)){
+              $case = 'f.family = '.$religion;
+            }else {
+              //mengaji
+              $case = 'f.family = '.$religion.' AND k.keimanan_mengaji = '.$mengaji;
+            }
+          }else{
+            //sholat
+            if(empty($mengaji)){
+              $case = 'f.family = '.$religion.' AND k.keimanan_sholat = '.$sholat;
+            }else {
+              //mengaji
+              $case = 'f.family = '.$religion.' AND k.keimanan_sholat = '.$sholat.' AND k.keimanan_mengaji = '.$mengaji;
+            }
+          }
+        }else {
+          //blood
+          if(empty($sholat)){
+            if(empty($mengaji)){
+              $case = 'f.family = '.$religion.' AND f.family_blood = '.$blood;
+            }else {
+              //mengaji
+              $case = 'f.family = '.$religion.' AND f.family_blood = '.$blood.' AND k.keimanan_mengaji = '.$mengaji;
+            }
+          }else{
+            //sholat
+            if(empty($mengaji)){
+              $case = 'f.family = '.$religion.' AND f.family_blood = '.$blood.' AND k.keimanan_sholat = '.$sholat;
+            }else {
+              //mengaji
+              $case = 'f.family = '.$religion.' AND f.family_blood = '.$blood.' AND k.keimanan_sholat = '.$sholat.' AND k.keimanan_mengaji = '.$mengaji;
+            }
+          }
         }
-        else {
-          return false;
-        }
-      }
-      else {
-        if($result = $this->link->query("SELECT * FROM family WHERE family_religion = '$religion' AND family_age = '$age' ORDER BY place_id")){
-          return $result;
-        }
-        else {
-          return false;
+      }else {
+        //age
+        if(empty($blood)){
+          if(empty($sholat)){
+            if(empty($mengaji)){
+              $case = 'f.family = '.$religion.' AND f.family_age = '.$age;
+            }else {
+              //mengaji
+              $case = 'f.family = '.$religion.' AND f.family_age = '.$age.' AND k.keimanan_mengaji = '.$mengaji;
+            }
+          }else{
+            //sholat
+            if(empty($mengaji)){
+              $case = 'f.family = '.$religion.' AND f.family_age = '.$age.' AND k.keimanan_sholat = '.$sholat;
+            }else {
+              //mengaji
+              $case = 'f.family = '.$religion.' AND f.family_age = '.$age.' AND k.keimanan_sholat = '.$sholat.' AND k.keimanan_mengaji = '.$mengaji;
+            }
+          }
+        }else {
+          //blood
+          if(empty($sholat)){
+            if(empty($mengaji)){
+              $case = 'f.family = '.$religion.' AND f.family_age = '.$age.' AND f.family_blood = '.$blood;
+            }else {
+              //mengaji
+              $case = 'f.family = '.$religion.' AND f.family_age = '.$age.' AND f.family_blood = '.$blood.' AND k.keimanan_mengaji = '.$mengaji;
+            }
+          }else{
+            //sholat
+            if(empty($mengaji)){
+              $case = 'f.family = '.$religion.' AND f.family_age = '.$age.' AND f.family_blood = '.$blood.' AND k.keimanan_sholat = '.$sholat;
+            }else {
+              //mengaji
+              $case = 'f.family = '.$religion.' AND f.family_age = '.$age.' AND f.family_blood = '.$blood.' AND k.keimanan_sholat = '.$sholat.' AND k.keimanan_mengaji = '.$mengaji;
+            }
+          }
         }
       }
     }
+    // $case = 'f.family_religion = '.$religion.' AND f.family_age = '.$age.' AND f.family_blood = '.$blood
+    // $case = 'family_religion = '.$religion;
+
+
+
+    //INPUT QUERY
+    if(empty($age) && empty($religion) && empty($blood) && empty($sholat) && empty($mengaji)){
+      if ($result = $this->link->query("SELECT * FROM family")) {
+        return $result;
+      }else {
+        return false;
+      }
+    }
+    else {
+      if ($result = $this->link->query("SELECT * FROM family AS f LEFT JOIN keimanan AS k ON f.family_id = k.family_id WHERE $case")) {
+        return $result;
+      }else {
+        return  false;
+      }
+    }
+    // return $result;
   }
 
   //GET gamilu by place id

@@ -49,14 +49,17 @@ class RequestKey {
   public static $FAMILY_PLACE_ID      = 'family-place-id';
   public static $FAMILY_NAME          = 'family-name';
   public static $FAMILY_STATUS        = 'family-status';
+  public static $FAMILY_STATUS_NUMBER = 'family-status-number';
+  public static $FAMILY_KAWIN         = 'family-kawin';
   public static $FAMILY_RELIGION      = 'family-religion';
-  public static $FAMILY_AGE        = 'family-age';
+  public static $FAMILY_AGE           = 'family-age';
   public static $FAMILY_GENDER        = 'family-gender';
   public static $FAMILY_BORN_PLACE    = 'family-born-place';
   public static $FAMILY_BORN_DATE     = 'family-born-date';
   public static $FAMILY_EDUCATION     = 'family-education';
   public static $FAMILY_SALARY        = 'family-salary';
   public static $FAMILY_BLOOD         = 'family-blood';
+  public static $FAMILY_DONOR         = 'family-donor';
 
   //KEIMANAN
   public static $KEIMANAN_ID          = 'keimanan-id';

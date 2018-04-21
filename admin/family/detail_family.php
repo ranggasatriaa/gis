@@ -63,7 +63,7 @@ else {
                     <!-- <a class="btn btn-sm btn-secondary" href="delete_masjid.php<?=$masjid->masjid_id?>"><i class="fa fa-eraser"></i> Delete</a> -->
                   </div>
                   <div class="card-header">
-                    <h4> Rumah Keluarga <?=$family_leader->family_gender = 1 ? "Pak" : "Bu"?> <?= $family_leader->family_name ?></h4>
+                    <h4> Rumah Keluarga <?=$family_leader->family_gender = 1 ? "Pak" : "Bu"?> <?= ucwords($family_leader->family_name) ?></h4>
                   </div>
                   <div class="card-body">
                     <h5>Anggota Keluarga
@@ -85,7 +85,7 @@ else {
                         ?>
                         <tr>
                           <td><?=$i?></td>
-                          <td><?=$family->family_name?></td>
+                          <td><?=ucwords($family->family_name)?></td>
                           <td><?php
                           if ($family->family_status == 0) {
                             echo "Kepala Keluarga";
@@ -100,7 +100,7 @@ else {
                           <td>
                             <a class="btn btn-primary btn-sm" href="detail_anggota.php?<?=RequestKey::$FAMILY_ID?>=<?=$family->family_id?>">Detail</a>
                             <!-- <?=$family->family_name?> -->
-                            
+
                             <!-- <a class="btn btn-primary btn-sm" href="detail_anggota_family.php">Detail</a> -->
                           </td>
                         </tr>

@@ -49,7 +49,7 @@ else {
       <div class="content-inner">
         <!-- Page Header-->
         <header class="page-header">
-          <div class="container-fluid">
+            <div class="container-fluid">
             <h2 class="no-margin-bottom">Delete family</h2>
           </div>
         </header>

@@ -14,6 +14,8 @@ else {
   $err_location    = '';
   $err_name        = '';
   $err_status      = '';
+  $err_status_number= '';
+  $err_kawin       = '';
   $err_religion    = '';
   $err_age         = '';
   $err_gender      = '';
@@ -22,8 +24,9 @@ else {
   $err_education   = '';
   $err_salary      = '';
   $err_blood       = '';
+  $err_donor       = '';
   $err_sholat      = '';
-  $err_mengaji       = '';
+  $err_mengaji     = '';
 
 
   if (isset($_POST[RequestKey::$PLACE_LOCATION])) {
@@ -38,97 +41,106 @@ else {
   && isset($_POST[RequestKey::$FAMILY_RELIGION]) && isset($_POST[RequestKey::$FAMILY_GENDER])
   && isset($_POST[RequestKey::$FAMILY_BORN_PLACE]) && isset($_POST[RequestKey::$FAMILY_BORN_DATE])
   && isset($_POST[RequestKey::$FAMILY_SALARY])  && isset($_POST[RequestKey::$FAMILY_BLOOD])
-  && isset($_POST[RequestKey::$KEIMANAN_SHOLAT]) && isset($_POST[RequestKey::$KEIMANAN_MENGAJI])){
-    // echo "masuk if iset | ";
-    $db = new DBHelper();
+){
+  // echo "masuk if iset | ";
+  $db = new DBHelper();
 
-    //escapeInput
-    $place_name         = $db->escapeInput($_POST[RequestKey::$FAMILY_NAME]);
-    $place_location     = $db->escapeInput($_POST[RequestKey::$PLACE_LOCATION]);
-    $family_name        = $db->escapeInput($_POST[RequestKey::$FAMILY_NAME]);
-    $family_status      = $db->escapeInput($_POST[RequestKey::$FAMILY_STATUS]);
-    $family_age         = $db->escapeInput($_POST[RequestKey::$FAMILY_AGE]);
-    $family_religion    = $db->escapeInput($_POST[RequestKey::$FAMILY_RELIGION]);
-    $family_gender      = $db->escapeInput($_POST[RequestKey::$FAMILY_GENDER]);
-    $family_born_place  = $db->escapeInput($_POST[RequestKey::$FAMILY_BORN_PLACE]);
-    $family_born_date   = $db->escapeInput($_POST[RequestKey::$FAMILY_BORN_DATE]);
-    $family_education   = $db->escapeInput($_POST[RequestKey::$FAMILY_EDUCATION]);
-    $family_salary      = $db->escapeInput($_POST[RequestKey::$FAMILY_SALARY]);
-    $family_blood       = $db->escapeInput($_POST[RequestKey::$FAMILY_BLOOD]);
-    $keimanan_sholat    = $db->escapeInput($_POST[RequestKey::$KEIMANAN_MENGAJI]);
-    $keimanan_mengaji   = $db->escapeInput($_POST[RequestKey::$KEIMANAN_SHOLAT]);
+  //escapeInput
+  $place_name         = $db->escapeInput($_POST[RequestKey::$FAMILY_NAME]);
+  $place_location     = $db->escapeInput($_POST[RequestKey::$PLACE_LOCATION]);
+  $family_name        = $db->escapeInput($_POST[RequestKey::$FAMILY_NAME]);
+  $family_status      = $db->escapeInput($_POST[RequestKey::$FAMILY_STATUS]);
+  $family_kawin       = $db->escapeInput($_POST[RequestKey::$FAMILY_KAWIN]);
+  $family_age         = $db->escapeInput($_POST[RequestKey::$FAMILY_AGE]);
+  $family_religion    = $db->escapeInput($_POST[RequestKey::$FAMILY_RELIGION]);
+  $family_gender      = $db->escapeInput($_POST[RequestKey::$FAMILY_GENDER]);
+  $family_born_place  = $db->escapeInput($_POST[RequestKey::$FAMILY_BORN_PLACE]);
+  $family_born_date   = $db->escapeInput($_POST[RequestKey::$FAMILY_BORN_DATE]);
+  $family_education   = $db->escapeInput($_POST[RequestKey::$FAMILY_EDUCATION]);
+  $family_salary      = $db->escapeInput($_POST[RequestKey::$FAMILY_SALARY]);
+  $family_blood       = $db->escapeInput($_POST[RequestKey::$FAMILY_BLOOD]);
+  $family_donor       = $db->escapeInput($_POST[RequestKey::$FAMILY_DONOR]);
+  $keimanan_sholat    = $db->escapeInput($_POST[RequestKey::$KEIMANAN_MENGAJI]);
+  $keimanan_mengaji   = $db->escapeInput($_POST[RequestKey::$KEIMANAN_SHOLAT]);
 
-    //CEK ERROR PADA INPUTAN
-    if(empty($err_name) && empty($err_gender) && empty($err_born_place) && empty($err_age)
-    && empty($err_religion) && empty($err_born_date) && empty($err_education)
-    && empty($err_salary) && empty($err_blood) && empty($err_sholat) && empty($err_mengaji)){
-      // echo "masuk error | ";
+  //CEK ERROR PADA INPUTAN
+  if(empty($err_name) && empty($err_gender) && empty($err_born_place) && empty($err_age)
+  && empty($err_religion) && empty($err_born_date) && empty($err_education)
+  && empty($err_salary) && empty($err_blood) && empty($err_sholat) && empty($err_mengaji)){
+    // echo "masuk error | ";
 
-      $array_place = array();
-      $array_place[RequestKey::$PLACE_NAME]         = $place_name;
-      $array_place[RequestKey::$FAMILY_NAME]        = $place_name;
-      $array_place[RequestKey::$PLACE_LOCATION]     = $place_location;
-      $array_place[RequestKey::$PLACE_CATEGORY]     = '1';
-      // print_r($array_place);
-      if (!$db->isLocationExist($place_location)) {
-        if ($place = $db->createPlace($array_place)) {
-          // echo "masuk create place | ";
-          $family_place_id = (int)$db->lastPlaceId();
-          // echo "place id: ". $family_place_id;
-          // $family_age =  date_diff(date_create($family_born_date), date_create('today'))->y;
-          // $family_age = 10;
-          $array_family = array();
-          $array_family[RequestKey::$FAMILY_PLACE_ID]    = $family_place_id;
-          $array_family[RequestKey::$FAMILY_NAME]        = $family_name;
-          $array_family[RequestKey::$FAMILY_STATUS]      = $family_status;
-          $array_family[RequestKey::$FAMILY_AGE]         = $family_age;
-          $array_family[RequestKey::$FAMILY_RELIGION]    = $family_religion;
-          $array_family[RequestKey::$FAMILY_GENDER]      = $family_gender;
-          $array_family[RequestKey::$FAMILY_BORN_PLACE]  = $family_born_place;
-          $array_family[RequestKey::$FAMILY_BORN_DATE]   = $family_born_date ;
-          $array_family[RequestKey::$FAMILY_EDUCATION]   = $family_education;
-          $array_family[RequestKey::$FAMILY_SALARY]      = $family_salary;
-          $array_family[RequestKey::$FAMILY_BLOOD]       = $family_blood;
+    $array_place = array();
+    $array_place[RequestKey::$PLACE_NAME]         = $place_name;
+    $array_place[RequestKey::$FAMILY_NAME]        = $place_name;
+    $array_place[RequestKey::$PLACE_LOCATION]     = $place_location;
+    $array_place[RequestKey::$PLACE_CATEGORY]     = '1';
+    // print_r($array_place);
+    if (!$db->isLocationExist($place_location)) {
+      if ($place = $db->createPlace($array_place)) {
+        // echo "masuk create place | ";
+        $family_place_id = (int)$db->lastPlaceId();
+        // echo "place id: ". $family_place_id;
+        // $family_age =  date_diff(date_create($family_born_date), date_create('today'))->y;
+        // $family_age = 10;
+        $array_family = array();
+        $array_family[RequestKey::$FAMILY_PLACE_ID]    = $family_place_id;
+        $array_family[RequestKey::$FAMILY_NAME]        = $family_name;
+        $array_family[RequestKey::$FAMILY_STATUS]      = $family_status;
+        $array_family[RequestKey::$FAMILY_KAWIN]       = $family_kawin;
+        $array_family[RequestKey::$FAMILY_AGE]         = $family_age;
+        $array_family[RequestKey::$FAMILY_RELIGION]    = $family_religion;
+        $array_family[RequestKey::$FAMILY_GENDER]      = $family_gender;
+        $array_family[RequestKey::$FAMILY_BORN_PLACE]  = $family_born_place;
+        $array_family[RequestKey::$FAMILY_BORN_DATE]   = $family_born_date ;
+        $array_family[RequestKey::$FAMILY_EDUCATION]   = $family_education;
+        $array_family[RequestKey::$FAMILY_SALARY]      = $family_salary;
+        $array_family[RequestKey::$FAMILY_BLOOD]       = $family_blood;
+        $array_family[RequestKey::$FAMILY_DONOR]       = $family_donor;
 
-          // print_r($array_family);
-          if ($family = $db->createFamily($array_family)) {
-            // echo "Masuk create family | ";
-            $keimanan_family_id = (int)$db->lastFamilyId();
+        // print_r($array_family);
+        if ($family = $db->createFamily($array_family)) {
+          // echo "Masuk create family | ";
+          $keimanan_family_id = (int)$db->lastFamilyId();
 
-            $array_keimanan = array();
-            $array_keimanan[RequestKey::$KEIMANAN_FAMILY_ID]  = $keimanan_family_id;
-            $array_keimanan[RequestKey::$KEIMANAN_SHOLAT]     = $keimanan_sholat;
-            $array_keimanan[RequestKey::$KEIMANAN_MENGAJI]    = $keimanan_mengaji;
-            // print_r($array_keimanan);
+          $array_keimanan = array();
+          $array_keimanan[RequestKey::$KEIMANAN_FAMILY_ID]  = $keimanan_family_id;
+          $array_keimanan[RequestKey::$KEIMANAN_SHOLAT]     = $keimanan_sholat;
+          $array_keimanan[RequestKey::$KEIMANAN_MENGAJI]    = $keimanan_mengaji;
+          // print_r($array_keimanan);
 
-            if ($keimanan = $db->createKeimanan($array_keimanan)) {
-              // echo "Masuk create keimanan |";
-              $message = 'Sukses membuat keluarga';
-              $status = 1;
-            }
-            else {
-              $db->deletePlace($family_place_id);
-              $db->deleteFamilyById($keimanan_family_id);
-              $status = 2;
-              $message = 'gagal create keimanan';
-            }
+          if ($keimanan = $db->createKeimanan($array_keimanan)) {
+            // echo "Masuk create keimanan |";
+            $message = 'Sukses membuat keluarga';
+            $status = 1;
           }
-          else{
+          else {
             $db->deletePlace($family_place_id);
+            $db->deleteFamilyById($keimanan_family_id);
             $status = 2;
+            $message = 'gagal create keimanan';
           }
         }
         else{
-          //error create
-          $status = 3;
+          $db->deletePlace($family_place_id);
+          $status = 2;
+          $message = 'Cek Inputan';
         }
       }
       else{
-        //telah ada lokasi yang sama
-        $status = 4;
+        //error create
+        $status = 2;
+        $message = 'Error Create Lokasi';
+
       }
     }
+    else{
+      //telah ada lokasi yang sama
+      $status = 2;
+      $message = 'Same Location';
+
+    }
   }
+}
 }
 ?>
 
@@ -193,13 +205,14 @@ else {
                       <div class="form-group row">
                         <label class="col-sm-2 form-control-label ">Agama</label>
                         <div class="col-sm-10">
-                          <select class="form-control" name="<?=RequestKey::$FAMILY_RELIGION?>" required>
+                          <select id="religion" class="form-control" name="<?=RequestKey::$FAMILY_RELIGION?>" required>
                             <option value=""> - Pilih -</option>
                             <option value="1">Islam</option>
                             <option value="2">Kristen</option>
                             <option value="3">Katolik</option>
                             <option value="4">Budha</option>
                             <option value="5">Hindu</option>
+                            <option value="6">Lainnya</option>
                           </select>
                           <small class="form-text" ><?=$err_gender?></small>
                         </div>
@@ -258,6 +271,19 @@ else {
                         </div>
                       </div>
                       <div class="form-group row">
+                        <label class="col-sm-2 form-control-label ">Status Kawin</label>
+                        <div class="col-sm-10">
+                          <select class="form-control" name="<?=RequestKey::$FAMILY_KAWIN?>">
+                            <option value=""> - Pilih -</option>
+                            <option value="0">Belum Kawin</option>
+                            <option value="1">Kawin</option>
+                            <option value="2">Janda/duda cerai hidup</option>
+                            <option value="3">Janda/duda cerai mati</option>
+                          </select>
+                          <small class="form-text" ><?=$err_kawin?></small>
+                        </div>
+                      </div>
+                      <div class="form-group row">
                         <label class="col-sm-2 form-control-label ">Golongan Darah</label>
                         <div class="col-sm-10">
                           <select class="form-control" name="<?=RequestKey::$FAMILY_BLOOD?>">
@@ -271,29 +297,44 @@ else {
                         </div>
                       </div>
                       <div class="form-group row">
-                        <label class="col-sm-2 form-control-label ">Kebiasaan Sholat</label>
+                        <label class="col-sm-2 form-control-label ">Kesediaan Donor</label>
                         <div class="col-sm-10">
-                          <select class="form-control" name="<?=RequestKey::$KEIMANAN_SHOLAT?>">
-                            <option value=""> - Pilih  -</option>
-                            <option value="1">5 waktu</option>
-                            <option value="2">tidak 5 waktu</option>
-                            <option value="3">Sholat jumat saja</option>
-                            <option value="4">Sholat Hari Raya saja</option>
+                          <select class="form-control" name="<?=RequestKey::$FAMILY_DONOR?>">
+                            <option value=""> - Pilih -</option>
+                            <option value="1">Bersedia</option>
+                            <option value="2">Tidak bersedia</option>
                           </select>
-                          <small class="form-text" ><?=$err_sholat?></small>
+                          <small class="form-text" ><?=$err_donor?></small>
                         </div>
                       </div>
-                      <div class="form-group row">
-                        <label class="col-sm-2 form-control-label ">Kemampuan Mengaji</label>
-                        <div class="col-sm-10">
-                          <select class="form-control" name="<?=RequestKey::$KEIMANAN_MENGAJI?>">
-                            <option value=""> - Pilih  -</option>
-                            <option value="1">Tidak Bisa</option>
-                            <option value="2">Kurang Lancar</option>
-                            <option value="3">Lancar Membaca</option>
-                            <option value="4">Hafal Al-Quran</option>
-                          </select>
-                          <small class="form-text" ><?=$err_mengaji?></small>
+                      <div id=keimanan style="display:none">
+                        <div class="form-group row">
+                          <label class="col-sm-2 form-control-label ">Kebiasaan Sholat</label>
+                          <div class="col-sm-10">
+                            <select class="form-control" name="<?=RequestKey::$KEIMANAN_SHOLAT?>">
+                              <option value=""> - Pilih  -</option>
+                              <option value="0">Tidak Sholat</option>
+                              <option value="1">5 waktu di Masjid</option>
+                              <option value="2">5 waktu di Rumah</option>
+                              <option value="3">kurang 5 waktu di masjid</option>
+                              <option value="4">Sholat Jumat saja</option>
+                              <option value="5">Sholat Hari Raya saja</option>
+                            </select>
+                            <small class="form-text" ><?=$err_sholat?></small>
+                          </div>
+                        </div>
+                        <div class="form-group row">
+                          <label class="col-sm-2 form-control-label ">Kemampuan Membaca Al-Quran</label>
+                          <div class="col-sm-10">
+                            <select class="form-control" name="<?=RequestKey::$KEIMANAN_MENGAJI?>">
+                              <option value=""> - Pilih  -</option>
+                              <option value="0">Tidak Bisa</option>
+                              <option value="1">Kurang Lancar</option>
+                              <option value="2">Lancar Membaca</option>
+                              <option value="3">Hafal Al-Quran</option>
+                            </select>
+                            <small class="form-text" ><?=$err_mengaji?></small>
+                          </div>
                         </div>
                       </div>
                       <div class="form-group">
@@ -314,7 +355,7 @@ else {
   </div>
   <?php
   include('foot.php');
-  echo '<script>var status = '.$status.'; var message = "'.$message.'"</script>';
+  echo '<script>var status = '.$status.'; var message = "'.$message.'";</script>';
   $status = 0;
   $message = '';
   ?>
@@ -327,19 +368,22 @@ else {
       });
     }
     else if (status == 2) {
-      swal("Failed!","Tidak bisa masuk query","error");
-    }
-    else if (status == 3) {
-      swal("Failed!","Cek Inputan","error");
-    }
-    else if (status == 4) {
-      swal("Failed!","Same location","error");
+      swal("Failed!",message,"error");
     }
     else if (status == 9) {
       swal("Failed!","Tidak ada lokasi terpilih","error")
       .then((value) => {
         window.location.href = "select_place.php";
       });
+    }
+  });
+
+  $('#religion').on('change',function(){
+    if( $(this).val()==="1"){
+      $("#keimanan").show()
+    }
+    else{
+      $("#keimanan").hide()
     }
   });
   </script>

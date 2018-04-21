@@ -170,6 +170,12 @@ else {
           origin: new google.maps.Point(0, 0),
           anchor: new google.maps.Point(16, 32)
         }
+        var lainnya_icon={
+          url: '../img/lainnya_icon.png',
+          size: new google.maps.Size(32, 32),
+          origin: new google.maps.Point(0, 0),
+          anchor: new google.maps.Point(16, 32)
+        }
 
     //MARKER FOR HOME
     var infowindow = new google.maps.InfoWindow()
@@ -186,6 +192,8 @@ else {
         var religion = budha_icon;
       }else if (rumah[4] == 5) {
         var religion = hindu_icon;
+      }else if (rumah[4] == 6) {
+        var religion = lainnya_icon;
       }
       var marker = new google.maps.Marker({
         position: {lat: rumah[1], lng: rumah[2]},

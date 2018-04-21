@@ -36,7 +36,7 @@ span:focus {
 }
 
 section {
-  padding: 50px 0;
+  padding: 20px 0;
 }
 
 canvas {
@@ -57,7 +57,7 @@ canvas {
 }
 
 header.page-header {
-  padding: 20px 0;
+  padding: 10px 0;
 }
 
 table {
@@ -3339,3 +3339,5 @@ a > code {
     margin-left: 15px;
   }
 }
+
+

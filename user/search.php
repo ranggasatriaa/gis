@@ -1,11 +1,15 @@
 
 <?php
 session_start();
-require_once('../../includes/request-key.php');
-require_once('../../includes/db-helper.php');
+require_once('../includes/request-key.php');
+require_once('../includes/db-helper.php');
 
-if(!isset($_SESSION[RequestKey::$USER_ID])) {
-  header('Location: ../../.');
+if(isset($_SESSION[RequestKey::$USER_LEVEL])) {
+  if ($_SESSION[RequestKey::$USER_LEVEL] == 0) {
+    header('Location: ../admin/.');
+  }else{
+    header('Location: ../takmir/.');
+  }
 }
 else {
   $db = new DBHelper();
@@ -55,17 +59,14 @@ else {
 <body>
 
   <div class="page">
-
     <?php include('main-navbar.php'); ?>
-
-    <div class="page-content d-flex align-items-stretch">
-      <?php include('side-navbar.php') ?>
-
-      <div class="content-inner">
+    <div class="row">
+      <div class="col-lg-12">
         <!-- Page Header-->
         <header class="page-header">
-          <div class="container-fluid">
-            <h2 class="no-margin-bottom">Masyarakat</h2>
+          <div class="container-fluid col-12 row">
+            <h2 class="no-margin-bottom col-8">Cari Masyarakat</h2>
+            <a href="../." class="text-right col-4"><h7 > Kembali <span class="fa fa-arrow-right"></span></h7></a>
           </div>
         </header>
         <section style="padding:20px 0px" class="dashboard-header">
@@ -226,7 +227,7 @@ else {
                                   ?>
                                 </td>
                                 <td>
-                                  <a  class="btn btn-primary btn-sm" href="detail_anggota.php?<?=RequestKey::$FAMILY_ID?>=<?=$family->family_id?>">Detail</a>
+                                  <a  class="btn btn-primary btn-sm" href="detail_orang.php?<?=RequestKey::$FAMILY_ID?>=<?=$family->family_id?>">Detail</a>
                                 </td>
                               </tr>
                               <?php

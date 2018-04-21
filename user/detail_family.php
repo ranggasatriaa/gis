@@ -71,8 +71,10 @@ $place          = $db->getPlaceById($pid);
                             }
                             ?></td>
                             <td>
+                              <a  class="btn btn-primary btn-sm" href="detail_anggota.php?<?=RequestKey::$FAMILY_ID?>=<?=$family->family_id?>">Detail</a>
+
                               <!-- <?=$family->family_name?> -->
-                              <a class="btn btn-sm btn-primary" href="#" data-toggle="modal" data-target="#modalAnggotaKeluarga"
+                              <!-- <a class="btn btn-sm btn-primary" href="#" data-toggle="modal" data-target="#modalAnggotaKeluarga"
                               data-id="<?=$family->family_id?>"
                               data-name="<?=strtoupper($family->family_name)?>"
                               data-status="<?php if ($family->family_status = 0) {
@@ -92,7 +94,7 @@ $place          = $db->getPlaceById($pid);
                               data-education="<?=$family->family_education?>"
                               data-salary="<?=$family->family_salary?>"
                               data-blood="<?=$family->family_blood?>" >
-                              <i class=""></i> Detail</a>
+                              <i class=""></i> Detail</a> -->
                               <!-- <a class="btn btn-primary btn-sm" href="detail_anggota_family.php">Detail</a> -->
                             </td>
                           </tr>

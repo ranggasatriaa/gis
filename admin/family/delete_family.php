@@ -15,7 +15,7 @@ else {
 
   if(isset($_GET[RequestKey::$PLACE_ID])){
     $pid = $db->escapeInput($_GET[RequestKey::$PLACE_ID]);
-    if ($db->deleteAnggota($pid)) {
+    if ($db->deleteFamilyByPlaceId($pid)) {
       if($db->deleteplace($pid)){
 
         $status = 1;
