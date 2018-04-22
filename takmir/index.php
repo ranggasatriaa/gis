@@ -115,7 +115,7 @@ else {
               <div class="col-lg-6">
                 <div class="pie-chart-example card">
                   <div class="card-header">
-                    <h3> Kemampuan Mengaji</h3>
+                    <h3> Kemampuan Membaca Al-Quran</h3>
                   </div>
                   <div class="card-body">
                     <canvas id="chartMengaji"></canvas>
@@ -242,26 +242,28 @@ else {
        "Kristen",
        "Katolok",
        "Budha",
-       "Hindu"
+       "Hindu",
+       "Lainnya"
      ],
      datasets: [
        {
-         data: [<?=$db->countReligion(1)?>,<?=$db->countReligion(2)?>,<?=$db->countReligion(3)?>,<?=$db->countReligion(4)?>,<?=$db->countReligion(5)?>],
+         data: [<?=$db->countReligion(1)?>,<?=$db->countReligion(2)?>,<?=$db->countReligion(3)?>,<?=$db->countReligion(4)?>,<?=$db->countReligion(5)?>,<?=$db->countReligion(6)?>],
          borderWidth: 0,
          backgroundColor: [
-           '#b7dfcb',
-           "#5abad1",
+           "#9ed5cd",
+           "#69c0d1",
+           "#44a7cb",
            "#3984b6",
-           "#264992",
-           "#151e5e"
-
+           "#2e62a1",
+           "#192473"
          ],
          hoverBackgroundColor: [
-           '#b7dfcb',
-           "#5abad1",
+           "#9ed5cd",
+           "#69c0d1",
+           "#44a7cb",
            "#3984b6",
-           "#264992",
-           "#151e5e"
+           "#2e62a1",
+           "#192473"
          ]
        }
      ]
@@ -278,27 +280,33 @@ else {
    type: 'pie',
    data: {
      labels: [
-       "5 Waktu",
-       "Tidak 5 waktu",
+       "TIdak Sholat",
+       "5 Waktu di Masjid",
+       "5 waktu di rumah",
+       "Tidak 5 waktu di masjid",
        "Sholat Jumat Saja",
        "Sholat Hari Raya Saja",
      ],
      datasets: [
        {
-         data: [<?=$db->countSholat(1)?>,<?=$db->countSholat(2)?>,<?=$db->countSholat(3)?>,<?=$db->countSholat(4)?>],
+         data: [<?=$db->countSholat(0)?>,<?=$db->countSholat(1)?>,<?=$db->countSholat(2)?>,<?=$db->countSholat(3)?>,<?=$db->countSholat(4)?>,<?=$db->countSholat(5)?>],
          borderWidth: 0,
          backgroundColor: [
-           '#9ed5cd',
+           "#9ed5cd",
+           "#69c0d1",
            "#44a7cb",
+           "#3984b6",
            "#2e62a1",
-           "#192574"
-
+           "#192473"
          ],
          hoverBackgroundColor: [
-           '#9ed5cd',
+           "#9ed5cd",
+           "#69c0d1",
            "#44a7cb",
+           "#3984b6",
            "#2e62a1",
-           "#192574"
+           "#192473"
+
          ]
        }
      ]
@@ -316,11 +324,10 @@ else {
    type: 'pie',
    data: {
      labels: [
-       "Balita",
-       "Anak-anak",
-       "Remaja",
-       "Dewasa",
-       "Lansia"
+       "Tidak Bisa",
+       "Kurang Lancar",
+       "Lancar Membaca",
+       "Hafal Al-Quran"
      ],
      datasets: [
        {

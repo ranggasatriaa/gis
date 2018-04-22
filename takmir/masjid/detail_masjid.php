@@ -54,8 +54,9 @@ else {
       <div class="content-inner">
         <!-- Page Header-->
         <header class="page-header">
-          <div class="container-fluid">
-            <h2 class="no-margin-bottom">Place Detail</h2>
+          <div class="container-fluid col-12 row">
+            <h2 class="no-margin-bottom col-8">Place Detail</h2>
+            <a href="../place.php" class="text-right col-4"><h7 > Kembali <span class="fa fa-arrow-right"></span></h7></a>
           </div>
         </header>
         <section class="dashboard-header">

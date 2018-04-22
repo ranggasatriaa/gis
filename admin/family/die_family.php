@@ -14,19 +14,49 @@ else {
   $db = new DBHelper();
 
   if(isset($_GET[RequestKey::$FAMILY_ID])){
-    $fid = $db->escapeInput($_GET[RequestKey::$FAMILY_ID]);
-    $family_old = $db->getFamilyById($fid);
-    $pid = $family_old->place_id;
-    if ($result = $db->deleteFamilyById($fid)) {
-      //MASUK DELETE
-      $status = 1;
-    }
-    else {
-      //GAGAL QUERY
-      $status = 2;
-    }
+    $fid    = $db->escapeInput($_GET[RequestKey::$FAMILY_ID]);
+    $family = $db->getFamilyById($fid);
+    $pid    = $family->place_id;
+    echo $fid;
 
-    // $place_id = $masjid->place_id;
+    if ($family->family_status == 0) {
+      if ($result = $db->dieFamily($fid)) {
+        if ($istris   = $db->getFamilyIstri($pid)) {
+          echo "1 ";
+          while ($istri = $istris->fetch_object()) {
+            echo "2 ";
+            echo " - ".$istri->family_id;
+            $db->updateIstri($istri->family_id);
+          }
+        }
+        $status = 1;
+        $message = 'Anggota keluarga telah meninggal :"(()';
+      }else {
+        if ($result = $db->dieFamily($fid)) {
+          //MASUK DELETE
+          $status = 1;
+          $message = 'Anggota keluarga telah meninggal :"(';
+        }
+        else {
+          //GAGAL QUERY
+          $status = 2;
+          $message = 'Anggota keluarga gagal meinggal :)';
+
+        }
+      }
+    }else {
+      if ($result = $db->dieFamily($fid)) {
+        //MASUK DELETE
+        $status = 1;
+        $message = 'Anggota keluarga telah meninggal :"(';
+      }
+      else {
+        //GAGAL QUERY
+        $status = 2;
+        $message = 'Anggota keluarga gagal meinggal :)';
+
+      }
+    }
   }else {
     header('location: ../place.php ');
   }
@@ -76,20 +106,20 @@ else {
   // echo $status;
   // echo $message;
   include('foot.php');
-  echo '<script>var status = '.$status.';</script>';
+  echo '<script>var status = '.$status.'; </script>';
   $status = 0;
   // $message = '';
   ?>
   <script>
   $(document).ready(function() {
     if (status == 1) {
-      swal("Success!","Berhasil menghapus anggota","success")
+      swal("Success!","message","success")
       .then((value) => {
         window.location.href = "detail_family.php?place-id=<?=$pid?>" + escape(window.location.href);
       })
     }
     else if (status == 2) {
-      swal("Failed!","gagal query","error");
+      swal("Failed!",message,"error");
     }
   });
   </script>

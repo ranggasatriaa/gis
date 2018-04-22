@@ -266,7 +266,7 @@ else {
                       <div class="form-group row">
                         <label class="col-sm-2 form-control-label ">Penghasilan (dalam Rp)</label>
                         <div class="col-sm-10">
-                          <input class="form-control" type="number" name="<?= RequestKey::$FAMILY_SALARY ?>" value="" placeholder="Masukkan Penghasilan">
+                          <input class="form-control" type="number" min="0" name="<?= RequestKey::$FAMILY_SALARY ?>" value="" placeholder="Masukkan Penghasilan">
                           <small class="form-text" ><?=$err_salary?></small>
                         </div>
                       </div>
@@ -302,7 +302,7 @@ else {
                           <select class="form-control" name="<?=RequestKey::$FAMILY_DONOR?>">
                             <option value=""> - Pilih -</option>
                             <option value="1">Bersedia</option>
-                            <option value="2">Tidak bersedia</option>
+                            <option value="0">Tidak bersedia</option>
                           </select>
                           <small class="form-text" ><?=$err_donor?></small>
                         </div>

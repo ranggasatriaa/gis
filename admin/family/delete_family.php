@@ -8,6 +8,7 @@ if(!isset($_SESSION[RequestKey::$USER_ID])) {
   header('Location: ../../.');
 }
 else {
+
   $status          = 0;
   $message         = '';
 

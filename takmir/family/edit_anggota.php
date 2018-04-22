@@ -111,7 +111,7 @@ else {
                       <div class="form-group row">
                         <label class="col-sm-2 form-control-label ">Nama Lengkap</label>
                         <div class="col-sm-10">
-                          <input class="form-control" disabled type="text" name="<?= RequestKey::$FAMILY_NAME ?>" value="<?=$family->family_name?>">
+                          <input class="form-control" disabled type="text" name="<?= RequestKey::$FAMILY_NAME ?>" value="<?=ucwords($family->family_name)?>">
                         </div>
                       </div>
                       <div class="form-group row">
@@ -120,15 +120,36 @@ else {
                           <?php if ($family->family_status == 0) {
                             echo '<input class="form-control" disabled type="text" value="Kepala Keluarga">';
                           }elseif ($family->family_status == 1) {
-                            echo '<input class="form-control" disabled type="text" value="Anak Keluarga">';
+                            echo '<input class="form-control" disabled type="text" value="Istri">';
                           }elseif ($family->family_status == 2) {
-                            echo '<input class="form-control" disabled type="text" value="Anggota Keluarga">';
+                            echo '<input class="form-control" disabled type="text" value="Anak">';
                           }elseif ($family->family_status == 3) {
                             echo '<input class="form-control" disabled type="text" value="Pembantu">';
                           }
                           ?>
                         </div>
                       </div>
+                        <?php if ($family->family_status == 1): ?>
+                          <div class="form-group row">
+                            <labelclass="col-sm-2 form-control-label ">Istri Ke</label>
+                            <div class="col-sm-10">
+                              <input disabled class="form-control" type="number" min="0" name="<?=RequestKey::$FAMILY_STATUS_NUMBER?>" value="<?=$family->family_status_number?>">
+                              <small class="form-text" ><?=$err_status_number?></small>
+                            </div>
+                          </div>
+                        <?php else: if ($family->family_status == 2) {
+                          ?>
+                          <div class="form-group row">
+                            <labelclass="col-sm-2 form-control-label ">Anak Ke</label>
+                            <div class="col-sm-10">
+                              <input disabled class="form-control" type="number" min="0" name="<?=RequestKey::$FAMILY_STATUS_NUMBER?>" value="<?=$family->family_status_number?>">
+                              <small class="form-text" ><?=$err_status_number?></small>
+                            </div>
+                          </div>
+                          <?php
+                        }?>
+                        <?php endif; ?>
+
                       <div class="form-group row">
                         <label class="col-sm-2 form-control-label ">Jenis Kelamin</label>
                         <div class="col-sm-10">
@@ -189,13 +210,47 @@ else {
                       <div class="form-group row">
                         <label class="col-sm-2 form-control-label ">Pendidikan Terakhir</label>
                         <div class="col-sm-10">
-                          <input class="form-control"disabled type="text" name="<?= RequestKey::$FAMILY_EDUCATION ?>" value="<?=$family->family_education?>" placeholder="Masukkan Pendidikan Terakhir" required="">
+                          <?php if ($family->family_education == 0) {
+                            echo '<input class="form-control" disabled type="text" value="Tidak Ada">';
+                          }elseif ($family->family_education == 1) {
+                            echo '<input class="form-control" disabled type="text" value="SD/MI">';
+                          }elseif ($family->family_education == 2) {
+                            echo '<input class="form-control" disabled type="text" value="SMP/MTS">';
+                          }elseif ($family->family_education == 3) {
+                            echo '<input class="form-control" disabled type="text" value="SMA/MA">';
+                          }elseif ($family->family_education == 4) {
+                            echo '<input class="form-control" disabled type="text" value="SMK">';
+                          }elseif ($family->family_education == 5) {
+                            echo '<input class="form-control" disabled type="text" value="Diploma (D3/4)">';
+                          }elseif ($family->family_education == 6) {
+                            echo '<input class="form-control" disabled type="text" value="Sarjana (S1)">';
+                          }elseif ($family->family_education == 7) {
+                            echo '<input class="form-control" disabled type="text" value="Magister (S2)">';
+                          }elseif ($family->family_education == 8) {
+                            echo '<input class="form-control" disabled type="text" value="Doktor (S3)">';
+                          }
+                          ?>
                         </div>
                       </div>
                       <div class="form-group row">
                         <label class="col-sm-2 form-control-label ">Penghasilan (dalam Rp)</label>
                         <div class="col-sm-10">
                           <input class="form-control" disabled type="number" name="<?= RequestKey::$FAMILY_SALARY ?>" value="<?=$family->family_salary?>" placeholder="Masukkan Penghasilan">
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label class="col-sm-2 form-control-label ">Status Kawin</label>
+                        <div class="col-sm-10">
+                          <?php if ($family->family_blood == 0) {
+                            echo '<input class="form-control" disabled type="text" value="Belum Kawin">';
+                          }elseif ($family->family_blood == 1) {
+                            echo '<input class="form-control" disabled type="text" value="Kawin">';
+                          }elseif ($family->family_blood == 2) {
+                            echo '<input class="form-control" disabled type="text" value="Janda/duda cerai hidup">';
+                          }elseif ($family->family_blood == 3) {
+                            echo '<input class="form-control" disabled type="text" value="Janda/duda cerai mati">';
+                          }else
+                          ?>
                         </div>
                       </div>
                       <div class="form-group row">
@@ -209,6 +264,17 @@ else {
                             echo '<input class="form-control" disabled type="text" value="AB">';
                           }elseif ($family->family_blood == 4) {
                             echo '<input class="form-control" disabled type="text" value="O">';
+                          }
+                          ?>
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label class="col-sm-2 form-control-label ">Kesediaan Donor</label>
+                        <div class="col-sm-10">
+                          <?php if ($family->family_donor == 1) {
+                            echo '<input class="form-control" disabled type="text" value="Bersedia">';
+                          }elseif ($family->family_donor == 0) {
+                            echo '<input class="form-control" disabled type="text" value="Tidak Besedia">';
                           }
                           ?>
                         </div>

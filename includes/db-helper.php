@@ -536,6 +536,7 @@ class DBHelper{
     $family_place_id    = $array[RequestKey::$FAMILY_PLACE_ID];
     $family_name        = $array[RequestKey::$FAMILY_NAME];
     $family_status      = $array[RequestKey::$FAMILY_STATUS];
+    $family_status_number= $array[RequestKey::$FAMILY_STATUS_NUMBER];
     $family_age         = $array[RequestKey::$FAMILY_AGE];
     $family_religion    = $array[RequestKey::$FAMILY_RELIGION];
     $family_gender      = $array[RequestKey::$FAMILY_GENDER];
@@ -544,8 +545,9 @@ class DBHelper{
     $family_education   = $array[RequestKey::$FAMILY_EDUCATION];
     $family_salary      = $array[RequestKey::$FAMILY_SALARY];
     $family_blood       = $array[RequestKey::$FAMILY_BLOOD];
+    $family_donor       = $array[RequestKey::$FAMILY_DONOR];
 
-    if ($result = $this->link->query("INSERT INTO family(place_id, family_name, family_status, family_age, family_religion, family_gender, family_born_place, family_born_date, family_education, family_salary, family_blood) VALUES ( '$family_place_id', '$family_name', '$family_status', '$family_age', '$family_religion', '$family_gender', '$family_born_place', '$family_born_date', '$family_education', '$family_salary', '$family_blood') ")){
+    if ($result = $this->link->query("INSERT INTO family(place_id, family_name, family_status, family_status_number, family_age, family_religion, family_gender, family_born_place, family_born_date, family_education, family_salary, family_blood, family_donor) VALUES ( '$family_place_id', '$family_name', '$family_status', '$family_status_number', '$family_age', '$family_religion', '$family_gender', '$family_born_place', '$family_born_date', '$family_education', '$family_salary', '$family_blood', '$family_donor') ")){
       return true;
     }
     else{
@@ -558,6 +560,7 @@ class DBHelper{
     $family_id          = $array[RequestKey::$FAMILY_ID];
     $family_name        = $array[RequestKey::$FAMILY_NAME];
     $family_status      = $array[RequestKey::$FAMILY_STATUS];
+    $family_status_number= $array[RequestKey::$FAMILY_STATUS_NUMBER];
     $family_age         = $array[RequestKey::$FAMILY_AGE];
     $family_religion    = $array[RequestKey::$FAMILY_RELIGION];
     $family_gender      = $array[RequestKey::$FAMILY_GENDER];
@@ -566,8 +569,8 @@ class DBHelper{
     $family_education   = $array[RequestKey::$FAMILY_EDUCATION];
     $family_salary      = $array[RequestKey::$FAMILY_SALARY];
     $family_blood       = $array[RequestKey::$FAMILY_BLOOD];
-
-    if ($result = $this->link->query("UPDATE family SET family_name = '$family_name', family_status = '$family_status', family_age = '$family_age', family_religion = '$family_religion', family_gender = '$family_gender', family_born_place = '$family_born_place', family_born_date = '$family_born_date', family_education = '$family_education', family_salary = '$family_salary', family_blood = '$family_blood' WHERE family_id = '$family_id' ")){
+    $family_donor       = $array[RequestKey::$FAMILY_DONOR];
+    if ($result = $this->link->query("UPDATE family SET family_name = '$family_name', family_status = '$family_status', family_status_number = '$family_status_number', family_age = '$family_age', family_religion = '$family_religion', family_gender = '$family_gender', family_born_place = '$family_born_place', family_born_date = '$family_born_date', family_education = '$family_education', family_salary = '$family_salary', family_blood = '$family_blood', family_donor = '$family_donor' WHERE family_id = '$family_id' ")){
       return true;
     }
     else{
@@ -575,8 +578,38 @@ class DBHelper{
     }
   }
 
+  //ANGGOTA MENINGGAL
+  function dieFamily($family_id){
+    $date = date("Y-m-d");
+    if ($result = $this->link->query("UPDATE family SET family_die_date = '$date' WHERE family_id = '$family_id' ")){
+      return true;
+    }
+    else{
+      return false;
+    }
+  }
 
-  //DELTE Anggota
+  //ANGGOTA MENINGGAL
+  function updateIstri($family_id){
+    if ($result = $this->link->query("UPDATE family SET family_status = 0, family_kawin = 3 WHERE family_id = '$family_id' ")){
+      return true;
+    }
+    else{
+      return false;
+    }
+  }
+
+  //GET ISTRI
+  function getFamilyIstri($pid) {
+    if ($result = $this->link->query("SELECT * FROM family WHERE place_id = '$pid' AND family_status = 1")) {
+      return $result;
+    }
+    else{
+      return false;
+    }
+  }
+
+  //DELTE ANGGOTA
   function deleteFamilyById($fid){
     if ($result = $this->link->query("DELETE FROM family WHERE family_id = '$fid'")) {
       return true;
@@ -868,7 +901,7 @@ class DBHelper{
   }
 
   function countSholat($sholat) {
-    if ($result = $this->link->query("SELECT * FROM keimanan WHERE keimanan_sholat = '$sholat'")) {
+    if ($result = $this->link->query("SELECT * FROM keimanan AS k INNER JOIN family AS f ON k.family_id = f.family_id WHERE k.keimanan_sholat = '$sholat' AND f.family_religion = 1")) {
       return $result->num_rows;
     }
     else{
@@ -877,7 +910,7 @@ class DBHelper{
   }
 
   function countMengaji($mengaji) {
-    if ($result = $this->link->query("SELECT * FROM keimanan WHERE keimanan_mengaji = '$mengaji'")) {
+    if ($result = $this->link->query("SELECT * FROM keimanan AS k INNER JOIN family AS f ON k.family_id = f.family_id WHERE k.keimanan_mengaji = '$mengaji' AND f.family_religion = 1")) {
       return $result->num_rows;
     }
     else{

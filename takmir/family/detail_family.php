@@ -47,8 +47,9 @@ else {
       <div class="content-inner">
         <!-- Page Header-->
         <header class="page-header">
-          <div class="container-fluid">
-            <h2 class="no-margin-bottom">Place Detail</h2>
+          <div class="container-fluid col-12 row">
+            <h2 class="no-margin-bottom col-8">Place Detail</h2>
+            <a href="../place.php" class="text-right col-4"><h7 > Kembali <span class="fa fa-arrow-right"></span></h7></a>
           </div>
         </header>
         <section class="dashboard-header">
@@ -57,7 +58,11 @@ else {
               <div class="col-md-12">
                 <div class="card">
                   <div class="card-header">
-                    <h4> Rumah Keluarga <?=$family_leader->family_gender = 1 ? "Pak" : "Bu"?> <?= $family_leader->family_name ?></h4>
+                    <div class=" col-12 row no-padding">
+                    <h4 class="no-margin-bottom col-8"> Rumah Keluarga <?=$family_leader->family_gender = 1 ? "Pak" : "Bu"?> <?= $family_leader->family_name ?>
+                    </h4>
+                    <a href="../place.php" class="text-right col-4"><h7 > Kembali <span class="fa fa-arrow-right"></span></h7></a>
+                  </div>
                   </div>
                   <div class="card-body">
                     <h5>Anggota Keluarga
@@ -88,6 +93,9 @@ else {
                             echo "Anggota Keluarga";
                           }elseif ($family->family_status == 3) {
                             echo "Pembantu";
+                          }
+                          if ($family->family_die_date != NULL) {
+                            echo ' - meninggal';
                           }
                           ?></td>
                           <td>

@@ -36,7 +36,7 @@ else {
         <!-- Page Header-->
         <header class="page-header">
           <div class="container-fluid">
-            <h2 class="no-margin-bottom">Detail Anggota</h2>
+            <h2>Detail Anggota</h2>
           </div>
         </header>
         <section class="dashboard-header">
@@ -44,9 +44,16 @@ else {
             <div class="row">
               <div class="col-md-12">
                 <div class="card">
-
                   <div class="card-header">
-                    <h4> Detail Anggota Keluarga</h4>
+                    <h4> Detail Anggota Keluarga
+                      <?php if ($family->family_die_date == ''): ?>
+                        <a class="pull-right btn btn-secondary" href="die_family.php?<?=RequestKey::$FAMILY_ID?>=<?=$family->family_id?>">Anggota Meninggal</a>
+                        <?php else: ?>
+                          <span class="pull-right">
+                            Anggota ini telah Meninggal
+                          </span>
+                      <?php endif; ?>
+                    </h4>
                   </div>
                   <div class="card-body">
                   </h5>
@@ -144,12 +151,47 @@ else {
                       <tr>
                         <th width="20%">Pendidikan Terakhir</th>
                         <td>:</td>
-                        <td><?=$family->family_education?></td>
+                        <td><?php if($family->family_education == 0){
+                          echo 'Tidak Ada';
+                        }elseif($family->family_education == 1){
+                          echo 'SD/MI';
+                        }elseif($family->family_education == 2){
+                          echo 'SMP/MTS';
+                        }elseif($family->family_education == 3){
+                          echo 'SMA/MA';
+                        }elseif($family->family_education == 4){
+                          echo 'SMK';
+                        }elseif($family->family_education == 5){
+                          echo 'Diploma (D3/4)';
+                        }elseif($family->family_education == 6){
+                          echo 'Sarjana (S1)';
+                        }elseif($family->family_education == 7){
+                          echo 'Magister (S2)';
+                        }elseif($family->family_education == 8){
+                          echo 'Doktor (S3)';
+                        }else{
+                          echo 'Lainnya';
+                        }?></td>
                       </tr>
                       <tr>
-                        <th width="20%">Pendapatan</th>
+                        <th width="20%">Penghasilan</th>
                         <td>:</td>
-                        <td><?=$family->family_salary?></td>
+                        <td>Rp <?=$family->family_salary?>,-</td>
+                      </tr>
+                      <tr>
+                        <th width="20%">Status Kawin</th>
+                        <td>:</td>
+                        <td><?php if($family->family_kawin == 0){
+                          echo 'Belum kawin';
+                        }elseif($family->family_kawin == 1){
+                          echo 'Kawin';
+                        }elseif($family->family_kawin == 2){
+                          echo 'Janda/duda cerai hidup';
+                        }elseif($family->family_kawin == 3){
+                          echo 'Janda/duda cerai mati';
+                        }else{
+                          echo 'Lainnya';
+                        }?></td>
                       </tr>
                       <tr>
                         <th width="20%">Golongan Darah</th>
@@ -166,7 +208,19 @@ else {
                           echo 'Lainnya';
                         }?></td>
                       </tr>
-                      <?php
+                      <?php if ($family->family_age >= 3) {
+                        ?>
+                        <tr>
+                          <th width="20%">Ketersediaan Donor</th>
+                          <td>:</td>
+                          <td><?php if($family->family_donor == 1){
+                            echo 'Bersedia';
+                          }else{
+                            echo 'Tidak Bersedia';
+                          }?></td>
+                        </tr>
+                        <?php
+                      }
                       if ($family->family_religion == 1) {
                         ?>
                         <tr>

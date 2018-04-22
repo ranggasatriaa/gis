@@ -41,14 +41,14 @@ else {
     $status = 9;
     // header('Location: select_place.php');
   }
-  echo "string";
+  // echo "string";
   if(isset($_POST[RequestKey::$FAMILY_PLACE_ID]) &&isset($_POST[RequestKey::$FAMILY_NAME])
   && isset($_POST[RequestKey::$FAMILY_STATUS]) && isset($_POST[RequestKey::$FAMILY_AGE])
   && isset($_POST[RequestKey::$FAMILY_RELIGION]) && isset($_POST[RequestKey::$FAMILY_GENDER])
   && isset($_POST[RequestKey::$FAMILY_BORN_PLACE]) && isset($_POST[RequestKey::$FAMILY_BORN_DATE])
   && isset($_POST[RequestKey::$FAMILY_SALARY])  && isset($_POST[RequestKey::$FAMILY_BLOOD])
 ){
-  echo "masuk if iset | ";
+  // echo "masuk if iset | ";
   $db = new DBHelper();
 
   //escapeInput
@@ -74,7 +74,7 @@ else {
   if(empty($err_name) && empty($err_gender) && empty($err_born_place) && empty($err_age)
   && empty($err_religion) && empty($err_born_date) && empty($err_education)
   && empty($err_salary) && empty($err_blood) && empty($err_sholat) && empty($err_mengaji)){
-    echo "masuk error | ";
+    // echo "masuk error | ";
     $array_family = array();
     $array_family[RequestKey::$FAMILY_PLACE_ID]       = $family_place_id;
     $array_family[RequestKey::$FAMILY_NAME]           = $family_name;
@@ -91,19 +91,19 @@ else {
     $array_family[RequestKey::$FAMILY_BLOOD]          = $family_blood;
     $array_family[RequestKey::$FAMILY_DONOR]          = $family_donor;
 
-    print_r($array_family);
+    // print_r($array_family);
     if ($family = $db->createFamily($array_family)) {
-      echo "Masuk create family | ";
+      // echo "Masuk create family | ";
       $keimanan_family_id = (int)$db->lastFamilyId();
 
       $array_keimanan = array();
       $array_keimanan[RequestKey::$KEIMANAN_FAMILY_ID]  = $keimanan_family_id;
       $array_keimanan[RequestKey::$KEIMANAN_SHOLAT]     = $keimanan_sholat;
       $array_keimanan[RequestKey::$KEIMANAN_MENGAJI]    = $keimanan_mengaji;
-      print_r($array_keimanan);
+      // print_r($array_keimanan);
 
       if ($keimanan = $db->createKeimanan($array_keimanan)) {
-        echo "Masuk create keimanan |";
+        // echo "Masuk create keimanan |";
         $message = 'Sukses membuat anggota';
         $status = 1;
       }
@@ -117,14 +117,12 @@ else {
       //error create
       $status = 2;
       $message = 'gagal create anggota';
-
     }
   }
   else{
     //telah ada lokasi yang sama
     $status = 2;
     $message = 'Cek Inputan';
-
   }
 }
 }
@@ -182,7 +180,7 @@ else {
                           <label id="status_number_istri" style="display:none" class="col-sm-2 form-control-label ">Istri Ke</label>
                           <label id="status_number_anak" style="display:block" class="col-sm-2 form-control-label ">Anak Ke</label>
                           <div class="col-sm-10">
-                            <input class="form-control" type="number" name="<?=RequestKey::$FAMILY_STATUS_NUMBER?>" value="">
+                            <input class="form-control" type="number" min="0" name="<?=RequestKey::$FAMILY_STATUS_NUMBER?>" value="">
                             <small class="form-text" ><?=$err_status_number?></small>
                           </div>
                         </div>
@@ -262,21 +260,23 @@ else {
                       <div class="form-group row">
                         <label class="col-sm-2 form-control-label ">Penghasilan (dalam Rp)</label>
                         <div class="col-sm-10">
-                          <input class="form-control" type="number" name="<?= RequestKey::$FAMILY_SALARY ?>" value="" placeholder="Masukkan Penghasilan">
+                          <input class="form-control" type="number" min="0" name="<?= RequestKey::$FAMILY_SALARY ?>" value="" placeholder="Masukkan Penghasilan">
                           <small class="form-text" ><?=$err_salary?></small>
                         </div>
                       </div>
-                      <div class="form-group row">
-                        <label class="col-sm-2 form-control-label ">Status Kawin</label>
-                        <div class="col-sm-10">
-                          <select class="form-control" name="<?=RequestKey::$FAMILY_KAWIN?>">
-                            <option value=""> - Pilih -</option>
-                            <option value="0">Belum Kawin</option>
-                            <option value="1">Kawin</option>
-                            <option value="2">Janda/duda cerai hidup</option>
-                            <option value="3">Janda/duda cerai mati</option>
-                          </select>
-                          <small class="form-text" ><?=$err_kawin?></small>
+                      <div id="kawin" style="display:none">
+                        <div class="form-group row">
+                          <label class="col-sm-2 form-control-label ">Status Kawin</label>
+                          <div class="col-sm-10">
+                            <select class="form-control" name="<?=RequestKey::$FAMILY_KAWIN?>">
+                              <option value=""> - Pilih -</option>
+                              <option value="0">Belum Kawin</option>
+                              <option value="1">Kawin</option>
+                              <option value="2">Janda/duda cerai hidup</option>
+                              <option value="3">Janda/duda cerai mati</option>
+                            </select>
+                            <small class="form-text" ><?=$err_kawin?></small>
+                          </div>
                         </div>
                       </div>
                       <div class="form-group row">
@@ -298,7 +298,7 @@ else {
                           <select class="form-control" name="<?=RequestKey::$FAMILY_DONOR?>">
                             <option value=""> - Pilih -</option>
                             <option value="1">Bersedia</option>
-                            <option value="2">Tidak bersedia</option>
+                            <option value="0">Tidak bersedia</option>
                           </select>
                           <small class="form-text" ><?=$err_donor?></small>
                         </div>
@@ -385,9 +385,11 @@ else {
   $('#age').on('change',function(){
     if( $(this).val()==="3" || $(this).val()==="4" || $(this).val()==="5"){
       $("#donor").show()
+      $("#kawin").show()
     }
     else{
       $("#donor").hide()
+      $("#kawin").hide()
     }
   });
 

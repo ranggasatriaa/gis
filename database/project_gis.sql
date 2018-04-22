@@ -3,8 +3,8 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 14, 2018 at 02:34 PM
--- Server version: 10.1.28-MariaDB
+-- Generation Time: 22 Apr 2018 pada 15.54
+-- Versi Server: 10.1.28-MariaDB
 -- PHP Version: 7.1.10
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
@@ -25,56 +25,62 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `family`
+-- Struktur dari tabel `family`
 --
 
 CREATE TABLE `family` (
   `family_id` int(10) NOT NULL,
   `place_id` int(10) NOT NULL,
   `family_name` varchar(50) NOT NULL,
-  `family_status` int(1) NOT NULL COMMENT '0=kepala keluarga, 1=anak pertama, 2=anggota keluarga, 3=pembantu',
-  `family_religion` int(1) NOT NULL COMMENT '1=islam, 2=kristen, 3=katolik, 4=budha, 5=hindu',
+  `family_status` int(1) NOT NULL COMMENT '0=kepala keluarga, 1=istri, 2=anak, 3=pembantu',
+  `family_status_number` int(2) NOT NULL DEFAULT '0',
+  `family_kawin` int(1) NOT NULL DEFAULT '0',
+  `family_religion` int(1) NOT NULL COMMENT '1=islam, 2=kristen, 3=katolik, 4=budha, 5=hindu 6=lainnya',
   `family_age` int(3) NOT NULL COMMENT '1=balita 2= anak-anak 3=remaja 4=dewasa 5=lansia',
   `family_gender` int(1) NOT NULL,
   `family_born_place` varchar(10) NOT NULL,
   `family_born_date` date NOT NULL,
+  `family_die_date` date DEFAULT NULL,
   `family_education` int(1) NOT NULL COMMENT '0= Tidak sekolah 1 = SD/MI 2 = SMP/MTS 3 = SMA/MA 4 = SMK 5 = Diploma(D3) 6 = Sarjana(S1) 7 = Magister (S2) 8 = Doktor (S3)',
   `family_salary` int(10) DEFAULT '0',
-  `family_blood` varchar(2) NOT NULL
+  `family_blood` varchar(2) NOT NULL,
+  `family_donor` int(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `family`
+-- Dumping data untuk tabel `family`
 --
 
-INSERT INTO `family` (`family_id`, `place_id`, `family_name`, `family_status`, `family_religion`, `family_age`, `family_gender`, `family_born_place`, `family_born_date`, `family_education`, `family_salary`, `family_blood`) VALUES
-(1, 2, 'jamaludin 12', 0, 1, 4, 1, 'qwd ', '2015-10-30', 4, 123123, '1');
+INSERT INTO `family` (`family_id`, `place_id`, `family_name`, `family_status`, `family_status_number`, `family_kawin`, `family_religion`, `family_age`, `family_gender`, `family_born_place`, `family_born_date`, `family_die_date`, `family_education`, `family_salary`, `family_blood`, `family_donor`) VALUES
+(1, 2, 'jamaludin 12', 0, 0, 0, 1, 4, 1, 'qwd ', '2015-10-30', NULL, 4, 123123, '1', 0),
+(2, 5, 'rangga satria', 0, 0, 0, 1, 3, 1, '2016-11-30', '2016-11-30', NULL, 3, 11, '1', 0);
+
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `keimanan`
+-- Struktur dari tabel `keimanan`
 --
 
 CREATE TABLE `keimanan` (
   `keimanan id` int(10) NOT NULL,
   `family_id` int(10) NOT NULL,
-  `keimanan_sholat` int(1) NOT NULL DEFAULT '0' COMMENT '0=tidak sholat 1=5 waktu, 2=tidak 5waktu 3=sholat jumat 4=sholat hari raya',
+  `keimanan_sholat` int(1) NOT NULL DEFAULT '0' COMMENT '0=tidak sholat, 1=shalat 5 waktu di masjid, 2=shalat 5 waktu di rumah, 3=sholat kurang dari 5 waktu di masjid, 4=shalat jumat saja,5= shalat hari traya saja',
   `keimanan_mengaji` int(1) NOT NULL DEFAULT '0' COMMENT '1= tidak bisa 2=kurang lancar 3=lancar baca 4=hafal quran'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `keimanan`
+-- Dumping data untuk tabel `keimanan`
 --
 
 INSERT INTO `keimanan` (`keimanan id`, `family_id`, `keimanan_sholat`, `keimanan_mengaji`) VALUES
-(1, 1, 1, 1);
-
+(1, 1, 1, 1),
+(2, 2, 3, 2);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `masjid`
+-- Struktur dari tabel `masjid`
 --
 
 CREATE TABLE `masjid` (
@@ -85,17 +91,17 @@ CREATE TABLE `masjid` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `masjid`
+-- Dumping data untuk tabel `masjid`
 --
 
 INSERT INTO `masjid` (`masjid_id`, `place_id`, `masjid_name`, `masjid_history`) VALUES
 (1, 1, 'al azar', 'history al azar history al azar history al azar history al azar history al azar history al azar history al azar history al azar history al azar history al azar history al azar history al azar history al azar history al azar history al azar history al azar'),
-(2, 4, 'masjid Hidayah', 'sejarah ');
+(2, 3, 'masjid Hidayah', 'sejarah ');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `masjid_jumat`
+-- Struktur dari tabel `masjid_jumat`
 --
 
 CREATE TABLE `masjid_jumat` (
@@ -106,7 +112,7 @@ CREATE TABLE `masjid_jumat` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `masjid_jumat`
+-- Dumping data untuk tabel `masjid_jumat`
 --
 
 INSERT INTO `masjid_jumat` (`jumat_id`, `masjid_id`, `jumat_date`, `jumat_imam`) VALUES
@@ -116,7 +122,7 @@ INSERT INTO `masjid_jumat` (`jumat_id`, `masjid_id`, `jumat_date`, `jumat_imam`)
 -- --------------------------------------------------------
 
 --
--- Table structure for table `masjid_kajian`
+-- Struktur dari tabel `masjid_kajian`
 --
 
 CREATE TABLE `masjid_kajian` (
@@ -130,7 +136,7 @@ CREATE TABLE `masjid_kajian` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `masjid_kajian`
+-- Dumping data untuk tabel `masjid_kajian`
 --
 
 INSERT INTO `masjid_kajian` (`kajian_id`, `masjid_id`, `kajian_date`, `kajian_time`, `kajian_title`, `kajian_description`, `kajian_speaker`) VALUES
@@ -140,7 +146,7 @@ INSERT INTO `masjid_kajian` (`kajian_id`, `masjid_id`, `kajian_date`, `kajian_ti
 -- --------------------------------------------------------
 
 --
--- Table structure for table `masjid_kegiatan`
+-- Struktur dari tabel `masjid_kegiatan`
 --
 
 CREATE TABLE `masjid_kegiatan` (
@@ -153,7 +159,7 @@ CREATE TABLE `masjid_kegiatan` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `masjid_kegiatan`
+-- Dumping data untuk tabel `masjid_kegiatan`
 --
 
 INSERT INTO `masjid_kegiatan` (`kegiatan_id`, `masjid_id`, `kegiatan_date`, `kegiatan_time`, `kegiatan_title`, `kegiatan_description`) VALUES
@@ -162,7 +168,7 @@ INSERT INTO `masjid_kegiatan` (`kegiatan_id`, `masjid_id`, `kegiatan_date`, `keg
 -- --------------------------------------------------------
 
 --
--- Table structure for table `place`
+-- Struktur dari tabel `place`
 --
 
 CREATE TABLE `place` (
@@ -173,18 +179,19 @@ CREATE TABLE `place` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `place`
+-- Dumping data untuk tabel `place`
 --
 
 INSERT INTO `place` (`place_id`, `place_name`, `place_location`, `place_category`) VALUES
 (1, 'masjid al azar', '-7.058198, 110.426586', 0),
 (2, 'jamaludin 12', '-7.0578289,110.4262025', 1),
-(3, 'masjid Hidayah', '-7.058137, 110.424741', 0);
+(3, 'masjid Hidayah', '-7.058137, 110.424741', 0),
+(5, 'rangga', '-7.05642385886491, 110.42509977644352', 1);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `user`
+-- Struktur dari tabel `user`
 --
 
 CREATE TABLE `user` (
@@ -196,11 +203,11 @@ CREATE TABLE `user` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `user`
+-- Dumping data untuk tabel `user`
 --
 
 INSERT INTO `user` (`user_id`, `user_name`, `user_username`, `user_password`, `user_level`) VALUES
-(1, 'Admin ku', 'admin', '88ea39439e74fa27c09a4fc0bc8ebe6d00978392', 0),
+(1, 'Admin', 'admin', '88ea39439e74fa27c09a4fc0bc8ebe6d00978392', 0),
 (2, 'Takmir', 'takmir', '88ea39439e74fa27c09a4fc0bc8ebe6d00978392', 1);
 
 --
@@ -263,13 +270,13 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `family`
 --
 ALTER TABLE `family`
-  MODIFY `family_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `family_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `keimanan`
 --
 ALTER TABLE `keimanan`
-  MODIFY `keimanan id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `keimanan id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `masjid`
@@ -299,7 +306,7 @@ ALTER TABLE `masjid_kegiatan`
 -- AUTO_INCREMENT for table `place`
 --
 ALTER TABLE `place`
-  MODIFY `place_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `place_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `user`
