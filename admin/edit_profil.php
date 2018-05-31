@@ -12,6 +12,8 @@ $message = '';
 
 if(!isset($_SESSION[RequestKey::$USER_ID])) {
   header('Location: ../.');
+}if ($_SESSION[RequestKey::$USER_LEVEL] != 0){
+  header('Location: ../unauthorize.php');
 }
 else {
   $db   = new DBHelper();
@@ -39,6 +41,7 @@ else {
       $array[RequestKey::$USER_USERNAME]  = $db->escapeInput($_POST[RequestKey::$USER_USERNAME]);
       if ($db->updateUser($array)) {
         $status = 1;
+        $message = "Berhasil mengubah profil";
       }
       else {
         $status = 2;

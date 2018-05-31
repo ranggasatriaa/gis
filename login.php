@@ -94,7 +94,7 @@ else {
               <div class="content">
                 <form id="login-form" action="login.php" method="post">
                   <div class="form-group">
-                    <input id="login-email" type="username" name="<?=RequestKey::$USER_USERNAME?>" required="" class="input-material">
+                    <input id="login-email" type="username" name="<?=RequestKey::$USER_USERNAME?>" required="" class="input-material" autofocus>
                     <label for="login-email" class="label-material">Username</label>
                   </div>
                   <div class="form-group">
@@ -104,7 +104,7 @@ else {
                   <?= (!empty($err_login)) ? '<p class="text-danger">'.$err_login.'</p>' : '' ?>
                   <button id="login" name="submit" class="btn btn-primary">Login</button>
                 </form>
-                <a href="forget-password.php" class="forgot-pass">Forgot Password?</a><br><small>Do not have an account? </small><a href="register.php" class="signup">Signup</a>
+<!--                <a href="forget-password.php" class="forgot-pass">Forgot Password?</a><br><small>Do not have an account? </small><a href="register.php" class="signup">Signup</a>-->
               </div>
             </div>
           </div>

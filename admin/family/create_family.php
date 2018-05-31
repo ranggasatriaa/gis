@@ -6,6 +6,8 @@ require_once('../../includes/db-helper.php');
 
 if(!isset($_SESSION[RequestKey::$USER_ID])) {
   header('Location: ../../.');
+}if ($_SESSION[RequestKey::$USER_LEVEL] != 0){
+  header('Location: ../../unauthorize.php');
 }
 else {
 
@@ -313,12 +315,13 @@ else {
                           <div class="col-sm-10">
                             <select class="form-control" name="<?=RequestKey::$KEIMANAN_SHOLAT?>">
                               <option value=""> - Pilih  -</option>
-                              <option value="0">Tidak Sholat</option>
+                              <option value="-1">Tidak Sholat</option>
                               <option value="1">5 waktu di Masjid</option>
                               <option value="2">5 waktu di Rumah</option>
                               <option value="3">kurang 5 waktu di masjid</option>
-                              <option value="4">Sholat Jumat saja</option>
-                              <option value="5">Sholat Hari Raya saja</option>
+                              <option value="4">kurang 5 waktu di rumah</option>
+                              <option value="5">Sholat Jumat saja</option>
+                              <option value="6">Sholat Hari Raya saja</option>
                             </select>
                             <small class="form-text" ><?=$err_sholat?></small>
                           </div>
@@ -328,7 +331,7 @@ else {
                           <div class="col-sm-10">
                             <select class="form-control" name="<?=RequestKey::$KEIMANAN_MENGAJI?>">
                               <option value=""> - Pilih  -</option>
-                              <option value="0">Tidak Bisa</option>
+                              <option value="-1">Tidak Bisa</option>
                               <option value="1">Kurang Lancar</option>
                               <option value="2">Lancar Membaca</option>
                               <option value="3">Hafal Al-Quran</option>

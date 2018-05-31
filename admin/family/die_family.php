@@ -6,6 +6,8 @@ require_once('../../includes/db-helper.php');
 
 if(!isset($_SESSION[RequestKey::$USER_ID])) {
   header('Location: ../../.');
+}if ($_SESSION[RequestKey::$USER_LEVEL] != 0){
+  header('Location: ../../unauthorize.php');
 }
 else {
   $status          = 0;
@@ -17,16 +19,19 @@ else {
     $fid    = $db->escapeInput($_GET[RequestKey::$FAMILY_ID]);
     $family = $db->getFamilyById($fid);
     $pid    = $family->place_id;
-    echo $fid;
+//    echo $fid;
 
     if ($family->family_status == 0) {
+//      echo "family->family_status == 0";
       if ($result = $db->dieFamily($fid)) {
+//        echo "die family";
         if ($istris   = $db->getFamilyIstri($pid)) {
-          echo "1 ";
+//          print_r($istris->fetch_object());
+//          echo "1 ";
           while ($istri = $istris->fetch_object()) {
-            echo "2 ";
-            echo " - ".$istri->family_id;
-            $db->updateIstri($istri->family_id);
+//            echo "2 ";
+//            echo " - ".$istri->family_id;
+            $db->updateIstriUp($istri->family_id);
           }
         }
         $status = 1;
@@ -108,18 +113,18 @@ else {
   include('foot.php');
   echo '<script>var status = '.$status.'; </script>';
   $status = 0;
-  // $message = '';
+   $message = '';
   ?>
   <script>
   $(document).ready(function() {
     if (status == 1) {
-      swal("Success!","message","success")
+      swal("Success!","Meninggal","success")
       .then((value) => {
-        window.location.href = "detail_family.php?place-id=<?=$pid?>" + escape(window.location.href);
-      })
+        window.location.href = "detail_family.php?place-id=<?=$pid?>" + escape(window.location.href)
+      });
     }
     else if (status == 2) {
-      swal("Failed!",message,"error");
+      swal("Failed!","meninggal","error");
     }
   });
   </script>

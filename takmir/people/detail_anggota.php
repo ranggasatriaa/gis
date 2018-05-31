@@ -7,6 +7,9 @@ require_once('../../includes/db-helper.php');
 if(!isset($_SESSION[RequestKey::$USER_ID])) {
   header('Location: ../../.');
 }
+if ($_SESSION[RequestKey::$USER_LEVEL] != 1){
+  header('Location: ../../unauthorize.php');
+}
 else {
 
   $db         = new DBHelper();
@@ -46,8 +49,8 @@ else {
                 <div class="card">
                   <div class="card-header">
                     <h4> Detail Anggota Keluarga
-                      <?php echo $family->family_die_date; ?>
-                      <?php if ($family->family_die_date != NULL): ?>
+<!--                      --><?php //echo $family->family_name; ?>
+                      <?php if ($family->family_die_date != '0000-00-00'): ?>
                         <span class="pull-right">
                           Anggota ini telah Meninggal
                         </span>
@@ -225,7 +228,7 @@ else {
                         <tr>
                           <th>Kebiasaan Shalat</th>
                           <td>:</td>
-                          <td><?php if($keimanan->keimanan_sholat == 0){
+                          <td><?php if($keimanan->keimanan_sholat == -1){
                             echo 'Tidak Sholat';
                           }elseif($keimanan->keimanan_sholat == 1){
                             echo '5 waktu di masjid';
@@ -234,8 +237,10 @@ else {
                           }elseif($keimanan->keimanan_sholat == 3){
                             echo 'tidak 5 waktu di masjid';
                           }elseif($keimanan->keimanan_sholat == 4){
-                            echo 'Sholat Jumat Saja';
+                              echo 'tidak 5 waktu di rumah';
                           }elseif($keimanan->keimanan_sholat == 5){
+                            echo 'Sholat Jumat Saja';
+                          }elseif($keimanan->keimanan_sholat == 6){
                             echo 'Sholat Hari Raya Saja';
                           }else{
                             echo 'Lainnya';
@@ -244,7 +249,7 @@ else {
                         <tr>
                           <th>Kemampuan Membaca Al-Quran</th>
                           <td>:</td>
-                          <td><?php if($keimanan->keimanan_mengaji == 0){
+                          <td><?php if($keimanan->keimanan_mengaji == -1){
                             echo 'Tidak Bisa';
                           }elseif($keimanan->keimanan_mengaji == 1){
                             echo 'Kurang Lancar';
@@ -261,7 +266,7 @@ else {
                       ?>
                       <tr>
                         <td style="text-align:right" colspan="3">
-                          <a class="pull-left btn btn-secondary btn-sm" href="detail_family.php?<?=RequestKey::$PLACE_ID?>=<?=$family->place_id?>">Kembali</a>
+                          <a class="pull-left btn btn-secondary btn-sm" href="index.php">Kembali</a>
                           <?php if ($family->family_religion == 1): ?>
                             <a class="btn btn-primary btn-sm" href="edit_anggota.php?<?=RequestKey::$FAMILY_ID?>=<?=$family->family_id?>">Edit</a>
                           <?php endif; ?>

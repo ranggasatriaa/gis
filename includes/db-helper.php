@@ -589,9 +589,30 @@ class DBHelper{
     }
   }
 
-  //ANGGOTA MENINGGAL
-  function updateIstri($family_id){
+  //ANGGOTA HIDUP
+  function lifeFamily($family_id){
+    $date = date('');
+    if ($result = $this->link->query("UPDATE family SET family_die_date = '$date' WHERE family_id = '$family_id' ")){
+      return true;
+    }
+    else{
+      return false;
+    }
+  }
+
+  //UPDATE ISTRI UP
+  function updateIstriUp($family_id){
     if ($result = $this->link->query("UPDATE family SET family_status = 0, family_kawin = 3 WHERE family_id = '$family_id' ")){
+      return true;
+    }
+    else{
+      return false;
+    }
+  }
+
+  //UPDATE ISTRI DOWN
+  function updateIstriDown($family_id){
+    if ($result = $this->link->query("UPDATE family SET family_status = 1, family_kawin = 1 WHERE family_id = '$family_id' ")){
       return true;
     }
     else{
@@ -602,6 +623,16 @@ class DBHelper{
   //GET ISTRI
   function getFamilyIstri($pid) {
     if ($result = $this->link->query("SELECT * FROM family WHERE place_id = '$pid' AND family_status = 1")) {
+      return $result;
+    }
+    else{
+      return false;
+    }
+  }
+
+  //GET ISTRI 2
+  function getFamilyJanda($pid) {
+    if ($result = $this->link->query("SELECT * FROM family WHERE place_id = '$pid' AND family_kawin = 3")) {
       return $result;
     }
     else{
@@ -756,36 +787,36 @@ class DBHelper{
         if(empty($blood)){
           if(empty($sholat)){
             if(empty($mengaji)){
-              $case = 'f.family = '.$religion;
+              $case = 'f.family_religion = '.$religion;
             }else {
               //mengaji
-              $case = 'f.family = '.$religion.' AND k.keimanan_mengaji = '.$mengaji;
+              $case = 'f.family_religion = '.$religion.' AND k.keimanan_mengaji = '.$mengaji;
             }
           }else{
             //sholat
             if(empty($mengaji)){
-              $case = 'f.family = '.$religion.' AND k.keimanan_sholat = '.$sholat;
+              $case = 'f.family_religion = '.$religion.' AND k.keimanan_sholat = '.$sholat;
             }else {
               //mengaji
-              $case = 'f.family = '.$religion.' AND k.keimanan_sholat = '.$sholat.' AND k.keimanan_mengaji = '.$mengaji;
+              $case = 'f.family_religion = '.$religion.' AND k.keimanan_sholat = '.$sholat.' AND k.keimanan_mengaji = '.$mengaji;
             }
           }
         }else {
           //blood
           if(empty($sholat)){
             if(empty($mengaji)){
-              $case = 'f.family = '.$religion.' AND f.family_blood = '.$blood;
+              $case = 'f.family_religion = '.$religion.' AND f.family_blood = '.$blood;
             }else {
               //mengaji
-              $case = 'f.family = '.$religion.' AND f.family_blood = '.$blood.' AND k.keimanan_mengaji = '.$mengaji;
+              $case = 'f.family_religion = '.$religion.' AND f.family_blood = '.$blood.' AND k.keimanan_mengaji = '.$mengaji;
             }
           }else{
             //sholat
             if(empty($mengaji)){
-              $case = 'f.family = '.$religion.' AND f.family_blood = '.$blood.' AND k.keimanan_sholat = '.$sholat;
+              $case = 'f.family_religion = '.$religion.' AND f.family_blood = '.$blood.' AND k.keimanan_sholat = '.$sholat;
             }else {
               //mengaji
-              $case = 'f.family = '.$religion.' AND f.family_blood = '.$blood.' AND k.keimanan_sholat = '.$sholat.' AND k.keimanan_mengaji = '.$mengaji;
+              $case = 'f.family_religion = '.$religion.' AND f.family_blood = '.$blood.' AND k.keimanan_sholat = '.$sholat.' AND k.keimanan_mengaji = '.$mengaji;
             }
           }
         }
@@ -794,36 +825,36 @@ class DBHelper{
         if(empty($blood)){
           if(empty($sholat)){
             if(empty($mengaji)){
-              $case = 'f.family = '.$religion.' AND f.family_age = '.$age;
+              $case = 'f.family_religion = '.$religion.' AND f.family_age = '.$age;
             }else {
               //mengaji
-              $case = 'f.family = '.$religion.' AND f.family_age = '.$age.' AND k.keimanan_mengaji = '.$mengaji;
+              $case = 'f.family_religion = '.$religion.' AND f.family_age = '.$age.' AND k.keimanan_mengaji = '.$mengaji;
             }
           }else{
             //sholat
             if(empty($mengaji)){
-              $case = 'f.family = '.$religion.' AND f.family_age = '.$age.' AND k.keimanan_sholat = '.$sholat;
+              $case = 'f.family_religion = '.$religion.' AND f.family_age = '.$age.' AND k.keimanan_sholat = '.$sholat;
             }else {
               //mengaji
-              $case = 'f.family = '.$religion.' AND f.family_age = '.$age.' AND k.keimanan_sholat = '.$sholat.' AND k.keimanan_mengaji = '.$mengaji;
+              $case = 'f.family_religion = '.$religion.' AND f.family_age = '.$age.' AND k.keimanan_sholat = '.$sholat.' AND k.keimanan_mengaji = '.$mengaji;
             }
           }
         }else {
           //blood
           if(empty($sholat)){
             if(empty($mengaji)){
-              $case = 'f.family = '.$religion.' AND f.family_age = '.$age.' AND f.family_blood = '.$blood;
+              $case = 'f.family_religion = '.$religion.' AND f.family_age = '.$age.' AND f.family_blood = '.$blood;
             }else {
               //mengaji
-              $case = 'f.family = '.$religion.' AND f.family_age = '.$age.' AND f.family_blood = '.$blood.' AND k.keimanan_mengaji = '.$mengaji;
+              $case = 'f.family_religion = '.$religion.' AND f.family_age = '.$age.' AND f.family_blood = '.$blood.' AND k.keimanan_mengaji = '.$mengaji;
             }
           }else{
             //sholat
             if(empty($mengaji)){
-              $case = 'f.family = '.$religion.' AND f.family_age = '.$age.' AND f.family_blood = '.$blood.' AND k.keimanan_sholat = '.$sholat;
+              $case = 'f.family_religion = '.$religion.' AND f.family_age = '.$age.' AND f.family_blood = '.$blood.' AND k.keimanan_sholat = '.$sholat;
             }else {
               //mengaji
-              $case = 'f.family = '.$religion.' AND f.family_age = '.$age.' AND f.family_blood = '.$blood.' AND k.keimanan_sholat = '.$sholat.' AND k.keimanan_mengaji = '.$mengaji;
+              $case = 'f.family_religion = '.$religion.' AND f.family_age = '.$age.' AND f.family_blood = '.$blood.' AND k.keimanan_sholat = '.$sholat.' AND k.keimanan_mengaji = '.$mengaji;
             }
           }
         }

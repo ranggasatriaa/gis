@@ -15,6 +15,9 @@ $message = '';
 if(!isset($_SESSION[RequestKey::$USER_ID])) {
   header('Location: ../.');
 }
+if ($_SESSION[RequestKey::$USER_LEVEL] != 1){
+  header('Location: ../unauthorize.php');
+}
 else {
   //DB
   $db   = new DBHelper();

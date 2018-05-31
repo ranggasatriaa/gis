@@ -7,6 +7,9 @@ require_once('../includes/db-helper.php');
 if(!isset($_SESSION[RequestKey::$USER_ID])) {
   header('Location: ../.');
 }
+if ($_SESSION[RequestKey::$USER_LEVEL] != 1){
+  header('Location: ../unauthorize.php');
+}
 else {
   $db = new DBHelper();
   $side_bar = 1;
@@ -126,6 +129,17 @@ else {
           </div>
 
         </section>
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-lg-12 no-padding  ">
+              <div class="card no-margin">
+                <div class="card-header">
+                  Peta
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
         <!-- Dashboard Header Section    -->
         <div id="map"></div>
         <?php include('page-footer.php'); ?>

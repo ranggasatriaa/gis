@@ -7,6 +7,9 @@ require_once('../../includes/db-helper.php');
 if(!isset($_SESSION[RequestKey::$USER_ID])) {
   header('Location: ../../.');
 }
+if ($_SESSION[RequestKey::$USER_LEVEL] != 1){
+  header('Location: ../../unauthorize.php');
+}
 else {
   $db = new DBHelper();
 
@@ -284,10 +287,13 @@ else {
                         <div class="col-sm-10">
                           <select class="form-control" name="<?=RequestKey::$KEIMANAN_SHOLAT?>">
                             <option value=""> - Pilih  -</option>
-                            <option value="1" <?=$keimanan->keimanan_sholat == 1 ? "selected":""?> >5 waktu</option>
-                            <option value="2" <?=$keimanan->keimanan_sholat == 2 ? "selected":""?> >tidak 5 waktu</option>
-                            <option value="3" <?=$keimanan->keimanan_sholat == 3 ? "selected":""?> >Sholat jumat saja</option>
-                            <option value="4" <?=$keimanan->keimanan_sholat == 4 ? "selected":""?> >Sholat Hari Raya saja</option>
+                            <option value="-1" <?=$keimanan->keimanan_sholat ==   -1 ? "selected":""?> >Tidak Sholat</option>
+                            <option value="1" <?=$keimanan->keimanan_sholat == 1 ? "selected":""?> >5 waktu di masjid</option>
+                            <option value="2" <?=$keimanan->keimanan_sholat == 2 ? "selected":""?> >5 waktu di rumah</option>
+                            <option value="3" <?=$keimanan->keimanan_sholat == 3 ? "selected":""?> >Tidak 5 waktu di masjid</option>
+                            <option value="4" <?=$keimanan->keimanan_sholat == 4 ? "selected":""?> >Tidak 5 waktu di rumah</option>
+                            <option value="5" <?=$keimanan->keimanan_sholat == 5 ? "selected":""?> >Sholat Jumat saja</option>
+                            <option value="6" <?=$keimanan->keimanan_sholat == 6 ? "selected":""?> >Sholat Hari Raya saja</option>
                           </select>
                           <small class="form-text" ><?=$err_sholat?></small>
                         </div>
@@ -297,10 +303,10 @@ else {
                         <div class="col-sm-10">
                           <select class="form-control" name="<?=RequestKey::$KEIMANAN_MENGAJI?>">
                             <option value=""> - Pilih  -</option>
-                            <option value="1" <?=$keimanan->keimanan_mengaji == 1 ? "selected":""?> >Tidak Bisa</option>
-                            <option value="2" <?=$keimanan->keimanan_mengaji == 2 ? "selected":""?> >Kurang Lancar</option>
-                            <option value="3" <?=$keimanan->keimanan_mengaji == 3 ? "selected":""?> >Lancar Membaca</option>
-                            <option value="4" <?=$keimanan->keimanan_mengaji == 4 ? "selected":""?> >Hafal Al-Quran</option>
+                            <option value="-1" <?=$keimanan->keimanan_mengaji == -1 ? "selected":""?> >Tidak Bisa</option>
+                            <option value="1" <?=$keimanan->keimanan_mengaji == 1 ? "selected":""?> >Kurang Lancar</option>
+                            <option value="2" <?=$keimanan->keimanan_mengaji == 2 ? "selected":""?> >Lancar Membaca</option>
+                            <option value="3" <?=$keimanan->keimanan_mengaji == 3 ? "selected":""?> >Hafal Al-Quran</option>
                           </select>
                           <small class="form-text" ><?=$err_mengaji?></small>
                         </div>

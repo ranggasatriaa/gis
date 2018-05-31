@@ -7,6 +7,9 @@ require_once('../../includes/db-helper.php');
 if(!isset($_SESSION[RequestKey::$USER_ID])) {
   header('Location: ../../.');
 }
+if ($_SESSION[RequestKey::$USER_LEVEL] != 1){
+  header('Location: ../../unauthorize.php');
+}
 else {
   $db = new DBHelper();
   $side_bar   = 2;
@@ -139,21 +142,23 @@ else {
                           <!-- <label>Agama</label> -->
                           <select class="form-control" name="sholat">
                             <option value="">Semua Kebiasaan</option>
+                            <option <?= $sholat == -1 ?"selected":""?> value="-1">Tidak Sholat</option>
                             <option <?= $sholat == 1 ?"selected":""?> value="1">Sholat 5 waktu di masjid</option>
                             <option <?= $sholat == 2 ?"selected":""?> value="2">Sholat 5 waktu di rumah</option>
                             <option <?= $sholat == 3 ?"selected":""?> value="3">Kurang dari 5 waktu di masjid</option>
-                            <option <?= $sholat == 4 ?"selected":""?> value="4">Sholat Jumat saja</option>
-                            <option <?= $sholat == 5 ?"selected":""?> value="5">Sholat Hari raya saja</option>
+                            <option <?= $sholat == 4 ?"selected":""?> value="4">Kurang dari 5 waktu di rumah</option>
+                            <option <?= $sholat == 5 ?"selected":""?> value="5">Sholat Jumat saja</option>
+                            <option <?= $sholat == 6 ?"selected":""?> value="6">Sholat Hari raya saja</option>
                           </select>
                         </div>
                         <div class="from-groip col-5 no-margin">
                           <!-- <label>Kolompok Umur</label> -->
                           <select class="form-control" name="mengaji">
                             <option value="">Semua Kemampuan </option>
-                            <option <?= $mengaji == 1 ?"selected":""?> value="1">Tidak bisa</option>
-                            <option <?= $mengaji == 2 ?"selected":""?> value="2">Kurang Lancar</option>
-                            <option <?= $mengaji == 3 ?"selected":""?> value="3">Lancar baca</option>
-                            <option <?= $mengaji == 4 ?"selected":""?> value="4">Hafal Al-Quran</option>
+                            <option <?= $mengaji == -1 ?"selected":""?> value="-1">Tidak bisa</option>
+                            <option <?= $mengaji == 1 ?"selected":""?> value="1">Kurang Lancar</option>
+                            <option <?= $mengaji == 2 ?"selected":""?> value="2">Lancar baca</option>
+                            <option <?= $mengaji == 3 ?"selected":""?> value="3">Hafal Al-Quran</option>
                           </select>
                         </div>
                       </div>

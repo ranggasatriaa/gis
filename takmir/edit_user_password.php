@@ -15,6 +15,10 @@ $message = '';
 if(!isset($_SESSION[RequestKey::$USER_ID])) {
   header('Location: ../.');
 }
+
+if ($_SESSION[RequestKey::$USER_LEVEL] != 1){
+  header('Location: ../unauthorize.php');
+}
 else {
   //DB
   $db   = new DBHelper();
@@ -47,6 +51,7 @@ else {
         if ($password_baru == $password_baru_2) {
           if($db->changePassword($uid,sha1($password_baru))){
             $status = 1;
+            $message = "berhasil mengubah password";
           }else {
             $status = 2;
             $message = $db->strBadQuery;
@@ -145,7 +150,7 @@ else {
   <script>
   $(document).ready(function() {
     if (status == 1) {
-      swal("Success!","","success").then((value) => {
+      swal("Success!",message"success").then((value) => {
         window.location.href = "detail_user.php?user-id=<?=$uid?>" + escape(window.location.href);
       });
     }

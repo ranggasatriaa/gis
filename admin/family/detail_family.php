@@ -6,6 +6,8 @@ require_once('../../includes/db-helper.php');
 
 if(!isset($_SESSION[RequestKey::$USER_ID])) {
   header('Location: ../../.');
+}if ($_SESSION[RequestKey::$USER_LEVEL] != 0){
+  header('Location: ../../unauthorize.php');
 }
 else {
 
@@ -96,7 +98,7 @@ else {
                           }elseif ($family->family_status == 3) {
                             echo "Pembantu";
                           }
-                          if ($family->family_die_date != NULL) {
+                          if ($family->family_die_date != '0000-00-00') {
                             echo ' - meninggal';
                           }
                           ?></td>

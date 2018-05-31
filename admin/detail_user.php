@@ -5,6 +5,8 @@ require_once('../includes/db-helper.php');
 
 if(!isset($_SESSION[RequestKey::$USER_ID])) {
   header('Location: ../.');
+}if ($_SESSION[RequestKey::$USER_LEVEL] != 0){
+  header('Location: ../unauthorize.php');
 }
 else {
   $db = new DBHelper();
@@ -44,11 +46,13 @@ else {
               <div class="col-lg-12">
                 <div class="client card">
                   <div class="card-body text-center">
-                    <div class="client-avatar"><img src="../img/no_image_image.png" alt="..." class="img-fluid rounded-circle" style="height:100px; width: 100px; object-fit: contain;">
-                      <div class="status bg-green"></div>
-                    </div>
+<!--                    <div class="client-avatar"><img src="../img/no_image_image.png" alt="..." class="img-fluid rounded-circle" style="height:100px; width: 100px; object-fit: contain;">-->
+<!--                      <div class="status bg-green"></div>-->
+<!--                    </div>-->
                     <div class="client-title">
                       <h3>Nama: <?=$user->user_name;?></h3><span>username: <?=$user->user_username;?></span>
+                      <span>level: <?= $user->user_level==0 ? "Admin" : "Takmir" ?></span>
+
                     </div>
                     <br>
                     <a href="edit_user.php?<?=RequestKey::$USER_ID?>=<?=$user->user_id?>" class="btn btn-primary">Ubah User</a>

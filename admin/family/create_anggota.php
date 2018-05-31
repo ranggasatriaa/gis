@@ -6,6 +6,8 @@ require_once('../../includes/db-helper.php');
 
 if(!isset($_SESSION[RequestKey::$USER_ID])) {
   header('Location: ../../.');
+}if ($_SESSION[RequestKey::$USER_LEVEL] != 0){
+  header('Location: ../../unauthorize.php');
 }
 else {
   include('head.php');
@@ -190,7 +192,7 @@ else {
                         <div class="col-sm-10">
                           <select class="form-control" name="<?=RequestKey::$FAMILY_GENDER?>" required>
                             <option value=""> - Pilih -</option>
-                            <option value="1">Laki-laki</option>
+                            <option id="laki" value="1">Laki-laki</option>
                             <option value="2">Perempuan</option>
                           </select>
                           <small class="form-text" ><?=$err_gender?></small>
@@ -230,8 +232,8 @@ else {
                         <div class="col-sm-10">
                           <select id="age" class="form-control" name="<?=RequestKey::$FAMILY_AGE?>" required>
                             <option value=""> - Pilih -</option>
-                            <option value="1">Balita</option>
-                            <option value="2">Anak-anak</option>
+                            <option id="balita" value="1">Balita</option>
+                            <option id="anak" value="2">Anak-anak</option>
                             <option value="3">Remaja</option>
                             <option value="4">Dewasa</option>
                             <option value="5">Lansia</option>
@@ -309,12 +311,13 @@ else {
                           <div class="col-sm-10">
                             <select class="form-control" name="<?=RequestKey::$KEIMANAN_SHOLAT?>">
                               <option value=""> - Pilih  -</option>
-                              <option value="0">Tidak Sholat</option>
+                              <option value="-1">Tidak Sholat</option>
                               <option value="1">5 waktu di Masjid</option>
                               <option value="2">5 waktu di Rumah</option>
                               <option value="3">kurang 5 waktu di masjid</option>
-                              <option value="4">Sholat Jumat saja</option>
-                              <option value="5">Sholat Hari Raya saja</option>
+                              <option value="4">kurang 5 waktu di rumah</option>
+                              <option value="5">Sholat Jumat saja</option>
+                              <option value="6">Sholat Hari Raya saja</option>
                             </select>
                             <small class="form-text" ><?=$err_sholat?></small>
                           </div>
@@ -324,10 +327,10 @@ else {
                           <div class="col-sm-10">
                             <select class="form-control" name="<?=RequestKey::$KEIMANAN_MENGAJI?>">
                               <option value=""> - Pilih  -</option>
-                              <option value="1">Tidak Bisa</option>
-                              <option value="2">Kurang Lancar</option>
-                              <option value="3">Lancar Membaca</option>
-                              <option value="4">Hafal Al-Quran</option>
+                              <option value="-1">Tidak Bisa</option>
+                              <option value="1">Kurang Lancar</option>
+                              <option value="2">Lancar Membaca</option>
+                              <option value="3">Hafal Al-Quran</option>
                             </select>
                             <small class="form-text" ><?=$err_mengaji?></small>
                           </div>
@@ -351,7 +354,7 @@ else {
   </div>
   <?php
   include('foot.php');
-  echo '<script>var status = '.$status.';</script>';
+  echo '<script>var status = '.$status.'; var message = "'.$message.'"</script>';
   $status = 0;
   $message = '';
   ?>
@@ -361,15 +364,24 @@ else {
       $("#status_number").show()
       $("#status_number_istri").show()
       $("#status_number_anak").hide()
+      $("#balita").hide()
+      $("#anak").hide()
+      $("#laki").hide()
     }
     else if ( $(this).val()==="2") {
       $("#status_number").show()
       $("#status_number_anak").show()
       $("#status_number_istri").hide()
+      $("#balita").show()
+      $("#anak").show()
+      $("#laki").show()
     }else{
       $("#status_number").hide()
       $("#status_number_anak").hide()
       $("#status_number_anak").hide()
+      $("#balita").hide()
+      $("#anak").show()
+      $("#laki").show()
     }
   });
 
@@ -395,7 +407,7 @@ else {
 
   $(document).ready(function() {
     if (status == 1) {
-      swal("Success!","message","success")
+      swal("Success!",message,"success")
       .then((value) => {
         window.location.href = "detail_family.php?place-id=<?=$pid?>" + escape(window.location.href);
       });

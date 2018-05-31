@@ -6,6 +6,8 @@ require_once('../../includes/db-helper.php');
 
 if(!isset($_SESSION[RequestKey::$USER_ID])) {
   header('Location: ../../.');
+}if ($_SESSION[RequestKey::$USER_LEVEL] != 0){
+  header('Location: ../../unauthorize.php');
 }
 else {
 
@@ -46,12 +48,13 @@ else {
                 <div class="card">
                   <div class="card-header">
                     <h4> Detail Anggota Keluarga
-                      <?php if ($family->family_die_date == ''): ?>
-                        <a class="pull-right btn btn-secondary" href="die_family.php?<?=RequestKey::$FAMILY_ID?>=<?=$family->family_id?>">Anggota Meninggal</a>
+                      <?php if ($family->family_die_date == NULL || $family->family_die_date == '0000-00-00'): ?>
+                        <a class="pull-right btn btn-secondary btn-sm" href="die_family.php?<?=RequestKey::$FAMILY_ID?>=<?=$family->family_id?>">Anggota Meninggal</a>
                         <?php else: ?>
-                          <span class="pull-right">
-                            Anggota ini telah Meninggal
-                          </span>
+                        <a class="pull-right btn btn-secondary btn-sm" href="life_family.php?<?=RequestKey::$FAMILY_ID?>=<?=$family->family_id?>">Anggota Tidak Meninggal</a>
+<!--                        <span class="pull-right">-->
+<!--                            Anggota ini telah Meninggal-->
+<!--                          </span>-->
                       <?php endif; ?>
                     </h4>
                   </div>
@@ -235,8 +238,10 @@ else {
                           }elseif($keimanan->keimanan_sholat == 3){
                             echo 'tidak 5 waktu di masjid';
                           }elseif($keimanan->keimanan_sholat == 4){
-                            echo 'Sholat Jumat Saja';
+                            echo 'tidak 5 waktu di rumah';
                           }elseif($keimanan->keimanan_sholat == 5){
+                            echo 'Sholat Jumat Saja';
+                          }elseif($keimanan->keimanan_sholat == 6){
                             echo 'Sholat Hari Raya Saja';
                           }else{
                             echo 'Lainnya';

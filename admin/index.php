@@ -4,8 +4,14 @@ session_start();
 require_once('../includes/request-key.php');
 require_once('../includes/db-helper.php');
 
-if(!isset($_SESSION[RequestKey::$USER_ID])) {
+if(!isset($_SESSION[RequestKey::$USER_LEVEL])) {
   header('Location: ../.');
+}
+
+if ($_SESSION[RequestKey::$USER_LEVEL] != 0){
+  header('Location: ../unauthorize.php');
+}if ($_SESSION[RequestKey::$USER_LEVEL] != 0){
+  header('Location: ../unauthorize.php');
 }
 else {
   $db = new DBHelper();

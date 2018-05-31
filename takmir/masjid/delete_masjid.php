@@ -7,6 +7,9 @@ require_once('../../includes/db-helper.php');
 if(!isset($_SESSION[RequestKey::$USER_ID])) {
   header('Location: ../../.');
 }
+if ($_SESSION[RequestKey::$USER_LEVEL] != 1){
+  header('Location: ../../unauthorize.php');
+}
 else {
   //begin database
   $db = new DBHelper();
