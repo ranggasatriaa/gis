@@ -229,7 +229,7 @@ else {
                         <tr>
                           <th>Kebiasaan Shalat</th>
                           <td>:</td>
-                          <td><?php if($keimanan->keimanan_sholat == 0){
+                          <td><?php if($keimanan->keimanan_sholat == -1){
                             echo 'Tidak Sholat';
                           }elseif($keimanan->keimanan_sholat == 1){
                             echo '5 waktu di masjid';
@@ -250,7 +250,7 @@ else {
                         <tr>
                           <th>Kemampuan Membaca Al-Quran</th>
                           <td>:</td>
-                          <td><?php if($keimanan->keimanan_mengaji == 0){
+                          <td><?php if($keimanan->keimanan_mengaji == -1){
                             echo 'Tidak Bisa';
                           }elseif($keimanan->keimanan_mengaji == 1){
                             echo 'Kurang Lancar';

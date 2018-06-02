@@ -91,9 +91,9 @@ else {
                           if ($family->family_status == 0) {
                             echo "Kepala Keluarga";
                           }elseif ($family->family_status == 1) {
-                            echo "Anak Pertama";
+                            echo "Istri ke-".$family->family_status_number;
                           }elseif ($family->family_status == 2) {
-                            echo "Anggota Keluarga";
+                            echo "Anak ke-".$family->family_status_number;
                           }elseif ($family->family_status == 3) {
                             echo "Pembantu";
                           }

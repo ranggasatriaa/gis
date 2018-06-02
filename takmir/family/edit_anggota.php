@@ -18,6 +18,7 @@ else {
   $err_location    = '';
   $err_name        = '';
   $err_status      = '';
+  $err_status_number= '';
   $err_religion    = '';
   $err_age         = '';
   $err_gender      = '';
@@ -50,8 +51,8 @@ else {
 
     //escapeInput
     $family_id          = $db->escapeInput($_POST[RequestKey::$FAMILY_ID]);
-    $keimanan_sholat    = $db->escapeInput($_POST[RequestKey::$KEIMANAN_MENGAJI]);
-    $keimanan_mengaji   = $db->escapeInput($_POST[RequestKey::$KEIMANAN_SHOLAT]);
+    $keimanan_sholat    = $db->escapeInput($_POST[RequestKey::$KEIMANAN_SHOLAT]);
+    $keimanan_mengaji   = $db->escapeInput($_POST[RequestKey::$KEIMANAN_MENGAJI]);
 
     //CEK ERROR PADA INPUTAN
     if(empty($err_blood) && empty($err_sholat) && empty($err_mengaji)){
@@ -134,7 +135,7 @@ else {
                       </div>
                         <?php if ($family->family_status == 1): ?>
                           <div class="form-group row">
-                            <labelclass="col-sm-2 form-control-label ">Istri Ke</label>
+                            <label class="col-sm-2 form-control-label ">Istri Ke</label>
                             <div class="col-sm-10">
                               <input disabled class="form-control" type="number" min="0" name="<?=RequestKey::$FAMILY_STATUS_NUMBER?>" value="<?=$family->family_status_number?>">
                               <small class="form-text" ><?=$err_status_number?></small>

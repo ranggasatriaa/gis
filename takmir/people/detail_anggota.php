@@ -248,7 +248,7 @@ else {
                         </tr>
                         <tr>
                           <th>Kemampuan Membaca Al-Quran</th>
-                          <td>:</td>
+                          <td>: <?=$keimanan->keimanan_mengaji?></td>
                           <td><?php if($keimanan->keimanan_mengaji == -1){
                             echo 'Tidak Bisa';
                           }elseif($keimanan->keimanan_mengaji == 1){

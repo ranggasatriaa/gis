@@ -505,7 +505,7 @@ else {
         title: masjid[0],
       });
 
-      var content = "<div style='width:200px;min-height:40px'><h3>" + masjid[0] + "</h3><p>"+masjid[4]+"...</p><a href='user/detail_masjid.php?place-id="+masjid[3]+"'>Read More</a></div>"
+      var content = "<div style='width:200px;min-height:40px'><h3>" + masjid[0] + "</h3><p>"+masjid[4]+"...</p><a href='masjid/detail_masjid.php?place-id="+masjid[3]+"'>Read More</a></div>"
 
       google.maps.event.addListener(marker,'click', (function(marker,content,infowindow){
         return function() {

@@ -69,8 +69,8 @@ else {
   $family_salary        = $db->escapeInput($_POST[RequestKey::$FAMILY_SALARY]);
   $family_blood         = $db->escapeInput($_POST[RequestKey::$FAMILY_BLOOD]);
   $family_donor         = $db->escapeInput($_POST[RequestKey::$FAMILY_DONOR]);
-  $keimanan_sholat      = $db->escapeInput($_POST[RequestKey::$KEIMANAN_MENGAJI]);
-  $keimanan_mengaji     = $db->escapeInput($_POST[RequestKey::$KEIMANAN_SHOLAT]);
+  $keimanan_sholat      = $db->escapeInput($_POST[RequestKey::$KEIMANAN_SHOLAT]);
+  $keimanan_mengaji     = $db->escapeInput($_POST[RequestKey::$KEIMANAN_MENGAJI]);
 
   //CEK ERROR PADA INPUTAN
   if(empty($err_name) && empty($err_gender) && empty($err_born_place) && empty($err_age)
@@ -182,7 +182,7 @@ else {
                           <label id="status_number_istri" style="display:none" class="col-sm-2 form-control-label ">Istri Ke</label>
                           <label id="status_number_anak" style="display:block" class="col-sm-2 form-control-label ">Anak Ke</label>
                           <div class="col-sm-10">
-                            <input class="form-control" type="number" min="0" name="<?=RequestKey::$FAMILY_STATUS_NUMBER?>" value="">
+                            <input class="form-control" type="number" min="1" name="<?=RequestKey::$FAMILY_STATUS_NUMBER?>" value="">
                             <small class="form-text" ><?=$err_status_number?></small>
                           </div>
                         </div>
