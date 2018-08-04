@@ -12,12 +12,13 @@ if ($_SESSION[RequestKey::$USER_LEVEL] != 1){
 }
 else {
   $db = new DBHelper();
-
+  $masjids = $db->getAllMasjid2();
   $status          = 0;
   $message         = '';
   $err_location    = '';
   $err_name        = '';
   $err_status      = '';
+  $err_masjid_id      = '';
   $err_status_number= '';
   $err_religion    = '';
   $err_age         = '';
@@ -44,33 +45,43 @@ else {
     // header('Location: select_place.php');
   }
   // echo "string";
-  if(isset($_POST[RequestKey::$FAMILY_ID])
+  if(isset($_POST[RequestKey::$FAMILY_ID]) && isset($_POST[RequestKey::$FAMILY_MASJID_ID])
   && isset($_POST[RequestKey::$KEIMANAN_SHOLAT]) && isset($_POST[RequestKey::$KEIMANAN_MENGAJI])){
     // echo "masuk if iset | ";
     $db = new DBHelper();
 
     //escapeInput
     $family_id          = $db->escapeInput($_POST[RequestKey::$FAMILY_ID]);
-    $keimanan_sholat    = $db->escapeInput($_POST[RequestKey::$KEIMANAN_MENGAJI]);
-    $keimanan_mengaji   = $db->escapeInput($_POST[RequestKey::$KEIMANAN_SHOLAT]);
+    $family_masjid_id   = $db->escapeInput($_POST[RequestKey::$FAMILY_MASJID_ID]);
+    $keimanan_mengaji    = $db->escapeInput($_POST[RequestKey::$KEIMANAN_MENGAJI]);
+    $keimanan_sholat   = $db->escapeInput($_POST[RequestKey::$KEIMANAN_SHOLAT]);
 
     //CEK ERROR PADA INPUTAN
-    if(empty($err_blood) && empty($err_sholat) && empty($err_mengaji)){
+    if(empty($err_blood) && empty($err_masjid_id) && empty($err_sholat) && empty($err_mengaji)){
       // echo "masuk error | ";
       $array_keimanan = array();
       $array_keimanan[RequestKey::$FAMILY_ID]           = $family_id;
       $array_keimanan[RequestKey::$KEIMANAN_SHOLAT]     = $keimanan_sholat;
       $array_keimanan[RequestKey::$KEIMANAN_MENGAJI]    = $keimanan_mengaji;
 
+      $array_family = array();
+      $array_family[RequestKey::$FAMILY_ID] = $family_id;
+      $array_family[RequestKey::$FAMILY_MASJID_ID] = $family_masjid_id;
+
       // print_r($array_family);
+      // print_r($array_keimanan);
       if ($db->editKeimanan($array_keimanan)) {
-        // echo "Masuk create keimanan |";
-        $message = 'Sukses edit keimanan';
-        $status = 1;
+        if ($db->editFamilyJamaah($array_family)) {
+          echo "Masuk create Jamaah |";
+          $message = 'Sukses edit keimanan dan jamaah';
+          $status = 1;
+        }else{
+          $status = 2;
+          $message = 'gagal edit Jamaah';
+        }
       }
       else {
-        $status = 2;
-        $message = 'gagal edit';
+
       }
     }
     else{
@@ -135,7 +146,7 @@ else {
                       </div>
                         <?php if ($family->family_status == 1): ?>
                           <div class="form-group row">
-                            <labelclass="col-sm-2 form-control-label ">Istri Ke</label>
+                            <label class="col-sm-2 form-control-label ">Istri Ke</label>
                             <div class="col-sm-10">
                               <input disabled class="form-control" type="number" min="0" name="<?=RequestKey::$FAMILY_STATUS_NUMBER?>" value="<?=$family->family_status_number?>">
                               <small class="form-text" ><?=$err_status_number?></small>
@@ -281,6 +292,23 @@ else {
                             echo '<input class="form-control" disabled type="text" value="Tidak Besedia">';
                           }
                           ?>
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label class="col-sm-2 form-control-label ">Jamaah Masjid</label>
+                        <div class="col-sm-10">
+                          <select class="form-control" name="<?=RequestKey::$FAMILY_MASJID_ID?>" required>
+                            <option value=""> - Pilih - </option>
+                            <option value="-1" <?=$family->masjid_id <= 0 ? "selected":""?> >Belum menjadi jamaan masjid manapun</option>
+                            <?php while ($masjid = $masjids->fetch_object()){
+                              ?>
+                              <option <?=$family->masjid_id ==$masjid->masjid_id ?"selected" :""?> value="<?=$masjid->masjid_id?>">
+                              <?=ucwords($masjid->masjid_name)?>
+                              </option>
+                              <?php
+                            }
+                             ?>
+                          </select>
                         </div>
                       </div>
                       <div class="form-group row">

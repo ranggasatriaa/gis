@@ -39,6 +39,7 @@ else {
       $array[RequestKey::$USER_ID]        = $db->escapeInput($uid);
       $array[RequestKey::$USER_NAME]      = $db->escapeInput($_POST[RequestKey::$USER_NAME]);
       $array[RequestKey::$USER_USERNAME]  = $db->escapeInput($_POST[RequestKey::$USER_USERNAME]);
+      $array[RequestKey::$USER_MASJID_ID] = 0;
       if ($db->updateUser($array)) {
         $status = 1;
         $message = "Berhasil mengubah profil";

@@ -142,11 +142,19 @@ else {
                         }elseif($family->family_age == 2){
                           echo 'Anak-anak';
                         }elseif($family->family_age == 3){
-                          echo 'Remaja';
+                          echo 'Remaja Awal';
                         }elseif($family->family_age == 4){
-                          echo 'Dewasa';
+                          echo 'Remaja Akhir';
                         }elseif($family->family_age == 5){
-                          echo 'Lansia';
+                          echo 'Dewasa Awal';
+                        }elseif($family->family_age == 6){
+                          echo 'Dewasa Akhir';
+                        }elseif($family->family_age == 7){
+                          echo 'Lansia Awal';
+                        }elseif($family->family_age == 8){
+                          echo 'Lansia Akhir';
+                        }elseif($family->family_age == 9){
+                          echo 'Manula';
                         }else{
                           echo 'Lainnya';
                         }?></td>
@@ -227,6 +235,11 @@ else {
                       if ($family->family_religion == 1) {
                         ?>
                         <tr>
+                          <th width="20%">Jamaah Masjid</th>
+                          <td>:</td>
+                          <td><?=$family->masjid_id==0 ? 'Belum menjadi jamaah masjid manapun' : ucwords($family->masjid_name)?></td>
+                        </tr>
+                        <tr>
                           <th>Kebiasaan Shalat</th>
                           <td>:</td>
                           <td><?php if($keimanan->keimanan_sholat == -1){
@@ -269,7 +282,12 @@ else {
                         <td style="text-align:right" colspan="3">
                           <a class="pull-left btn btn-secondary btn-sm" href="detail_family.php?<?=RequestKey::$PLACE_ID?>=<?=$family->place_id?>">Kembali</a>
                           <a class="btn btn-primary btn-sm" href="edit_anggota.php?<?=RequestKey::$FAMILY_ID?>=<?=$family->family_id?>">Edit</a>
-                          <a class="btn btn-sm btn-danger" href="#" data-toggle="modal" data-target="#modalAnggotaDelete" data-id="<?=$family->family_id?>" data-name="<?=strtoupper($family->family_name)?>"></i> Delete</a>
+                          <?php
+                           ?>
+                          <?php if ($db->countAnggota($family->place_id) != 1): ?>
+
+                            <a class="btn btn-sm btn-danger" href="#" data-toggle="modal" data-target="#modalAnggotaDelete" data-id="<?=$family->family_id?>" data-name="<?=strtoupper($family->family_name)?>"></i> Delete</a>
+                          <?php endif; ?>
 
                           <!-- <a class="btn btn-danger btn-sm" href="delete_anggota.php?<?=RequestKey::$FAMILY_ID?>=<?=$family->family_id?>">Delete</a> -->
                         </td>

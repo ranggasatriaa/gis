@@ -160,28 +160,40 @@ else {
       labels: [
         "Balita",
         "Anak-anak",
-        "Remaja",
-        "Dewasa",
-        "Lansia"
+        "Remaja Awal",
+        "Remaja Akhir",
+        "Dewasa Awaal",
+        "Dewasa Akhir",
+        "Lansia Awal",
+        "Lansia Akhir",
+        "Manula"
       ],
       datasets: [
         {
-          data: [<?=$db->countAge(1)?>,<?=$db->countAge(2)?>,<?=$db->countAge(3)?>,<?=$db->countAge(4)?>,<?=$db->countAge(5)?>],
+          data: [<?=$db->countAge(1)?>,<?=$db->countAge(2)?>,<?=$db->countAge(3)?>,<?=$db->countAge(4)?>,<?=$db->countAge(5)?>,<?=$db->countAge(6)?>,<?=$db->countAge(7)?>,<?=$db->countAge(8)?>,<?=$db->countAge(9)?>],
           borderWidth: 0,
           backgroundColor: [
-            '#b7dfcb',
-            "#5abad1",
+            "#d5e9ca",
+            "#9ed5cd",
+            "#69c0d1",
+            "#44a7cb",
             "#3984b6",
-            "#264992",
-            "#151e5e"
+            "#2e62a1",
+            "#233f8c",
+            "#192473",
+            "#121850"
 
           ],
           hoverBackgroundColor: [
-            '#b7dfcb',
-            "#5abad1",
+            "#d5e9ca",
+            "#9ed5cd",
+            "#69c0d1",
+            "#44a7cb",
             "#3984b6",
-            "#264992",
-            "#151e5e"
+            "#2e62a1",
+            "#233f8c",
+            "#192473",
+            "#121850"
           ]
         }
       ]
@@ -199,7 +211,7 @@ else {
    type: 'pie',
    data: {
      labels: [
-       "Tidak ada",
+       "Tidak sekolah",
        "SD/MI",
        "SMP/STM",
        "SMA/MA",

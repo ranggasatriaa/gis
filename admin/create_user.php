@@ -20,12 +20,15 @@ if ($_SESSION[RequestKey::$USER_LEVEL] != 0){
 else {
   $db   = new DBHelper();
 
+  $masjids = $db->getAllMasjid2();
+
   //VALIDASI
-  if(isset($_POST[RequestKey::$USER_NAME]) && isset($_POST[RequestKey::$USER_USERNAME]) && isset($_POST[RequestKey::$USER_PASSWORD]) && isset($_POST[RequestKey::$USER_LEVEL])){
+  if(isset($_POST[RequestKey::$USER_NAME]) && isset($_POST[RequestKey::$USER_USERNAME]) && isset($_POST[RequestKey::$USER_PASSWORD]) && isset($_POST[RequestKey::$USER_LEVEL]) && isset($_POST[RequestKey::$USER_MASJID_ID])){
     $user_name      = $db->escapeInput($_POST[RequestKey::$USER_NAME]);
     $user_username  = $db->escapeInput($_POST[RequestKey::$USER_USERNAME]);
     $user_password  = $db->escapeInput($_POST[RequestKey::$USER_PASSWORD]);
     $user_level     = $db->escapeInput($_POST[RequestKey::$USER_LEVEL]);
+    $user_masjid_id = $db->escapeInput($_POST[RequestKey::$USER_MASJID_ID]);
 
     if (!preg_match("/^[a-zA-Z ]{1,50}$/",$user_name)) {
       $err_name = "Nama tidak valid";
@@ -45,6 +48,9 @@ else {
       $array[RequestKey::$USER_USERNAME]  = $user_username;
       $array[RequestKey::$USER_PASSWORD]  = sha1($user_password);
       $array[RequestKey::$USER_LEVEL]     = $user_level;
+      $array[RequestKey::$USER_MASJID_ID] = $user_masjid_id;
+
+
 
       if ($db->createUser($array)) {
         $status = 1;
@@ -78,7 +84,7 @@ else {
         <!-- Page Header-->
         <header class="page-header">
           <div class="container-fluid">
-            <h2 class="no-margin-bottom">Edit profil</h2>
+            <h2 class="no-margin-bottom">Buat Takmir Baru</h2>
           </div>
         </header>
         <!-- Dashboard Header Section    -->
@@ -102,6 +108,21 @@ else {
                         <div class="col-sm-9">
                           <input id="inputHorizontalSuccess" name="<?= RequestKey::$USER_USERNAME ?>" type="text" placeholder="Nama" class="form-control form-control-success"  required>
                           <small class="form-text <?=($err_username != "" ? 'text-danger' : '')?>"><?=($err_username != "" ? $err_username : 'Karakter huruf dan angka tanpa spasi.')?></small>
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label class="col-sm-3 form-control-label ">Takmir Masjid</label>
+                        <div class="col-sm-9">
+                          <select class="form-control" name="<?=RequestKey::$USER_MASJID_ID?>" required>
+                            <option value=""> - Pilih - </option>
+                            <?php while ($masjid = $masjids->fetch_object()){
+                              echo '<option value="'.$masjid->masjid_id.'">';
+                              echo ucwords($masjid->masjid_name);
+                              echo '</option>';
+                            }
+                             ?>
+                          </select>
+                          <small class="form-text <?=($err_username != "" ? 'text-danger' : '')?>"><?=($err_username != "" ? $err_username : 'Pilih Masjid lokasi takmir.')?></small>
                         </div>
                       </div>
                       <div class="form-group row">

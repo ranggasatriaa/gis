@@ -171,8 +171,9 @@ else {
                           <tr>
                             <th>No</th>
                             <th>Nama</th>
-                            <th>Agama</th>
                             <th>Jenis Umur</th>
+                            <th>Agama</th>
+                            <th>Jamaah Masjid</th>
                             <th>Aksi</th>
                           </tr>
                         </thead>
@@ -198,6 +199,23 @@ else {
                                 </td>
                                 <td>
                                   <?php
+                                  if ($family->family_age == 1) {
+                                    echo "Balita";
+                                  }elseif ($family->family_age == 2) {
+                                    echo "Anak-anak";
+                                  }elseif ($family->family_age == 3) {
+                                    echo "Remaja";
+                                  }elseif ($family->family_age == 4) {
+                                    echo "Dewasa";
+                                  }elseif ($family->family_age == 5) {
+                                    echo "Lansia";
+                                  }else {
+                                    echo "Lainnya";
+                                  }
+                                  ?>
+                                </td>
+                                <td>
+                                  <?php
                                   if ($family->family_religion == 1) {
                                     echo "Islam";
                                   }elseif ($family->family_religion == 2) {
@@ -214,21 +232,8 @@ else {
                                   ?>
                                 </td>
                                 <td>
-                                  <?php
-                                  if ($family->family_age == 1) {
-                                    echo "Balita";
-                                  }elseif ($family->family_age == 2) {
-                                    echo "Anak-anak";
-                                  }elseif ($family->family_age == 3) {
-                                    echo "Remaja";
-                                  }elseif ($family->family_age == 4) {
-                                    echo "Dewasa";
-                                  }elseif ($family->family_age == 5) {
-                                    echo "Lansia";
-                                  }else {
-                                    echo "Lainnya";
-                                  }
-                                  ?>
+                                  
+                                  <?= $family->masjid_id != 0 ? ucwords($family->masjid_name) : 'Belum jadi jamaah masjid manapun'?>
                                 </td>
                                 <td>
                                   <a  class="btn btn-primary btn-sm" href="detail_anggota.php?<?=RequestKey::$FAMILY_ID?>=<?=$family->family_id?>">Detail</a>

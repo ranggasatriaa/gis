@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.7.4
+-- version 4.8.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 31, 2018 at 07:23 PM
--- Server version: 10.1.28-MariaDB
--- PHP Version: 7.1.10
+-- Generation Time: Aug 04, 2018 at 07:56 AM
+-- Server version: 10.1.33-MariaDB
+-- PHP Version: 7.2.6
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -31,12 +31,13 @@ SET time_zone = "+00:00";
 CREATE TABLE `family` (
   `family_id` int(10) NOT NULL,
   `place_id` int(10) NOT NULL,
+  `masjid_id` int(11) NOT NULL DEFAULT '0',
   `family_name` varchar(50) NOT NULL,
-  `family_status` int(1) NOT NULL COMMENT '0=kepala keluarga, 1=istri, 2=anak, 3=pembantu',
+  `family_status` int(1) NOT NULL DEFAULT '-1' COMMENT '0=kepala keluarga, 1=istri, 2=anak, 3=pembantu',
   `family_status_number` int(2) NOT NULL DEFAULT '0',
   `family_kawin` int(1) NOT NULL DEFAULT '0',
   `family_religion` int(1) NOT NULL COMMENT '1=islam, 2=kristen, 3=katolik, 4=budha, 5=hindu 6=lainnya',
-  `family_age` int(3) NOT NULL COMMENT '1=balita 2= anak-anak 3=remaja 4=dewasa 5=lansia',
+  `family_age` int(3) NOT NULL COMMENT '1) balita  : 0-5  2) kanak- kanak : 5-11 3) remaja awal : 12-16 4) remaja akhir : 17-25 5) dewasa awal : 26-35 6) dewasa akhur : 36-45 7) Lansia Awal : 46-55 8) lansia akhir : 56-65 9) manula  :  > 65',
   `family_gender` int(1) NOT NULL,
   `family_born_place` varchar(10) NOT NULL,
   `family_born_date` date NOT NULL,
@@ -51,21 +52,14 @@ CREATE TABLE `family` (
 -- Dumping data for table `family`
 --
 
-INSERT INTO `family` (`family_id`, `place_id`, `family_name`, `family_status`, `family_status_number`, `family_kawin`, `family_religion`, `family_age`, `family_gender`, `family_born_place`, `family_born_date`, `family_die_date`, `family_education`, `family_salary`, `family_blood`, `family_donor`) VALUES
-(1, 2, 'jamaludin 12', 0, 0, 0, 1, 4, 1, 'qwd ', '2015-10-30', '0000-00-00', 4, 123123, '1', 0),
-(2, 5, 'rangga satria', 0, 0, 0, 1, 3, 1, '2016-11-30', '2016-11-30', '0000-00-00', 3, 11, '1', 0),
-(37, 11, 'asd', 0, 0, 0, 3, 3, 2, 'asd', '2016-10-30', '0000-00-00', 0, 1, '2', 0),
-(40, 5, 'satria', 1, 1, 0, 1, 4, 2, '2017-10-30', '2017-10-30', '0000-00-00', 1, 0, '2', 0),
-(41, 11, 'Istri 1', 1, 1, 1, 1, 3, 2, 'zdv', '2014-08-30', '0000-00-00', 1, 1231, '1', 1),
-(42, 11, 'anak 1', 2, 0, 0, 1, 3, 2, 'asd', '2017-10-29', '0000-00-00', 3, 8, '1', 0),
-(43, 11, 'asd', 1, 0, 0, 1, 5, 2, 'malang', '2016-11-30', '0000-00-00', 1, 2, '2', 0),
-(44, 11, 'asd', 3, 0, 0, 3, 4, 2, 'malang', '2016-10-30', '0000-00-00', 2, 0, '1', 0),
-(45, 11, 'asd', 3, 0, 0, 3, 4, 2, 'malang', '2016-10-30', '0000-00-00', 2, 0, '1', 0),
-(46, 11, 'asd', 3, 0, 0, 3, 4, 2, 'malang', '2016-10-30', '0000-00-00', 2, 0, '1', 0),
-(47, 11, 'aasd', 2, 0, 0, 2, 5, 2, 'malang', '2017-10-30', '0000-00-00', 1, 0, '2', 0),
-(48, 11, 'aasd', 2, 0, 0, 2, 5, 2, 'malang', '2017-10-30', '0000-00-00', 1, 0, '2', 0),
-(50, 11, 'asd', 3, 0, 0, 2, 3, 1, 'asd', '2017-11-28', '2018-05-31', 0, 0, '1', 1),
-(51, 11, 'asd', 3, 0, 0, 2, 3, 2, 'malang', '2018-11-30', '0000-00-00', 0, 0, '2', 1);
+INSERT INTO `family` (`family_id`, `place_id`, `masjid_id`, `family_name`, `family_status`, `family_status_number`, `family_kawin`, `family_religion`, `family_age`, `family_gender`, `family_born_place`, `family_born_date`, `family_die_date`, `family_education`, `family_salary`, `family_blood`, `family_donor`) VALUES
+(1, 2, 1, 'jamaludin 12', 0, -1, 0, 1, 3, 1, 'asdasd', '2002-10-30', '0000-00-00', 4, 123123, '1', 0),
+(2, 5, 0, 'rangga satria', 0, 0, 0, 1, 3, 1, '2016-11-30', '2016-11-30', '0000-00-00', 3, 11, '1', 0),
+(37, 11, 0, 'asd', 0, 0, 0, 3, 3, 2, 'asd', '2016-10-30', '0000-00-00', 0, 1, '2', 0),
+(40, 5, 0, 'satria', 1, 1, 0, 1, 4, 2, '2017-10-30', '2017-10-30', '0000-00-00', 1, 0, '2', 0),
+(52, 11, 0, 'asf', 3, 0, 0, 2, 2, 1, 'asd', '2018-02-02', '0000-00-00', 1, 21, '1', 0),
+(53, 5, 0, 'asd', 1, 1, 0, 1, 1, 2, '12', '2018-01-01', '0000-00-00', 0, 0, '1', 0),
+(54, 5, 3, 'qweqw', 1, 2, 0, 1, 1, 2, 'qwd', '2018-01-01', '0000-00-00', 0, 0, '1', 0);
 
 -- --------------------------------------------------------
 
@@ -140,7 +134,14 @@ INSERT INTO `keimanan` (`keimanan id`, `family_id`, `keimanan_sholat`, `keimanan
 (53, 49, 1, 1),
 (54, 50, -1, -1),
 (55, 51, -1, -1),
-(56, 52, 2, -1);
+(56, 52, 2, -1),
+(57, 52, 0, 0),
+(58, 53, -1, -1),
+(59, 54, 3, 1),
+(60, 55, -1, -1),
+(61, 57, -1, -1),
+(62, 53, 0, 0),
+(63, 54, 3, 1);
 
 -- --------------------------------------------------------
 
@@ -160,8 +161,8 @@ CREATE TABLE `masjid` (
 --
 
 INSERT INTO `masjid` (`masjid_id`, `place_id`, `masjid_name`, `masjid_history`) VALUES
-(1, 1, 'al azar', 'history al azar history al azar history al azar history al azar history al azar history al azar history al azar history al azar history al azar history al azar history al azar history al azar history al azar history al azar history al azar history al azar'),
-(2, 3, 'masjid Hidayah', 'sejarah ');
+(3, 12, 'Masjid Baru', 'alsdkja'),
+(4, 13, 'Al- ikhlas', 'asdlalaksjd');
 
 -- --------------------------------------------------------
 
@@ -248,11 +249,11 @@ CREATE TABLE `place` (
 --
 
 INSERT INTO `place` (`place_id`, `place_name`, `place_location`, `place_category`) VALUES
-(1, 'masjid al azar', '-7.058198, 110.426586', 0),
 (2, 'jamaludin 12', '-7.0578289,110.4262025', 1),
-(3, 'masjid Hidayah', '-7.058137, 110.424741', 0),
 (5, 'rangga', '-7.05642385886491, 110.42509977644352', 1),
-(11, 'asd', '-7.0578399837958266, 110.42650525396732', 1);
+(11, 'asd', '-7.0578399837958266, 110.42650525396732', 1),
+(12, 'Masjid Baru', '-7.05832977035738, 110.42487447088627', 0),
+(13, 'Al- ikhlas', '-7.058084877141398, 110.42651598280338', 0);
 
 -- --------------------------------------------------------
 
@@ -265,16 +266,18 @@ CREATE TABLE `user` (
   `user_name` varchar(50) NOT NULL,
   `user_username` varchar(50) NOT NULL,
   `user_password` varchar(100) NOT NULL,
-  `user_level` int(1) NOT NULL
+  `user_level` int(1) NOT NULL,
+  `masjid_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `user`
 --
 
-INSERT INTO `user` (`user_id`, `user_name`, `user_username`, `user_password`, `user_level`) VALUES
-(1, 'Admin', 'admin', '88ea39439e74fa27c09a4fc0bc8ebe6d00978392', 0),
-(2, 'Takmir', 'takmir', '88ea39439e74fa27c09a4fc0bc8ebe6d00978392', 1);
+INSERT INTO `user` (`user_id`, `user_name`, `user_username`, `user_password`, `user_level`, `masjid_id`) VALUES
+(1, 'Admin', 'admin', '88ea39439e74fa27c09a4fc0bc8ebe6d00978392', 0, 0),
+(2, 'Takmir', 'takmir', '88ea39439e74fa27c09a4fc0bc8ebe6d00978392', 1, 3),
+(4, 'adminqwe', 'qwe', '88ea39439e74fa27c09a4fc0bc8ebe6d00978392', 1, 3);
 
 --
 -- Indexes for dumped tables
@@ -336,19 +339,19 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `family`
 --
 ALTER TABLE `family`
-  MODIFY `family_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=53;
+  MODIFY `family_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=55;
 
 --
 -- AUTO_INCREMENT for table `keimanan`
 --
 ALTER TABLE `keimanan`
-  MODIFY `keimanan id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=57;
+  MODIFY `keimanan id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=64;
 
 --
 -- AUTO_INCREMENT for table `masjid`
 --
 ALTER TABLE `masjid`
-  MODIFY `masjid_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `masjid_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `masjid_jumat`
@@ -372,13 +375,13 @@ ALTER TABLE `masjid_kegiatan`
 -- AUTO_INCREMENT for table `place`
 --
 ALTER TABLE `place`
-  MODIFY `place_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `place_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `user_id` int(1) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `user_id` int(1) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

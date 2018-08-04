@@ -141,11 +141,19 @@ else {
                         }elseif($family->family_age == 2){
                           echo 'Anak-anak';
                         }elseif($family->family_age == 3){
-                          echo 'Remaja';
+                          echo 'Remaja Awal';
                         }elseif($family->family_age == 4){
-                          echo 'Dewasa';
+                          echo 'Remaja Akhir';
                         }elseif($family->family_age == 5){
-                          echo 'Lansia';
+                          echo 'Dewasa Awal';
+                        }elseif($family->family_age == 6){
+                          echo 'Dewasa Akhir';
+                        }elseif($family->family_age == 7){
+                          echo 'Lansia Awal';
+                        }elseif($family->family_age == 8){
+                          echo 'Lansia Akhir';
+                        }elseif($family->family_age == 9){
+                          echo 'Manula';
                         }else{
                           echo 'Lainnya';
                         }?></td>
@@ -225,6 +233,11 @@ else {
                       }
                       if ($family->family_religion == 1) {
                         ?>
+                        <tr>
+                          <th width="20%">Jamaah Masjid</th>
+                          <td>:</td>
+                          <td><?=ucwords($family->masjid_name)?></td>
+                        </tr>
                         <tr>
                           <th>Kebiasaan Shalat</th>
                           <td>:</td>

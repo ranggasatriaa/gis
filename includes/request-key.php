@@ -7,7 +7,7 @@ class RequestKey {
   public static $USER_USERNAME        = 'user-username';
   public static $USER_PASSWORD        = 'user-password';
   public static $USER_LEVEL           = 'user-level';
-
+  public static $USER_MASJID_ID       = 'user-masjid-id';
 
   //PLACE
   public static $PLACE_ID             = 'place-id';
@@ -57,6 +57,7 @@ class RequestKey {
   public static $FAMILY_BORN_PLACE    = 'family-born-place';
   public static $FAMILY_BORN_DATE     = 'family-born-date';
   public static $FAMILY_EDUCATION     = 'family-education';
+  public static $FAMILY_MASJID_ID     = 'family-masjid-id';
   public static $FAMILY_SALARY        = 'family-salary';
   public static $FAMILY_BLOOD         = 'family-blood';
   public static $FAMILY_DONOR         = 'family-donor';

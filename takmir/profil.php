@@ -12,8 +12,7 @@ if ($_SESSION[RequestKey::$USER_LEVEL] != 1){
 else {
   $db = new DBHelper();
   $side_bar = 4;
-
-  $user    = $db->getUserById($_SESSION[RequestKey::$USER_ID]);
+  $user    = $db->getUserById2($_SESSION[RequestKey::$USER_ID]);
 }
 ?>
 <!DOCTYPE html>
@@ -56,6 +55,7 @@ else {
                       <h3>Nana: <?=$user->user_name;?></h3>
                       <span>username: <?=$user->user_username;?></span>
                       <span>level: <?= $user->user_level==0 ? "Admin" : "Takmir" ?></span>
+                      <span>Masjid: <?=$user->masjid_name == 0 ?ucwords($user->masjid_name):'Belum menjadi takmir masjid manapun'?></span>
                     </div>
                     <br>
                     <a href="edit_profil.php?<?=RequestKey::$USER_ID?>=<?=$user->user_id?>" class="btn btn-primary">Ubah profil</a>

@@ -19,10 +19,12 @@ else {
   $db   = new DBHelper();
   if (isset($_GET[RequestKey::$USER_ID])) {
     $uid  = $_GET[RequestKey::$USER_ID];
-    $user = $db->getUserById($uid);
+    $user = $db->getUserById2($uid);
+    $masjids = $db->getAllMasjid2();
   }elseif (isset($_POST[RequestKey::$USER_ID])) {
     $uid  = $_POST[RequestKey::$USER_ID];
-    $user = $db->getUserById($uid);
+    $user = $db->getUserById2($uid);
+    $masjids = $db->getAllMasjid2();
   }else {
     header('Location: user.php');
   }
@@ -32,6 +34,7 @@ else {
     $user_id        = $db->escapeInput($_POST[RequestKey::$USER_ID]);
     $user_name      = $db->escapeInput($_POST[RequestKey::$USER_NAME]);
     $user_username  = $db->escapeInput($_POST[RequestKey::$USER_USERNAME]);
+    $user_masjid_id = $db->escapeInput($_POST[RequestKey::$USER_MASJID_ID]);
 
     if (!preg_match("/^[a-zA-Z ]{1,50}$/",$user_name)) {
       $err_name = "Nama tidak valid";
@@ -46,6 +49,10 @@ else {
       $array[RequestKey::$USER_ID]        = $db->escapeInput($uid);
       $array[RequestKey::$USER_NAME]      = $db->escapeInput($_POST[RequestKey::$USER_NAME]);
       $array[RequestKey::$USER_USERNAME]  = $db->escapeInput($_POST[RequestKey::$USER_USERNAME]);
+      $array[RequestKey::$USER_MASJID_ID] = $db->escapeInput($_POST[RequestKey::$USER_MASJID_ID]);
+
+      // print_r($array);
+      // die();
       if ($db->updateUser($array)) {
         $status = 1;
       }
@@ -102,6 +109,23 @@ else {
                         <div class="col-sm-9">
                           <input id="inputHorizontalSuccess" name="<?= RequestKey::$USER_USERNAME ?>" type="text" placeholder="Nama" class="form-control form-control-success" value="<?= $user->user_username?>" required>
                           <small class="form-text <?=($err_username != "" ? 'text-danger' : '')?>"><?=($err_username != "" ? $err_username : 'Karakter huruf dan angka tanpa spasi.')?></small>
+                        </div>
+                      </div>
+                      <div class="form-group row">
+                        <label class="col-sm-3 form-control-label ">Takmir Masjid</label>
+                        <div class="col-sm-9">
+                          <select class="form-control" name="<?=RequestKey::$USER_MASJID_ID?>" required>
+                            <option value=""> - Pilih - </option>
+                            <?php while ($masjid = $masjids->fetch_object()){
+                              ?>
+                              <option <?=$user->masjid_id == $masjid->masjid_id ? 'selected' :''?> value="<?=$masjid->masjid_id?>">
+                                <?=ucwords($masjid->masjid_name)?>
+                                </option>
+                              <?php
+                            }
+                             ?>
+                          </select>
+                          <small class="form-text <?=($err_username != "" ? 'text-danger' : '')?>"><?=($err_username != "" ? $err_username : 'Pilih Masjid lokasi takmir.')?></small>
                         </div>
                       </div>
                       <div class="form-group row">

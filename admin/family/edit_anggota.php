@@ -46,7 +46,7 @@ else {
   }
   // echo "string";
   if(isset($_POST[RequestKey::$FAMILY_ID])&& isset($_POST[RequestKey::$FAMILY_NAME])
-  && isset($_POST[RequestKey::$FAMILY_STATUS]) && isset($_POST[RequestKey::$FAMILY_AGE])
+  && isset($_POST[RequestKey::$FAMILY_STATUS])
   && isset($_POST[RequestKey::$FAMILY_RELIGION]) && isset($_POST[RequestKey::$FAMILY_GENDER])
   && isset($_POST[RequestKey::$FAMILY_BORN_PLACE]) && isset($_POST[RequestKey::$FAMILY_BORN_DATE])
   && isset($_POST[RequestKey::$FAMILY_SALARY])  && isset($_POST[RequestKey::$FAMILY_BLOOD])
@@ -59,9 +59,12 @@ else {
   $family_id            = $db->escapeInput($_POST[RequestKey::$FAMILY_ID]);
   $family_name          = $db->escapeInput($_POST[RequestKey::$FAMILY_NAME]);
   $family_status        = $db->escapeInput($_POST[RequestKey::$FAMILY_STATUS]);
-  $family_status_number = $db->escapeInput($_POST[RequestKey::$FAMILY_STATUS_NUMBER]);
+  if (isset($_POST[RequestKey::$FAMILY_STATUS_NUMBER])) {
+    $family_status_number = $db->escapeInput($_POST[RequestKey::$FAMILY_STATUS_NUMBER]);
+  }else {
+    $family_status_number = -1;
+  }
   $family_kawin         = $db->escapeInput($_POST[RequestKey::$FAMILY_KAWIN]);
-  $family_age           = $db->escapeInput($_POST[RequestKey::$FAMILY_AGE]);
   $family_religion      = $db->escapeInput($_POST[RequestKey::$FAMILY_RELIGION]);
   $family_gender        = $db->escapeInput($_POST[RequestKey::$FAMILY_GENDER]);
   $family_born_place    = $db->escapeInput($_POST[RequestKey::$FAMILY_BORN_PLACE]);
@@ -73,11 +76,40 @@ else {
   $keimanan_sholat      = $db->escapeInput($_POST[RequestKey::$KEIMANAN_MENGAJI]);
   $keimanan_mengaji     = $db->escapeInput($_POST[RequestKey::$KEIMANAN_SHOLAT]);
 
+
+    if (date_create($family_born_date) >= date_create(date("Y-m-d"))) {
+      $err_born_date = "Tanggal Tidak Valid";
+    }
+
   //CEK ERROR PADA INPUTAN
-  if(empty($err_name) && empty($err_gender) && empty($err_born_place) && empty($err_age)
+  if(empty($err_name) && empty($err_gender) && empty($err_born_place)
   && empty($err_religion) && empty($err_born_date) && empty($err_education)
   && empty($err_salary) && empty($err_blood) && empty($err_sholat) && empty($err_mengaji)){
     // echo "masuk error | ";
+
+    $diff = date_diff(date_create($family_born_date), date_create(date("Y-m-d")));
+    $age = $diff->format('%y');
+    //DEFIN KATEGORI AGE
+    if ($age < 6) {
+      $family_age = 1; //balita
+    }elseif($age >= 5 && $age < 12){
+      $family_age = 2; //kanak2
+    }elseif($age >= 12 && $age < 17){
+      $family_age = 3; //remaja awal
+    }elseif($age >= 17 && $age < 26){
+      $family_age = 4; //remaja akhir
+    }elseif($age >= 26 && $age < 36){
+      $family_age = 5; //dewasa awal
+    }elseif($age >= 36 && $age < 46){
+      $family_age = 6; //dewasa akhir
+    }elseif($age >= 46 && $age < 56){
+      $family_age = 7; //lansia awal
+    }elseif($age >= 56 && $age < 66){
+      $family_age = 8; //lansia akhir
+    }elseif($age >= 66){
+      $family_age = 9; //manula
+    }
+
     $array_family = array();
     $array_family[RequestKey::$FAMILY_ID]             = $family_id;
     $array_family[RequestKey::$FAMILY_NAME]           = $family_name;
@@ -218,20 +250,6 @@ else {
                         <div class="col-sm-10">
                           <input class="form-control" type="date" name="<?= RequestKey::$FAMILY_BORN_DATE ?>" value="<?=$family->family_born_date?>" placeholder="" required="">
                           <small class="form-text" ><?=$err_born_date?></small>
-                        </div>
-                      </div>
-                      <div class="form-group row">
-                        <label class="col-sm-2 form-control-label ">Kategori Usia</label>
-                        <div class="col-sm-10">
-                          <select id="age" class="form-control" name="<?=RequestKey::$FAMILY_AGE?>" required>
-                            <option value=""> - Pilih -</option>
-                            <option id="balita" value="1" <?=$family->family_age == 1 ? "selected":""?> >Balita</option>
-                            <option id="anak" value="2" <?=$family->family_age == 2 ? "selected":""?> >Anak-anak</option>
-                            <option value="3" <?=$family->family_age == 3 ? "selected":""?> >Remaja</option>
-                            <option value="4" <?=$family->family_age == 4 ? "selected":""?> >Dewasa</option>
-                            <option value="5" <?=$family->family_age == 5 ? "selected":""?> >Lansia</option>
-                          </select>
-                          <small class="form-text" ><?=$err_gender?></small>
                         </div>
                       </div>
                       <div class="form-group row">

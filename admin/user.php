@@ -11,6 +11,7 @@ else {
   $db       = new DBHelper();
   $count    = $db->countUser('1');
   $users    = $db->getAllUser('1');
+  // print_r($users->fetch_object());
   $side_bar = 3;
 }
 ?>
@@ -44,14 +45,14 @@ else {
                 <a style="width:100%" href="create_user.php">
                   <div class="statistic d-flex align-items-center bg-white has-shadow">
                     <div class="icon bg-red"><i class="fa fa-plus"></i></div>
-                    <div class="text"><strong>Add</strong><br><small>User</small></div>
+                    <div class="text"><strong>Add</strong><br><small>Takmir</small></div>
                   </div>
                 </a>
               </div>
               <div class="statistics col-lg-4">
                 <div class="statistic d-flex align-items-center bg-white has-shadow">
                   <div class="icon bg-blue"><i class="fa fa-group"></i></div>
-                  <div class="text"><strong><?=$count?></strong><br><small>User</small></div>
+                  <div class="text"><strong><?=$count?></strong><br><small>Takmir</small></div>
                 </div>
               </div>
             </div>
@@ -73,6 +74,7 @@ else {
                           <tr>
                             <th>No</th>
                             <th>Nama Takmir</th>
+                            <th>Masjid lokasi takmir</th>
                             <th style="text-align:center">Aksi</th>
                           </tr>
                         </thead>
@@ -88,9 +90,12 @@ else {
                               <td>
                                 <?= ucwords($user->user_name); ?>
                               </td>
+                              <td>
+                                <?= ucwords($user->masjid_name); ?>
+                              </td>
                               <td style="text-align:center">
                                 <a class="btn btn-primary btn-sm" href="detail_user.php?<?=RequestKey::$USER_ID.'='.$user->user_id?>">Detail</a>
-                                <a class="btn btn-sm btn-secondary" href="#" data-toggle="modal" data-target="#modalUserDelete" data-id="<?=$user->user_id?>" data-name="<?=strtoupper($user->user_name)?>" data-level="Takmir" ></i> Delete</a>
+                                <a class="btn btn-sm btn-secondary" href="#" data-toggle="modal" data-target="#modalUserDelete" data-id="<?=$user->user_id?>" data-name="<?=strtoupper($user->user_name)?>" data-level="Takmir" data-masjid="<?=ucwords($user->masjid_name)?>" ></i> Delete</a>
                               </td>
                             </tr>
                             <?php
@@ -131,6 +136,10 @@ else {
                 <td>Level</td>
                 <td id="user-level"></td>
               </tr>
+              <tr>
+                <td>Masjid</td>
+                <td id="user-masjid"></td>
+              </tr>
             </table>
           </div>
           <div class="dropdown-divider"></div>
@@ -162,6 +171,7 @@ else {
     modal.find('#form-user-delete').attr('action','delete_user.php');
     modal.find('.modal-body #user-name').text(button.data('name'));
     modal.find('.modal-body #user-level').text(button.data('level'))
+    modal.find('.modal-body #user-masjid').text(button.data('masjid'))
     document.getElementById('user-id-delete').value=button.data('id') ;
   })
   </script>

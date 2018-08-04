@@ -14,7 +14,9 @@ else {
   $db = new DBHelper();
   $side_bar = 2;
   $count    = $db->countPlace();
-  $places  = $db->getAllPlace();
+  $user     = $db->getUserById($_SESSION[RequestKey::$USER_ID]);
+  // $masjid   = $db->getMasjidById($user->masjid_id);
+  $places   = $db->getAllPlace();
 }
 ?>
 

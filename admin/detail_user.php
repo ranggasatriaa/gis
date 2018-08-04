@@ -10,7 +10,7 @@ if(!isset($_SESSION[RequestKey::$USER_ID])) {
 }
 else {
   $db = new DBHelper();
-  $user    = $db->getUserById($_GET[RequestKey::$USER_ID]);
+  $user    = $db->getUserById2($_GET[RequestKey::$USER_ID]);
   $side_bar = 3;
 
 }
@@ -50,9 +50,10 @@ else {
 <!--                      <div class="status bg-green"></div>-->
 <!--                    </div>-->
                     <div class="client-title">
-                      <h3>Nama: <?=$user->user_name;?></h3><span>username: <?=$user->user_username;?></span>
-                      <span>level: <?= $user->user_level==0 ? "Admin" : "Takmir" ?></span>
-
+                      <h3>Nama: <?=$user->user_name;?></h3>
+                      <span>username: <?=$user->user_username;?></span>
+                      <span>Level: <?= $user->user_level==0 ? "Admin" : "Takmir" ?></span>
+                      <span>Masjid: <?= ucwords($user->masjid_name)?></span>
                     </div>
                     <br>
                     <a href="edit_user.php?<?=RequestKey::$USER_ID?>=<?=$user->user_id?>" class="btn btn-primary">Ubah User</a>

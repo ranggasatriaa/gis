@@ -30,7 +30,8 @@ class DBHelper{
     $user_username  = $array[RequestKey::$USER_USERNAME];
     $user_password  = $array[RequestKey::$USER_PASSWORD];
     $user_level     = $array[RequestKey::$USER_LEVEL];
-    if($place = $this->link->query("INSERT INTO user (user_name, user_username, user_password, user_level) VALUES ('$user_name', '$user_username', '$user_password', '$user_level')")){
+    $user_masjid_id = $array[RequestKey::$USER_MASJID_ID];
+    if($place = $this->link->query("INSERT INTO user (user_name, user_username, user_password, user_level, masjid_id) VALUES ('$user_name', '$user_username', '$user_password', '$user_level', '$user_masjid_id')")){
       return true;
     }
     return false;
@@ -41,10 +42,18 @@ class DBHelper{
     $user_id        = $array[RequestKey::$USER_ID];
     $user_name      = $array[RequestKey::$USER_NAME];
     $user_username  = $array[RequestKey::$USER_USERNAME];
-
-    if ($result = $this->link->query("UPDATE user SET user_name = '$user_name', user_username = '$user_username' WHERE user_id='$user_id'")) {
-      return true;
+    // $user_masjid_id = $array[RequestKey::$USER_MASJID_ID];
+    if (isset($array[RequestKey::$USER_MASJID_ID])) {
+      $user_masjid_id = $array[RequestKey::$USER_MASJID_ID];
+      if ($result = $this->link->query("UPDATE user SET user_name = '$user_name', user_username = '$user_username', masjid_id = '$user_masjid_id' WHERE user_id='$user_id'")) {
+        return true;
+      }
+    }else {
+      if ($result = $this->link->query("UPDATE user SET user_name = '$user_name', user_username = '$user_username' WHERE user_id='$user_id'")) {
+        return true;
+      }
     }
+
     return false;
   }
 
@@ -81,7 +90,7 @@ class DBHelper{
 
   //GET USER BY id
   function getAllUser($level){
-    if($result = $this->link->query("SELECT * FROM user WHERE user_level = '$level'")){
+    if($result = $this->link->query("SELECT * FROM user AS u LEFT JOIN masjid AS m ON u.masjid_id=m.masjid_id WHERE u.user_level = '$level'")){
       return $result;
     }
     else {
@@ -100,8 +109,27 @@ class DBHelper{
   }
 
   //GET USER BY id
+  function getUserById2($uid){
+    if($result = $this->link->query("SELECT * FROM user AS u LEFT JOIN masjid AS m ON u.masjid_id=m.masjid_id WHERE u.user_id = '$uid'")){
+      return $result->fetch_object();
+    }
+    else {
+      return false;
+    }
+  }
+
+  //GET USER BY id
   function countUser($level){
     if($result = $this->link->query("SELECT * FROM user WHERE user_level = '$level'")){
+      return $result->num_rows;
+    }
+    else {
+      return false;
+    }
+  }
+
+  function countAnggota($pid){
+    if($result = $this->link->query("SELECT * FROM family WHERE place_id = '$pid'")){
       return $result->num_rows;
     }
     else {
@@ -127,7 +155,17 @@ class DBHelper{
   }
   //ALL PLACE
   function getAllPlace() {
-    if ($result = $this->link->query("SELECT * FROM place")) {
+    if ($result = $this->link->query("SELECT * FROM place ORDER BY place_category ASC")) {
+      return $result;
+    }
+    else {
+      return false;
+    }
+  }
+
+  //ALL PLACE
+  function getAllFamily() {
+    if ($result = $this->link->query("SELECT * FROM place WHERE place_category=1")) {
       return $result;
     }
     else {
@@ -241,9 +279,19 @@ class DBHelper{
     }
   }
 
+  //GET MASJID
+  function getAllMasjid2() {
+    if ($result = $this->link->query("SELECT * FROM masjid")) {
+      return $result;
+    }
+    else{
+      return false;
+    }
+  }
+
   //GET MASJID BY ID
   function getMasjidById($mid) {
-    if ($result = $this->link->query("SELECT * FROM masjid WHERE masjid_id = '$mid'")) {
+    if ($result = $this->link->query("SELECT * FROM masjid AS m LEFT JOIN place AS p ON m.place_id=p.place_id WHERE m.masjid_id = '$mid'")) {
       return $result->fetch_object();
     }
     else{
@@ -546,13 +594,26 @@ class DBHelper{
     $family_salary      = $array[RequestKey::$FAMILY_SALARY];
     $family_blood       = $array[RequestKey::$FAMILY_BLOOD];
     $family_donor       = $array[RequestKey::$FAMILY_DONOR];
+    if (!empty($array[RequestKey::$FAMILY_MASJID_ID])) {
+      $family_masjid_id   = $array[RequestKey::$FAMILY_MASJID_ID];
+      if ($result = $this->link->query("INSERT INTO family(place_id, masjid_id, family_name, family_status, family_status_number, family_age, family_religion, family_gender, family_born_place, family_born_date, family_education, family_salary, family_blood, family_donor)
+      VALUES ( '$family_place_id', '$family_masjid_id', '$family_name', '$family_status', '$family_status_number', '$family_age', '$family_religion', '$family_gender', '$family_born_place', '$family_born_date', '$family_education', '$family_salary', '$family_blood', '$family_donor') ")){
+        return true;
+      }
+      else{
+        return false;
+      }
+    }else{
+      if ($result = $this->link->query("INSERT INTO family(place_id, family_name, family_status, family_status_number, family_age, family_religion, family_gender, family_born_place, family_born_date, family_education, family_salary, family_blood, family_donor)
+      VALUES ( '$family_place_id', '$family_name', '$family_status', '$family_status_number', '$family_age', '$family_religion', '$family_gender', '$family_born_place', '$family_born_date', '$family_education', '$family_salary', '$family_blood', '$family_donor') ")){
+        return true;
+      }
+      else{
+        return false;
+      }
+    }
 
-    if ($result = $this->link->query("INSERT INTO family(place_id, family_name, family_status, family_status_number, family_age, family_religion, family_gender, family_born_place, family_born_date, family_education, family_salary, family_blood, family_donor) VALUES ( '$family_place_id', '$family_name', '$family_status', '$family_status_number', '$family_age', '$family_religion', '$family_gender', '$family_born_place', '$family_born_date', '$family_education', '$family_salary', '$family_blood', '$family_donor') ")){
-      return true;
-    }
-    else{
-      return false;
-    }
+
   }
 
   //EDIT FAMILY TAKMIR
@@ -571,6 +632,19 @@ class DBHelper{
     $family_blood       = $array[RequestKey::$FAMILY_BLOOD];
     $family_donor       = $array[RequestKey::$FAMILY_DONOR];
     if ($result = $this->link->query("UPDATE family SET family_name = '$family_name', family_status = '$family_status', family_status_number = '$family_status_number', family_age = '$family_age', family_religion = '$family_religion', family_gender = '$family_gender', family_born_place = '$family_born_place', family_born_date = '$family_born_date', family_education = '$family_education', family_salary = '$family_salary', family_blood = '$family_blood', family_donor = '$family_donor' WHERE family_id = '$family_id' ")){
+      return true;
+    }
+    else{
+      return false;
+    }
+  }
+
+  //EDIT FAMILY JAMAAH
+  function editFamilyJamaah($array){
+    $family_id          = $array[RequestKey::$FAMILY_ID];
+    $family_masjid_id   = $array[RequestKey::$FAMILY_MASJID_ID];
+
+    if ($result = $this->link->query("UPDATE family SET masjid_id = '$family_masjid_id' WHERE family_id = '$family_id' ")){
       return true;
     }
     else{
@@ -686,7 +760,7 @@ class DBHelper{
 
   //GET FAMILY by id
   function getFamilyById($fid) {
-    if ($result = $this->link->query("SELECT * FROM family WHERE family_id = '$fid'")) {
+    if ($result = $this->link->query("SELECT *, f.place_id AS place_id FROM family AS f LEFT JOIN masjid AS m ON f.masjid_id=m.masjid_id WHERE f.family_id = '$fid'")) {
       return $result->fetch_object();
     }
     else{
@@ -867,14 +941,14 @@ class DBHelper{
 
     //INPUT QUERY
     if(empty($age) && empty($religion) && empty($blood) && empty($sholat) && empty($mengaji)){
-      if ($result = $this->link->query("SELECT * FROM family")) {
+      if ($result = $this->link->query("SELECT * FROM family AS f LEFT JOIN masjid AS m ON f.masjid_id=m.masjid_id")) {
         return $result;
       }else {
         return false;
       }
     }
     else {
-      if ($result = $this->link->query("SELECT * FROM family AS f LEFT JOIN keimanan AS k ON f.family_id = k.family_id WHERE $case")) {
+      if ($result = $this->link->query("SELECT * FROM family AS f LEFT JOIN keimanan AS k ON f.family_id = k.family_id LEFT JOIN masjid AS m ON f.masjid_id=m.masjid_id WHERE $case")) {
         return $result;
       }else {
         return  false;

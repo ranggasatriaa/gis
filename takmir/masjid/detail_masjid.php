@@ -13,8 +13,9 @@ if ($_SESSION[RequestKey::$USER_LEVEL] != 1){
 else {
 
   $db        = new DBHelper();
-  $side_bar     = 2;
+  $side_bar  = 2;
 
+  $user      = $db->getUserById($_SESSION[RequestKey::$USER_ID]);
   $pid       = $_GET[RequestKey::$PLACE_ID];
   $masjid    = $db->getMasjidByPlaceId($pid);
   $place     = $db->getPlaceById($pid);
@@ -68,7 +69,9 @@ else {
               <div class="col-md-12">
                 <div class="card">
                   <div class="card-close">
-                    <a class="btn btn-sm btn-primary" href="edit_masjid.php?<?=RequestKey::$MASJID_ID?>=<?=$masjid->masjid_id?>"><i class="fa fa-edit"></i> Edit</a>
+                    <?php if ($user->masjid_id == $masjid->masjid_id): ?>
+                      <a class="btn btn-sm btn-primary" href="edit_masjid.php?<?=RequestKey::$MASJID_ID?>=<?=$masjid->masjid_id?>"><i class="fa fa-edit"></i> Edit</a>
+                    <?php endif; ?>
                   </div>
                   <div class="card-header">
                     <h4> Masjid <?= $masjid->masjid_name ?></h4>
@@ -89,7 +92,9 @@ else {
                         <h4> Jadual Kajian</h4>
                       </div>
                       <div class="col-4 no-margin text-right">
-                        <a class="btn btn-primary btn-sm"href="create_kajian.php?<?=RequestKey::$MASJID_ID?>=<?=$masjid->masjid_id?>"><span claass="fa fa-plus"></span>+ Add</a>
+                        <?php if ($user->masjid_id == $masjid->masjid_id): ?>
+                          <a class="btn btn-primary btn-sm"href="create_kajian.php?<?=RequestKey::$MASJID_ID?>=<?=$masjid->masjid_id?>"><span claass="fa fa-plus"></span>+ Add</a>
+                        <?php endif; ?>
                       </div>
                     </div>
                   </div>
@@ -144,7 +149,9 @@ else {
                           <h4> Jadual Imam sholat Jumat</h4>
                         </div>
                         <div class="col-4 no-margin text-right">
-                          <a class="btn btn-primary btn-sm"href="create_jumat.php?<?=RequestKey::$MASJID_ID?>=<?=$masjid->masjid_id?>"><span claass="fa fa-plus"></span>+ Add</a>
+                          <?php if ($user->masjid_id == $masjid->masjid_id): ?>
+                            <a class="btn btn-primary btn-sm"href="create_jumat.php?<?=RequestKey::$MASJID_ID?>=<?=$masjid->masjid_id?>"><span claass="fa fa-plus"></span>+ Add</a>
+                          <?php endif; ?>
                         </div>
                       </div>
                     </div>
@@ -186,7 +193,9 @@ else {
                           <h4> Jadual Kegiatan</h4>
                         </div>
                         <div class="col-4 no-margin text-right">
-                          <a class="btn btn-primary btn-sm"href="create_kegiatan.php?<?=RequestKey::$MASJID_ID?>=<?=$masjid->masjid_id?>"><span claass="fa fa-plus"></span>+ Add</a>
+                          <?php if ($user->masjid_id == $masjid->masjid_id): ?>
+                            <a class="btn btn-primary btn-sm"href="create_kegiatan.php?<?=RequestKey::$MASJID_ID?>=<?=$masjid->masjid_id?>"><span claass="fa fa-plus"></span>+ Add</a>
+                          <?php endif; ?>
                         </div>
                       </div>
                     </div>

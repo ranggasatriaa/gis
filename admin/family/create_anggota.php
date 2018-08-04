@@ -13,6 +13,8 @@ else {
   include('head.php');
 
   $db = new DBHelper();
+  $masjids = $db->getAllMasjid2();
+
 
   $status          = 0;
   $message         = '';
@@ -45,7 +47,7 @@ else {
   }
   // echo "string";
   if(isset($_POST[RequestKey::$FAMILY_PLACE_ID]) &&isset($_POST[RequestKey::$FAMILY_NAME])
-  && isset($_POST[RequestKey::$FAMILY_STATUS]) && isset($_POST[RequestKey::$FAMILY_AGE])
+  && isset($_POST[RequestKey::$FAMILY_STATUS])
   && isset($_POST[RequestKey::$FAMILY_RELIGION]) && isset($_POST[RequestKey::$FAMILY_GENDER])
   && isset($_POST[RequestKey::$FAMILY_BORN_PLACE]) && isset($_POST[RequestKey::$FAMILY_BORN_DATE])
   && isset($_POST[RequestKey::$FAMILY_SALARY])  && isset($_POST[RequestKey::$FAMILY_BLOOD])
@@ -60,7 +62,6 @@ else {
   $family_status        = $db->escapeInput($_POST[RequestKey::$FAMILY_STATUS]);
   $family_status_number = $db->escapeInput($_POST[RequestKey::$FAMILY_STATUS_NUMBER]);
   $family_kawin         = $db->escapeInput($_POST[RequestKey::$FAMILY_KAWIN]);
-  $family_age           = $db->escapeInput($_POST[RequestKey::$FAMILY_AGE]);
   $family_religion      = $db->escapeInput($_POST[RequestKey::$FAMILY_RELIGION]);
   $family_gender        = $db->escapeInput($_POST[RequestKey::$FAMILY_GENDER]);
   $family_born_place    = $db->escapeInput($_POST[RequestKey::$FAMILY_BORN_PLACE]);
@@ -72,11 +73,49 @@ else {
   $keimanan_sholat      = $db->escapeInput($_POST[RequestKey::$KEIMANAN_SHOLAT]);
   $keimanan_mengaji     = $db->escapeInput($_POST[RequestKey::$KEIMANAN_MENGAJI]);
 
+  if (date_create($family_born_date) >= date_create(date("Y-m-d"))) {
+    $err_born_date = "Tanggal tidak Valid";
+  }
+
   //CEK ERROR PADA INPUTAN
-  if(empty($err_name) && empty($err_gender) && empty($err_born_place) && empty($err_age)
+  if(empty($err_name) && empty($err_gender) && empty($err_born_place)
   && empty($err_religion) && empty($err_born_date) && empty($err_education)
-  && empty($err_salary) && empty($err_blood) && empty($err_sholat) && empty($err_mengaji)){
+  && empty($err_salary) && empty($err_blood) && empty($err_sholat)
+  && empty($err_mengaji)){
     // echo "masuk error | ";
+
+    $diff = date_diff(date_create($family_born_date), date_create(date("Y-m-d")));
+    $age = $diff->format('%y');
+    //DEFIN KATEGORI AGE
+    if ($age < 6) {
+      $family_age = 1; //balita
+    }elseif($age >= 5 && $age < 12){
+      $family_age = 2; //kanak2
+    }elseif($age >= 12 && $age < 17){
+      $family_age = 3; //remaja awal
+    }elseif($age >= 17 && $age < 26){
+      $family_age = 4; //remaja akhir
+    }elseif($age >= 26 && $age < 36){
+      $family_age = 5; //dewasa awal
+    }elseif($age >= 36 && $age < 46){
+      $family_age = 6; //dewasa akhir
+    }elseif($age >= 46 && $age < 56){
+      $family_age = 7; //lansia awal
+    }elseif($age >= 56 && $age < 66){
+      $family_age = 8; //lansia akhir
+    }elseif($age >= 66){
+      $family_age = 9; //manula
+    }
+
+    // 1) balita  : 0-5
+    // 2) kanak- kanak : 5-11
+    // 3) remaja awal : 12-16
+    // 4) remaja akhir : 17-25
+    // 5) dewasa awal : 26-35
+    // 6) dewasa akhur : 36-45
+    // 7) Lansia Awal : 46-55
+    // 8) lansia akhir : 56-65
+    // 9) manula  :  > 65
     $array_family = array();
     $array_family[RequestKey::$FAMILY_PLACE_ID]       = $family_place_id;
     $array_family[RequestKey::$FAMILY_NAME]           = $family_name;
@@ -227,201 +266,215 @@ else {
                           <small class="form-text" ><?=$err_born_date?></small>
                         </div>
                       </div>
-                      <div class="form-group row">
-                        <label class="col-sm-2 form-control-label ">Kategori Usia</label>
-                        <div class="col-sm-10">
-                          <select id="age" class="form-control" name="<?=RequestKey::$FAMILY_AGE?>" required>
-                            <option value=""> - Pilih -</option>
-                            <option id="balita" value="1">Balita</option>
-                            <option id="anak" value="2">Anak-anak</option>
-                            <option value="3">Remaja</option>
-                            <option value="4">Dewasa</option>
-                            <option value="5">Lansia</option>
-                          </select>
-                          <small class="form-text" ><?=$err_gender?></small>
-                        </div>
-                      </div>
-                      <div class="form-group row">
-                        <label class="col-sm-2 form-control-label ">Pendidikan Terakhir</label>
-                        <div class="col-sm-10">
-                          <select class="form-control" name="<?=RequestKey::$FAMILY_EDUCATION?>" required>
-                            <option value=""> - Pilih-</option>
-                            <option value="0">Tidak Ada</option>
-                            <option value="1">SD/MI</option>
-                            <option value="2">SMP/MTS</option>
-                            <option value="3">SMA/MA</option>
-                            <option value="4">SMK</option>
-                            <option value="5">Diploma (D3/4)</option>
-                            <option value="6">Sarjana (S1)</option>
-                            <option value="7">Magister (S2)</option>
-                            <option value="8">Doktor (S3)</option>
-                          </select>
-                          <small class="form-text" ><?=$err_education?></small>
-                        </div>
-                      </div>
-                      <div class="form-group row">
-                        <label class="col-sm-2 form-control-label ">Penghasilan (dalam Rp)</label>
-                        <div class="col-sm-10">
-                          <input class="form-control" type="number" min="0" name="<?= RequestKey::$FAMILY_SALARY ?>" value="" placeholder="Masukkan Penghasilan">
-                          <small class="form-text" ><?=$err_salary?></small>
-                        </div>
-                      </div>
-                      <div id="kawin" style="display:none">
-                        <div class="form-group row">
-                          <label class="col-sm-2 form-control-label ">Status Kawin</label>
-                          <div class="col-sm-10">
-                            <select class="form-control" name="<?=RequestKey::$FAMILY_KAWIN?>">
-                              <option value=""> - Pilih -</option>
-                              <option value="0">Belum Kawin</option>
-                              <option value="1">Kawin</option>
-                              <option value="2">Janda/duda cerai hidup</option>
-                              <option value="3">Janda/duda cerai mati</option>
-                            </select>
-                            <small class="form-text" ><?=$err_kawin?></small>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="form-group row">
-                        <label class="col-sm-2 form-control-label ">Golongan Darah</label>
-                        <div class="col-sm-10">
-                          <select class="form-control" name="<?=RequestKey::$FAMILY_BLOOD?>">
-                            <option value=""> - Pilih -</option>
-                            <option value="1">A</option>
-                            <option value="2">B</option>
-                            <option value="3">AB</option>
-                            <option value="4">O</option>
-                          </select>
-                          <small class="form-text" ><?=$err_blood?></small>
-                        </div>
-                      </div>
-                      <div id="donor" class="form-group row" style="display:none">
-                        <label class="col-sm-2 form-control-label ">Kesediaan Donor</label>
-                        <div class="col-sm-10">
-                          <select class="form-control" name="<?=RequestKey::$FAMILY_DONOR?>">
-                            <option value=""> - Pilih -</option>
-                            <option value="1">Bersedia</option>
-                            <option value="0">Tidak bersedia</option>
-                          </select>
-                          <small class="form-text" ><?=$err_donor?></small>
-                        </div>
-                      </div>
-                      <div id="keimanan" style="display:none">
-                        <div class="form-group row">
-                          <label class="col-sm-2 form-control-label ">Kebiasaan Sholat</label>
-                          <div class="col-sm-10">
-                            <select class="form-control" name="<?=RequestKey::$KEIMANAN_SHOLAT?>">
-                              <option value=""> - Pilih  -</option>
-                              <option value="-1">Tidak Sholat</option>
-                              <option value="1">5 waktu di Masjid</option>
-                              <option value="2">5 waktu di Rumah</option>
-                              <option value="3">kurang 5 waktu di masjid</option>
-                              <option value="4">kurang 5 waktu di rumah</option>
-                              <option value="5">Sholat Jumat saja</option>
-                              <option value="6">Sholat Hari Raya saja</option>
-                            </select>
-                            <small class="form-text" ><?=$err_sholat?></small>
-                          </div>
-                        </div>
-                        <div class="form-group row">
-                          <label class="col-sm-2 form-control-label ">Kemampuan Mengaji</label>
-                          <div class="col-sm-10">
-                            <select class="form-control" name="<?=RequestKey::$KEIMANAN_MENGAJI?>">
-                              <option value=""> - Pilih  -</option>
-                              <option value="-1">Tidak Bisa</option>
-                              <option value="1">Kurang Lancar</option>
-                              <option value="2">Lancar Membaca</option>
-                              <option value="3">Hafal Al-Quran</option>
-                            </select>
-                            <small class="form-text" ><?=$err_mengaji?></small>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="form-group">
-                        <input type="hidden" name="<?=RequestKey::$FAMILY_PLACE_ID?>" value="<?=$pid?>">
-                        <a class="btn btn-secondary" href="detail_family.php?<?=RequestKey::$PLACE_ID?>=<?=$pid?>">Cancel</a>
-                        <input class="btn btn-primary" type="submit" name="submit" value="Submit">
-                      </div>
-                    </form>
+                      <!-- <div class="form-group row">
+                      <label class="col-sm-2 form-control-label ">Kategori Usia</label>
+                      <div class="col-sm-10">
+                      <select id="age" class="form-control" name="<?=RequestKey::$FAMILY_AGE?>" required>
+                      <option value=""> - Pilih -</option>
+                      <option id="balita" value="1">Balita</option>
+                      <option id="anak" value="2">Anak-anak</option>
+                      <option value="3">Remaja</option>
+                      <option value="4">Dewasa</option>
+                      <option value="5">Lansia</option>
+                    </select>
+                    <small class="form-text" ><?=$err_gender?></small>
+                  </div>
+                </div> -->
+                <div class="form-group row">
+                  <label class="col-sm-2 form-control-label ">Pendidikan Terakhir</label>
+                  <div class="col-sm-10">
+                    <select class="form-control" name="<?=RequestKey::$FAMILY_EDUCATION?>" required>
+                      <option value=""> - Pilih-</option>
+                      <option value="0">Tidak Ada</option>
+                      <option value="1">SD/MI</option>
+                      <option value="2">SMP/MTS</option>
+                      <option value="3">SMA/MA</option>
+                      <option value="4">SMK</option>
+                      <option value="5">Diploma (D3/4)</option>
+                      <option value="6">Sarjana (S1)</option>
+                      <option value="7">Magister (S2)</option>
+                      <option value="8">Doktor (S3)</option>
+                    </select>
+                    <small class="form-text" ><?=$err_education?></small>
                   </div>
                 </div>
-              </div>
+                <div class="form-group row">
+                  <label class="col-sm-2 form-control-label ">Penghasilan (dalam Rp)</label>
+                  <div class="col-sm-10">
+                    <input class="form-control" type="number" min="0" name="<?= RequestKey::$FAMILY_SALARY ?>" value="" placeholder="Masukkan Penghasilan">
+                    <small class="form-text" ><?=$err_salary?></small>
+                  </div>
+                </div>
+                <div id="kawin" style="display:none">
+                  <div class="form-group row">
+                    <label class="col-sm-2 form-control-label ">Status Kawin</label>
+                    <div class="col-sm-10">
+                      <select class="form-control" name="<?=RequestKey::$FAMILY_KAWIN?>">
+                        <option value=""> - Pilih -</option>
+                        <option value="0">Belum Kawin</option>
+                        <option value="1">Kawin</option>
+                        <option value="2">Janda/duda cerai hidup</option>
+                        <option value="3">Janda/duda cerai mati</option>
+                      </select>
+                      <small class="form-text" ><?=$err_kawin?></small>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-sm-2 form-control-label ">Golongan Darah</label>
+                  <div class="col-sm-10">
+                    <select class="form-control" name="<?=RequestKey::$FAMILY_BLOOD?>">
+                      <option value=""> - Pilih -</option>
+                      <option value="1">A</option>
+                      <option value="2">B</option>
+                      <option value="3">AB</option>
+                      <option value="4">O</option>
+                    </select>
+                    <small class="form-text" ><?=$err_blood?></small>
+                  </div>
+                </div>
+                <div id="donor" class="form-group row" style="display:none">
+                  <label class="col-sm-2 form-control-label ">Kesediaan Donor</label>
+                  <div class="col-sm-10">
+                    <select class="form-control" name="<?=RequestKey::$FAMILY_DONOR?>">
+                      <option value=""> - Pilih -</option>
+                      <option value="1">Bersedia</option>
+                      <option value="0">Tidak bersedia</option>
+                    </select>
+                    <small class="form-text" ><?=$err_donor?></small>
+                  </div>
+                </div>
+                <div id="keimanan" style="display:none">
+                  <div class="form-group row">
+                    <label class="col-sm-2 form-control-label ">Jamaah Masjid</label>
+                    <div class="col-sm-10">
+                      <select class="form-control" name="<?=RequestKey::$USER_MASJID_ID?>">
+                        <option value=""> - Pilih - </option>
+                        <?php while ($masjid = $masjids->fetch_object()){
+                          echo '<option value="'.$masjid->masjid_id.'">';
+                          echo ucwords($masjid->masjid_name);
+                          echo '</option>';
+                        }
+                         ?>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-sm-2 form-control-label ">Kebiasaan Sholat</label>
+                    <div class="col-sm-10">
+                      <select class="form-control" name="<?=RequestKey::$KEIMANAN_SHOLAT?>">
+                        <option value=""> - Pilih  -</option>
+                        <option value="-1">Tidak Sholat</option>
+                        <option value="1">5 waktu di Masjid</option>
+                        <option value="2">5 waktu di Rumah</option>
+                        <option value="3">kurang 5 waktu di masjid</option>
+                        <option value="4">kurang 5 waktu di rumah</option>
+                        <option value="5">Sholat Jumat saja</option>
+                        <option value="6">Sholat Hari Raya saja</option>
+                      </select>
+                      <small class="form-text" ><?=$err_sholat?></small>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-sm-2 form-control-label ">Kemampuan Mengaji</label>
+                    <div class="col-sm-10">
+                      <select class="form-control" name="<?=RequestKey::$KEIMANAN_MENGAJI?>">
+                        <option value=""> - Pilih  -</option>
+                        <option value="-1">Tidak Bisa</option>
+                        <option value="1">Kurang Lancar</option>
+                        <option value="2">Lancar Membaca</option>
+                        <option value="3">Hafal Al-Quran</option>
+                      </select>
+                      <small class="form-text" ><?=$err_mengaji?></small>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <input type="hidden" name="<?=RequestKey::$FAMILY_PLACE_ID?>" value="<?=$pid?>">
+                  <a class="btn btn-secondary" href="detail_family.php?<?=RequestKey::$PLACE_ID?>=<?=$pid?>">Cancel</a>
+                  <input class="btn btn-primary" type="submit" name="submit" value="Submit">
+                </div>
+              </form>
             </div>
           </div>
-        </section>
-        <?php include('page-footer.php'); ?>
+        </div>
       </div>
     </div>
-  </div>
-  <?php
-  include('foot.php');
-  echo '<script>var status = '.$status.'; var message = "'.$message.'"</script>';
-  $status = 0;
-  $message = '';
-  ?>
-  <script>
-  $('#status').on('change',function(){
-    if( $(this).val()==="1"){
-      $("#status_number").show()
-      $("#status_number_istri").show()
-      $("#status_number_anak").hide()
-      $("#balita").hide()
-      $("#anak").hide()
-      $("#laki").hide()
-    }
-    else if ( $(this).val()==="2") {
-      $("#status_number").show()
-      $("#status_number_anak").show()
-      $("#status_number_istri").hide()
-      $("#balita").show()
-      $("#anak").show()
-      $("#laki").show()
-    }else{
-      $("#status_number").hide()
-      $("#status_number_anak").hide()
-      $("#status_number_anak").hide()
-      $("#balita").hide()
-      $("#anak").show()
-      $("#laki").show()
-    }
-  });
+  </section>
+  <?php include('page-footer.php'); ?>
+</div>
+</div>
+</div>
+<?php
+include('foot.php');
+echo '<script>var status = '.$status.'; var message = "'.$message.'"</script>';
+$status = 0;
+$message = '';
+?>
+<script>
+$('#status').on('change',function(){
+  if( $(this).val()==="1"){
+    $("#status_number").show()
+    $("#status_number_istri").show()
+    $("#status_number_anak").hide()
+    $("#balita").hide()
+    $("#anak").hide()
+    $("#laki").hide()
+  }
+  else if ( $(this).val()==="2") {
+    $("#status_number").show()
+    $("#status_number_anak").show()
+    $("#status_number_istri").hide()
+    $("#balita").show()
+    $("#anak").show()
+    $("#laki").show()
+  }else{
+    $("#status_number").hide()
+    $("#status_number_anak").hide()
+    $("#status_number_anak").hide()
+    $("#balita").hide()
+    $("#anak").show()
+    $("#laki").show()
+  }
+});
 
-  $('#religion').on('change',function(){
-    if( $(this).val()==="1"){
-      $("#keimanan").show()
-    }
-    else{
-      $("#keimanan").hide()
-    }
-  });
+$('#religion').on('change',function(){
+  if( $(this).val()==="1"){
+    $("#keimanan").show()
+  }
+  else{
+    $("#keimanan").hide()
+  }
+});
 
-  $('#age').on('change',function(){
-    if( $(this).val()==="3" || $(this).val()==="4" || $(this).val()==="5"){
-      $("#donor").show()
-      $("#kawin").show()
-    }
-    else{
-      $("#donor").hide()
-      $("#kawin").hide()
-    }
-  });
+$('#age').on('change',function(){
+  if( $(this).val()==="3" || $(this).val()==="4" || $(this).val()==="5"){
+    $("#donor").show()
+    $("#kawin").show()
+  }
+  else{
+    $("#donor").hide()
+    $("#kawin").hide()
+  }
+});
 
-  $(document).ready(function() {
-    if (status == 1) {
-      swal("Success!",message,"success")
-      .then((value) => {
-        window.location.href = "detail_family.php?place-id=<?=$pid?>" + escape(window.location.href);
-      });
-    }
-    else if (status == 2) {
-      swal("Failed!",message,"error");
-    }
-    else if (status == 9) {
-      swal("Failed!","Tidak ada lokasi terpilih","error")
-      .then((value) => {
-        window.location.href = "../place.php";
-      });
-    }
-  });
-  </script>
+$(document).ready(function() {
+  if (status == 1) {
+    swal("Success!",message,"success")
+    .then((value) => {
+      window.location.href = "detail_family.php?place-id=<?=$pid?>" + escape(window.location.href);
+    });
+  }
+  else if (status == 2) {
+    swal("Failed!",message,"error");
+  }
+  else if (status == 9) {
+    swal("Failed!","Tidak ada lokasi terpilih","error")
+    .then((value) => {
+      window.location.href = "../place.php";
+    });
+  }
+});
+</script>
 </body>
 </html>

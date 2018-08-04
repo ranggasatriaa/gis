@@ -284,6 +284,12 @@ else {
                         </div>
                       </div>
                       <div class="form-group row">
+                        <label class="col-sm-2 form-control-label ">Jamaah Masjid</label>
+                        <div class="col-sm-10">
+                          <input class="form-control" disabled type="text" value="<?=ucwords($family->masjid_name)?>">
+                        </div>
+                      </div>
+                      <div class="form-group row">
                         <label class="col-sm-2 form-control-label ">Kebiasaan Sholat</label>
                         <div class="col-sm-10">
                           <select class="form-control" name="<?=RequestKey::$KEIMANAN_SHOLAT?>">
@@ -299,6 +305,7 @@ else {
                           <small class="form-text" ><?=$err_sholat?></small>
                         </div>
                       </div>
+
                       <div class="form-group row">
                         <label class="col-sm-2 form-control-label ">Kemampuan Mengaji</label>
                         <div class="col-sm-10">

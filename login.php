@@ -89,10 +89,17 @@ else {
             </div>
           </div>
           <!-- Form Panel    -->
+
           <div class="col-lg-6 bg-white">
             <div class="form d-flex align-items-center">
               <div class="content">
                 <form id="login-form" action="login.php" method="post">
+                  <div class="form-group">
+                    <!-- <label>
+                    username: admin - pass: admin123 <br>
+                    username: takmir - pass: takmir123 <br>
+                  </label> -->
+                  </div>
                   <div class="form-group">
                     <input id="login-email" type="username" name="<?=RequestKey::$USER_USERNAME?>" required="" class="input-material" autofocus>
                     <label for="login-email" class="label-material">Username</label>

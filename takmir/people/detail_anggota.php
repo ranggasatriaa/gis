@@ -49,7 +49,7 @@ else {
                 <div class="card">
                   <div class="card-header">
                     <h4> Detail Anggota Keluarga
-<!--                      --><?php //echo $family->family_name; ?>
+                      <!--                      --><?php //echo $family->family_name; ?>
                       <?php if ($family->family_die_date != '0000-00-00'): ?>
                         <span class="pull-right">
                           Anggota ini telah Meninggal
@@ -141,11 +141,19 @@ else {
                         }elseif($family->family_age == 2){
                           echo 'Anak-anak';
                         }elseif($family->family_age == 3){
-                          echo 'Remaja';
+                          echo 'Remaja Awal';
                         }elseif($family->family_age == 4){
-                          echo 'Dewasa';
+                          echo 'Remaja Akhir';
                         }elseif($family->family_age == 5){
-                          echo 'Lansia';
+                          echo 'Dewasa Awal';
+                        }elseif($family->family_age == 6){
+                          echo 'Dewasa Akhir';
+                        }elseif($family->family_age == 7){
+                          echo 'Lansia Awal';
+                        }elseif($family->family_age == 8){
+                          echo 'Lansia Akhir';
+                        }elseif($family->family_age == 9){
+                          echo 'Manula';
                         }else{
                           echo 'Lainnya';
                         }?></td>
@@ -226,6 +234,11 @@ else {
                       if ($family->family_religion == 1) {
                         ?>
                         <tr>
+                          <th width="20%">Jamaah Masjid</th>
+                          <td>:</td>
+                          <td><?=$family->masjid_id<=0 ? 'Belum menjadi jamaah masjid manapun' : ucwords($family->masjid_name)?></td>
+                        </tr>
+                        <tr>
                           <th>Kebiasaan Shalat</th>
                           <td>:</td>
                           <td><?php if($keimanan->keimanan_sholat == -1){
@@ -237,7 +250,7 @@ else {
                           }elseif($keimanan->keimanan_sholat == 3){
                             echo 'tidak 5 waktu di masjid';
                           }elseif($keimanan->keimanan_sholat == 4){
-                              echo 'tidak 5 waktu di rumah';
+                            echo 'tidak 5 waktu di rumah';
                           }elseif($keimanan->keimanan_sholat == 5){
                             echo 'Sholat Jumat Saja';
                           }elseif($keimanan->keimanan_sholat == 6){
@@ -248,7 +261,7 @@ else {
                         </tr>
                         <tr>
                           <th>Kemampuan Membaca Al-Quran</th>
-                          <td>: <?=$keimanan->keimanan_mengaji?></td>
+                          <td>:</td>
                           <td><?php if($keimanan->keimanan_mengaji == -1){
                             echo 'Tidak Bisa';
                           }elseif($keimanan->keimanan_mengaji == 1){
